@@ -1,0 +1,7 @@
+{
+  "name": "Statistics and Econometrics",
+  "practice_modes": ["estimator-derivation", "simulation-lab", "identification"],
+  "tracks": ["assumptions", "diagnostics", "replication"],
+  "no_agent_supported": true
+}
+

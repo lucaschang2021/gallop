@@ -1,0 +1,7 @@
+{
+  "name": "Finance and Financial Economics",
+  "practice_modes": ["model-derivation", "paper-seminar", "empirical-critique"],
+  "tracks": ["assumptions", "economic-interpretation", "research-questions"],
+  "no_agent_supported": true
+}
+

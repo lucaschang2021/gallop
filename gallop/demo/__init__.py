@@ -1,0 +1,2 @@
+"""Bundled deterministic demo resources."""
+
