@@ -1,0 +1,2 @@
+"""Framework-independent Gallop core."""
+

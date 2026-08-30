@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gallop.dev/schemas/practice-result.schema.json",
+  "title": "Gallop Practice Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "practice_id", "manifest_id", "subject", "topic",
+    "questions_attempted", "questions_correct", "questions_incorrect", "score",
+    "mistakes", "weakness_tags", "open_questions", "hints_used", "mastery_before",
+    "mastery_after", "difficulty", "started_at", "completed_at", "engine", "metadata"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "practice_id": {"type": "string", "minLength": 1},
+    "manifest_id": {"type": "string", "minLength": 1},
+    "subject": {"type": "string", "minLength": 1},
+    "topic": {"type": "string", "minLength": 1},
+    "questions_attempted": {"type": "integer", "minimum": 0},
+    "questions_correct": {"type": "integer", "minimum": 0},
+    "questions_incorrect": {"type": "integer", "minimum": 0},
+    "score": {"type": "number", "minimum": 0, "maximum": 1},
+    "mistakes": {"type": "array", "items": {}},
+    "weakness_tags": {"type": "array", "items": {"type": "string"}},
+    "open_questions": {"type": "array", "items": {}},
+    "hints_used": {"type": "integer", "minimum": 0},
+    "mastery_before": {"type": "integer", "minimum": 0, "maximum": 5},
+    "mastery_after": {"type": "integer", "minimum": 0, "maximum": 5},
+    "mastery_reason": {"type": "string"},
+    "difficulty": {"type": "string"},
+    "started_at": {"type": "string", "format": "date-time"},
+    "completed_at": {"type": "string", "format": "date-time"},
+    "engine": {"type": "string", "minLength": 1},
+    "integration_test": {"type": "boolean"},
+    "metadata": {"type": "object"}
+  }
+}
