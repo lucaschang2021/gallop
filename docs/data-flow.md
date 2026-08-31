@@ -1,5 +1,9 @@
 # Data flow
 
+> **Scope: legacy file/CLI pipeline.** For Automation V1's authoritative event
+> journal, human-confirmed assessments and derived Markdown, see
+> [architecture](architecture.md) and [Automation V1](automation-v1.md).
+
 ## Session → manifest
 
 Only observed concepts, mistakes, weaknesses, open questions, source references,
