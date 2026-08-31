@@ -8,14 +8,15 @@ practice, mastery tracking, and research-oriented learning.
 > Use AI to make learning harder in the right ways, not easier in the wrong ways.
 
 Gallop connects a teacher, a user-owned knowledge store, a practice engine, and
-an evidence-based mastery model. It is an early open-source release, not a
-production-ready learning platform and not a claim of guaranteed mastery.
+an evidence-based mastery model. Version 1.0.0 delivers Automation V1 with
+explicit safety boundaries; it does not claim guaranteed mastery or replace
+the learner's work.
 
 ## Why Gallop?
 
 AI conversations are easy to lose, quiz scores are easy to overinterpret, and
 practice tools rarely own the learner's long-term context. Gallop keeps durable
-state in Markdown, sends a minimal practice manifest to a replaceable practice
+replayable events and readable Markdown views, sends a minimal practice manifest to a replaceable practice
 engine, and imports structured evidence under conservative mastery rules.
 
 ## Core philosophy
@@ -33,7 +34,7 @@ Read [the full philosophy](docs/philosophy.md).
 ```mermaid
 flowchart TD
     A[ChatGPT-compatible Tutor] --> B[Structured Session]
-    B --> C[(Obsidian / Markdown\nSource of Truth)]
+    B --> C[(Validated Event Store)]
     C --> D[Gallop Practice Manifest]
     D --> E[DeepTutor\nDefault Practice Engine]
     E --> F[Structured Practice Result]
@@ -49,7 +50,7 @@ vendored into or redistributed with Gallop. See [architecture](docs/architecture
 ## How it works
 
 1. A tutor emits a truthful structured session.
-2. The Markdown knowledge store retains the canonical learning state.
+2. Automation retains immutable evidence and derives learning state and readable Markdown views.
 3. Gallop builds a minimal practice manifest from observed weaknesses.
 4. A practice engine generates appropriately difficult work.
 5. Gallop imports the result and evaluates evidence conservatively.
@@ -129,11 +130,25 @@ semantic retrieval over large material collections.
 
 These are examples only; the core is subject-independent.
 
-v0.1 provides a file/CLI structured-session importer, not a background ChatGPT
+The legacy v0.1 path provides a file/CLI structured-session importer, not a background ChatGPT
 account scraper. DeepTutor's default transport generates diagnostic choice
 questions; proof and oral assessment remain tutor-led. Stored practice IDs
 prevent replays from becoming repeated mastery evidence. Confidence is unknown
-(`null`) until a calibrated model exists.
+(null) in that legacy path; Automation V1 uses explicit conservative low/medium/high rules.
+
+## Automation V1
+
+New event-driven commands connect tutor intake, an append-only journal,
+explainable learning state, four-subject training policy, human-confirmed
+practice, Obsidian projections and the existing Gallop-Reader exporter.
+No historical learner state is silently migrated.
+
+Start with [Automation V1](docs/automation-v1.md), the
+[CLI reference](docs/automation-cli.md), [Mastery Safety Gate](docs/automation-safety.md),
+and [DeepTutor bridge](docs/deeptutor-integration.md).
+
+Cycle prepares learning operations; it never performs the learner's work.
+All shipped examples are synthetic and isolated from real mastery and Reader.
 
 ## Privacy and local-first operation
 
@@ -155,3 +170,8 @@ Bug reports, schemas, learning examples, and focused adapters are welcome. See
 
 Gallop is licensed under Apache-2.0. DeepTutor is a separate Apache-2.0 project;
 Gallop invokes it through an adapter and does not copy its implementation.
+
+Automation V1 final gate: **PASS**. Real DeepTutor generation, durable collection,
+a user-supplied confirmed response, practice/assessment events, state replay and
+isolated Obsidian projection passed. Real mastery remains unchanged.
+[Evidence summary](docs/automation-final-gate.md).

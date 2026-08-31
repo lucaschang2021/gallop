@@ -64,6 +64,11 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="gallop")
     parser.add_argument("--env-file", type=Path, default=Path(".env"))
     commands = parser.add_subparsers(dest="command", required=True)
+    from gallop.automation.cli import COMMANDS, register, execute
+    register(parser, commands)
+    from gallop.mobile import CloudNotReady, add_arguments, export_mobile
+    mobile = commands.add_parser("mobile-export", help="one-way Markdown reading mirror; no backend writes")
+    add_arguments(mobile)
     demo = commands.add_parser("demo", help="offline synthetic E2E, never learner evidence")
     demo.add_argument("--output", type=Path, default=Path("demo-output"))
     live = commands.add_parser("live-demo", help="explicit opt-in synthetic DeepTutor acceptance")
@@ -84,6 +89,14 @@ def main(argv: list[str] | None = None) -> int:
             sub.add_argument("--home", type=Path)
     args = parser.parse_args(argv)
     try:
+        if args.command in COMMANDS:
+            return execute(args)
+        if args.command == "mobile-export":
+            print(json.dumps(export_mobile(args.source, args.target, args.state, dry_run=args.dry_run,
+                                           icloud_safe=args.icloud_safe, refresh=args.refresh,
+                                           create_root_notes=args.create_root_notes,
+                                           icloud_binding=args.icloud_binding)))
+            return 0
         load_env(args.env_file)
         config = GallopConfig.from_environment()
         if args.command == "demo":
@@ -128,6 +141,9 @@ def main(argv: list[str] | None = None) -> int:
                               "mastery_before": report["mastery_before"],
                               "mastery_after": report["mastery_after"]}))
         return 0
+    except CloudNotReady as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
     except Exception as exc:
         # Do not print provider errors, arbitrary input bodies, or filesystem paths.
         print(f"Gallop failed: {type(exc).__name__}. Input retained; check configuration and local diagnostics.",

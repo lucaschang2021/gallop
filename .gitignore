@@ -40,3 +40,8 @@ learning-os/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Automation private runtime and configuration
+automation-runtime/
+automation.local.json
+*.sqlite3

@@ -1,51 +1,50 @@
 # Architecture
 
-Gallop separates responsibility into five deliberately small layers.
+Automation V1 adds a local event-driven path beside the compatible legacy
+adapters. It changes the authority model for new Automation inputs only.
 
-1. **Teacher Layer** — explanation, Socratic questioning, oral examination,
-   research supervision, and truthful structured session output.
-2. **Knowledge Layer** — canonical sessions, concepts, mistakes, research notes,
-   practice history, review state, and learning state. The default is Markdown/
-   Obsidian and it remains the source of truth.
-3. **Practice Layer** — question generation, quizzes, reinforcement, and
-   material-based tutoring. DeepTutor is the default external implementation.
-4. **Mastery Layer** — conservative state transitions based on correctness,
-   independence, hints, repeated performance, recall, transfer, and explanation.
-5. **Integration Layer** — schemas and adapters connecting the other layers.
+~~~mermaid
+flowchart TD
+    T[Tutor v1 package] --> I[Validated intake]
+    I --> E[(Append-only event journal + raw bytes)]
+    E --> S[Deterministic learning state]
+    S --> Q[Four-subject training queue]
+    Q --> M[Stable manifest]
+    M --> D[Existing DeepTutor preparation]
+    D --> H[Human start, actual work, human assessment]
+    H --> R[Validated practice + assessment events]
+    R --> E
+    S --> V[Owned Obsidian projections]
+    V --> P[Existing filtered mobile export]
+    P --> G[Gallop-Reader]
+    E --> A[Replay, explain, provenance]
+~~~
 
-```mermaid
-flowchart LR
-    T[Tutor] --> S[Session Protocol]
-    S --> K[(Markdown Knowledge Store)]
-    K --> M[Practice Manifest]
-    M --> P[Practice Engine]
-    P --> R[Practice Result]
-    R --> E[Mastery Engine]
-    E --> K
-    K --> T
-```
+## Boundaries
 
-## Adapter boundaries
+- Tutor observations are data, not tool commands or verified mastery.
+- Raw inputs live separately from validated session, practice, assessment and
+  state_transition events. Queue lifecycle and preparation also have events.
+- SQLite transactions and append-only triggers protect journal batches.
+  Every event has a stable ID, timestamp, source, namespace and hash-chain link.
+- Derived state carries its journal cursor and head hash. Replay verifies every
+  transition against its causal evidence, not just a final number.
+- A local operation lock serializes state and projection changes. Provider calls
+  are explicitly requested and never performed by cycle.
+- Markdown projections update only owned regions. Their receipt detects manual
+  changes; I/O interruption can be retried without replacing user notes.
+- The existing DeepTutor and mobile-export adapters remain the integration
+  boundaries. Old commands and their historical state are not migrated implicitly.
 
-- `TutorAdapter` is represented in v0.1 by the session protocol.
-- `KnowledgeStoreAdapter` is implemented by `ObsidianAdapter`.
-- `PracticeEngineAdapter` is implemented by `DeepTutorAdapter`.
-- `MasteryEngine` is native Gallop code.
-- `ReviewScheduler` preserves T+1/T+7/T+30 dates, while the knowledge store owns state.
+The state rules, policy data, application service, store, views and CLI live in
+separate small modules under gallop/automation. There is no daemon, extra web
+framework, LLM grader, swarm, or retrieval platform in V1.
 
-Gallop v0.1 uses Python protocols only where orchestration needs a boundary. It
-does not implement dynamic discovery, dependency injection, or a plugin runtime.
+See [Automation workflow](automation-v1.md), [safety](automation-safety.md),
+[CLI](automation-cli.md), and [DeepTutor bridge](deeptutor-integration.md).
 
-## Trust and failure boundaries
-
-- A malformed manifest or result is rejected before state mutation.
-- A missing or failed practice engine raises an explicit error.
-- Integration tests write only to `integration_tests`.
-- Mastery state is written atomically through a temporary file.
-- The practice engine never becomes the canonical knowledge store.
-- Logs and state must contain identifiers and outcomes, not credentials or note bodies.
-
-## External dependency boundary
-
-DeepTutor is installed separately. Gallop owns only its adapter, schemas,
-configuration, documentation, and tests. This keeps upgrades and licenses clear.
+DeepTutor preparation now uses durable submit/poll/collect jobs. The caller does
+not hold the journal lock while waiting on a provider. Final acceptance is
+**PASS**: a real generated task and user-confirmed response completed collection,
+practice/assessment events, isolated state transitions and Obsidian projection.
+The actual learner journal and mastery remain untouched.

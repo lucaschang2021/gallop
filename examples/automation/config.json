@@ -1,0 +1,7 @@
+{
+  "namespace": "integration_tests",
+  "root": "../../automation-runtime/integration_tests",
+  "vault": "../../automation-runtime/integration_tests/vault",
+  "reader": "../../automation-runtime/integration_tests/reader/Gallop-Reader",
+  "export_state": "../../automation-runtime/integration_tests/export"
+}
