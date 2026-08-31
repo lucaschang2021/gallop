@@ -10,6 +10,11 @@ import subprocess
 MACHINE_PATH = re.compile(r"(?<![A-Za-z0-9])[A-Za-z]:[\\/]")
 
 
+def public_commit_email(address: str) -> bool:
+    """Allow GitHub's public author identities and synthetic PR merge identity."""
+    return address.endswith("@users.noreply.github.com") or address == "noreply" + "@github.com"
+
+
 def git(*args: str) -> str:
     return subprocess.check_output(["git", *args], text=True, encoding="utf-8", errors="replace")
 
@@ -46,7 +51,7 @@ def main() -> int:
         if path.startswith(("data/", "vault/", "learning-os/")):
             findings.append({"path": path, "rule": "private-data-directory"})
     emails = git("log", "--all", "--format=%ae%n%ce").splitlines()
-    if any(not address.endswith("@users.noreply.github.com") for address in emails):
+    if any(not public_commit_email(address) for address in emails):
         findings.append({"path": "<commit-metadata>", "rule": "non-noreply-email"})
     print(json.dumps({"blobs_scanned": len(seen), "findings": findings,
                       "scope": "all reachable refs; metadata email check"}, indent=2))
