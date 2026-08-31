@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tutor Session Package v1",
+  "type": "object",
+  "required": [
+    "tutor",
+    "title",
+    "occurred_at",
+    "summary"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "tutor": {
+      "enum": [
+        "mathematics",
+        "statistics",
+        "finance",
+        "cs-ai"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "course": {
+      "type": "string"
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T.*(Z|[+-]\\d{2}:\\d{2})$"
+    },
+    "weakness_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "concepts": {
+      "type": "array"
+    },
+    "proofs_derivations": {
+      "type": "array"
+    },
+    "mistakes": {
+      "type": "array"
+    },
+    "open_questions": {
+      "type": "array"
+    },
+    "connections": {
+      "type": "array"
+    },
+    "research_ideas": {
+      "type": "array"
+    },
+    "hard_problem_sessions": {
+      "type": "array"
+    },
+    "oral_exams": {
+      "type": "array"
+    },
+    "simulation_labs": {
+      "type": "array"
+    },
+    "artifacts": {
+      "type": "array"
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": true,
+  "$id": "urn:gallop:schema:tutor-intake:1.0"
+}

@@ -1,0 +1,65 @@
+{
+  "mathematics": {
+    "folder": "01-Mathematics",
+    "training_types": [
+      "proof",
+      "hard_problem",
+      "conceptual",
+      "oral_exam"
+    ],
+    "focus": [
+      "proof",
+      "counterexample",
+      "definition reconstruction",
+      "hard problem"
+    ]
+  },
+  "statistics": {
+    "folder": "02-Statistics-Econometrics",
+    "training_types": [
+      "simulation",
+      "proof",
+      "empirical",
+      "oral_exam"
+    ],
+    "focus": [
+      "theory derivation",
+      "DGP reasoning",
+      "identification",
+      "empirical design"
+    ]
+  },
+  "finance": {
+    "folder": "03-Finance",
+    "training_types": [
+      "conceptual",
+      "hard_problem",
+      "empirical",
+      "oral_exam"
+    ],
+    "focus": [
+      "model assumptions",
+      "economic intuition",
+      "quantitative problems",
+      "empirical evidence",
+      "cases",
+      "accounting and institutional links"
+    ]
+  },
+  "cs-ai": {
+    "folder": "04-CS-AI",
+    "training_types": [
+      "coding",
+      "hard_problem",
+      "conceptual",
+      "oral_exam"
+    ],
+    "focus": [
+      "no-agent coding",
+      "algorithms",
+      "systems",
+      "implementation from scratch",
+      "debugging"
+    ]
+  }
+}

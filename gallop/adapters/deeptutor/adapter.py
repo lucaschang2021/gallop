@@ -28,7 +28,7 @@ class DeepTutorAdapter:
         self.timeout = timeout
         self.runner = runner
 
-    def generate(self, manifest: dict[str, Any]) -> dict[str, Any]:
+    def request(self, manifest: dict[str, Any]):
         validate_protocol("practice-manifest.schema.json", manifest)
         if not self.executable.is_file():
             raise DeepTutorUnavailable("DeepTutor executable unavailable; check configuration")
@@ -50,16 +50,23 @@ class DeepTutorAdapter:
         environment = {**os.environ, "PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8"}
         if self.home:
             environment["DEEPTUTOR_HOME"] = str(self.home)
+        return command, environment
+
+    def generate(self, manifest: dict[str, Any]) -> dict[str, Any]:
+        command, environment = self.request(manifest)
         try:
             completed = self.runner(command, cwd=self.home, env=environment, shell=False,
-                                    timeout=self.timeout, capture_output=True, text=True,
+                                    timeout=self.timeout, capture_output=True, text=True, stdin=subprocess.DEVNULL,
                                     encoding="utf-8", errors="strict", check=False)
         except (OSError, subprocess.TimeoutExpired, UnicodeError) as exc:
             raise DeepTutorUnavailable("DeepTutor transport failed or timed out; inspect its local session") from exc
         if completed.returncode:
             # Provider stderr may contain secrets. Never echo it.
             raise DeepTutorUnavailable(f"DeepTutor exited {completed.returncode}; inspect its local session")
-        questions = self._extract(completed.stdout)["questions"]
+        return self.decode(manifest, completed.stdout)
+
+    def decode(self, manifest: dict[str, Any], output: str) -> dict[str, Any]:
+        questions = self._extract(output)["questions"]
         if len(questions) != manifest["requested_question_count"]:
             raise ValueError("Incomplete question set; inspect the DeepTutor local session")
         answer_key, learner_questions = [], []

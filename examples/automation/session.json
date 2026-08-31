@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "session_id": "synthetic-mathematics-example-01",
+  "tutor": "mathematics",
+  "course": "Synthetic Analysis",
+  "title": "Fictional continuity lesson",
+  "occurred_at": "2026-01-01T10:00:00Z",
+  "summary": "Synthetic quantifier-order discussion; not learner history.",
+  "concepts": [
+    {
+      "name": "Continuity",
+      "definition": "Synthetic example definition"
+    }
+  ],
+  "proofs_derivations": [],
+  "hard_problem_sessions": [],
+  "oral_exams": [],
+  "simulation_labs": [],
+  "mistakes": [],
+  "weakness_tags": [
+    "quantifier-order"
+  ],
+  "open_questions": [
+    "Which quantifier comes first?"
+  ],
+  "connections": [],
+  "research_ideas": [],
+  "artifacts": [],
+  "integration_test": true
+}

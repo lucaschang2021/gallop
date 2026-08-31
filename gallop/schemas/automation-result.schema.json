@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:gallop:schema:automation-result:1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "result_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "queue_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "manifest_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "practice_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "concept": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "grading_reason": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "schema_version": {
+      "const": "1.0"
+    },
+    "subject": {
+      "enum": [
+        "mathematics",
+        "statistics",
+        "finance",
+        "cs-ai"
+      ]
+    },
+    "namespace": {
+      "enum": [
+        "learner",
+        "integration_tests"
+      ]
+    },
+    "integration_test": {
+      "type": "boolean"
+    },
+    "evidence_kind": {
+      "enum": [
+        "practice",
+        "review",
+        "hard_problem",
+        "proof",
+        "simulation",
+        "oral_exam",
+        "coding",
+        "conceptual",
+        "empirical"
+      ]
+    },
+    "outcome": {
+      "enum": [
+        "pass",
+        "fail",
+        "ungraded"
+      ]
+    },
+    "questions_attempted": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "questions_correct": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "hints_used": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "independent": {
+      "type": "boolean"
+    },
+    "transfer": {
+      "type": "boolean"
+    },
+    "grader": {
+      "enum": [
+        "human",
+        "ungraded"
+      ]
+    },
+    "response_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "weakness_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mistakes": {
+      "type": "array"
+    },
+    "open_questions": {
+      "type": "array"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "result_id",
+    "queue_id",
+    "manifest_id",
+    "practice_id",
+    "concept",
+    "grading_reason",
+    "schema_version",
+    "subject",
+    "namespace",
+    "integration_test",
+    "evidence_kind",
+    "outcome",
+    "questions_attempted",
+    "questions_correct",
+    "hints_used",
+    "independent",
+    "transfer",
+    "grader",
+    "response_refs",
+    "weakness_tags",
+    "mistakes",
+    "open_questions",
+    "started_at",
+    "completed_at"
+  ]
+}
