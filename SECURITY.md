@@ -26,4 +26,3 @@ services. Local-first does not mean that every selected manifest remains offline
 
 If a secret reaches Git history, revoke or rotate it immediately and report the
 affected commits. Deleting the current file is not sufficient remediation.
-

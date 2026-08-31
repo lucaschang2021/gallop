@@ -11,4 +11,3 @@ def review_dates(completed: date) -> dict[str, str]:
         "T+7": (completed + timedelta(days=7)).isoformat(),
         "T+30": (completed + timedelta(days=30)).isoformat(),
     }
-

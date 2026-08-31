@@ -21,4 +21,3 @@ Tutors must not invent scores, completed work, mastery, research output, or
 learner confidence. Mastery changes only through the Gallop mastery layer.
 
 See `gallop/schemas/session.schema.json` for the normative v1 schema.
-

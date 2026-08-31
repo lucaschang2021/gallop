@@ -1,2 +1,1 @@
 """Bundled JSON Schema documents."""
-

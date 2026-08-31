@@ -21,5 +21,4 @@ def validate_protocol(schema_name: str, document: dict[str, Any]) -> None:
         Draft202012Validator(schema, format_checker=FormatChecker()).validate(document)
     except ValidationError as exc:
         path = ".".join(str(part) for part in exc.absolute_path) or "<root>"
-        raise ProtocolValidationError(f"{schema_name} validation failed at {path}: {exc.message}") from exc
-
+        raise ProtocolValidationError(f"{schema_name} validation failed at {path} ({exc.validator})") from exc

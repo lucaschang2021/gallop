@@ -18,8 +18,7 @@ class GallopConfig:
     deeptutor_path: Path | None
     state_path: Path | None
     log_path: Path | None
-    model: str | None
-    embedding_model: str | None
+    deeptutor_home: Path | None
 
     @classmethod
     def from_environment(cls) -> "GallopConfig":
@@ -28,7 +27,19 @@ class GallopConfig:
             deeptutor_path=_optional_path("GALLOP_DEEPTUTOR_PATH"),
             state_path=_optional_path("GALLOP_STATE_PATH"),
             log_path=_optional_path("GALLOP_LOG_PATH"),
-            model=os.getenv("GALLOP_MODEL"),
-            embedding_model=os.getenv("GALLOP_EMBEDDING_MODEL"),
+            deeptutor_home=_optional_path("GALLOP_DEEPTUTOR_HOME"),
         )
 
+
+def load_env(path: Path) -> None:
+    """Read literal KEY=value configuration; never execute shell expressions."""
+    if not path.exists():
+        return
+    for line in path.read_text(encoding="utf-8-sig").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        key, separator, value = line.partition("=")
+        if not separator or not key.startswith("GALLOP_"):
+            raise ValueError("Environment file must use GALLOP_KEY=value lines")
+        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))

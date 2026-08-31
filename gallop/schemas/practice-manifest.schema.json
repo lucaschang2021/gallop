@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gallop.dev/schemas/practice-manifest.schema.json",
+  "$id": "urn:gallop:schema:practice-manifest:1.0",
   "title": "Gallop Practice Manifest",
   "type": "object",
   "additionalProperties": false,
@@ -42,4 +42,3 @@
     "created_at": {"type": "string", "format": "date-time"}
   }
 }
-

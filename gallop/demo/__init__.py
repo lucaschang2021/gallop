@@ -1,2 +1,1 @@
 """Bundled deterministic demo resources."""
-

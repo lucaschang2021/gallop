@@ -49,4 +49,3 @@ does not implement dynamic discovery, dependency injection, or a plugin runtime.
 
 DeepTutor is installed separately. Gallop owns only its adapter, schemas,
 configuration, documentation, and tests. This keeps upgrades and licenses clear.
-

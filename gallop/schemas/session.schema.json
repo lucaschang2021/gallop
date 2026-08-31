@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gallop.dev/schemas/session.schema.json",
+  "$id": "urn:gallop:schema:session:1.0",
   "title": "Gallop Session",
   "type": "object",
   "additionalProperties": false,
@@ -35,4 +35,3 @@
     "stringArray": {"type": "array", "items": {"type": "string"}}
   }
 }
-

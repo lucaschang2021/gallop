@@ -44,15 +44,17 @@ class PracticeResult:
     metadata: dict[str, Any] = field(default_factory=dict)
 
     def evidence(self) -> MasteryEvidence:
+        for key in ("independent", "delayed_recall", "transfer_success", "oral_explanation"):
+            if key in self.metadata and type(self.metadata[key]) is not bool:
+                raise ValueError("Evidence flags must be booleans")
         return MasteryEvidence(
             correct=self.questions_correct,
             attempted=self.questions_attempted,
             hints_used=self.hints_used,
-            independent=bool(self.metadata.get("independent", self.hints_used == 0)),
+            independent=self.metadata.get("independent", False),
             delayed_recall=bool(self.metadata.get("delayed_recall", False)),
             transfer_success=bool(self.metadata.get("transfer_success", False)),
             oral_explanation=bool(self.metadata.get("oral_explanation", False)),
             repeated_successes=int(self.metadata.get("repeated_successes", 0)),
             difficulty=self.difficulty,
         )
-

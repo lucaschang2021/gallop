@@ -60,9 +60,11 @@ vendored into or redistributed with Gallop. See [architecture](docs/architecture
 Requires Python 3.11 or newer.
 
 ```bash
-git clone https://github.com/OWNER/gallop.git
+git clone https://github.com/lucaschang2021/gallop.git
 cd gallop
 python -m venv .venv
+# Activate: source .venv/bin/activate (Linux/macOS)
+# PowerShell: .venv\Scripts\Activate.ps1
 python -m pip install -e ".[dev]"
 python -m gallop demo --output demo-output
 pytest
@@ -126,6 +128,12 @@ semantic retrieval over large material collections.
 - CS/AI: no-agent coding, algorithms, systems, and machine learning
 
 These are examples only; the core is subject-independent.
+
+v0.1 provides a file/CLI structured-session importer, not a background ChatGPT
+account scraper. DeepTutor's default transport generates diagnostic choice
+questions; proof and oral assessment remain tutor-led. Stored practice IDs
+prevent replays from becoming repeated mastery evidence. Confidence is unknown
+(`null`) until a calibrated model exists.
 
 ## Privacy and local-first operation
 

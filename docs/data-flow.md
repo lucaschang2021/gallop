@@ -29,3 +29,6 @@ Operational logs should include `timestamp`, `event`, `subject`, `source`,
 `target`, `manifest_id`, `practice_id`, `success`, and `error`. Do not log note
 bodies, answers not needed for recovery, credentials, tokens, or cookies.
 
+The implementation hashes context identifiers and paths in operational logs;
+errors use exception-class codes. Detailed evidence stays in the local knowledge
+store. Hashes are pseudonymous, not a guarantee of anonymity.

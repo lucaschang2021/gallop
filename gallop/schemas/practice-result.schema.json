@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gallop.dev/schemas/practice-result.schema.json",
+  "$id": "urn:gallop:schema:practice-result:1.0",
   "title": "Gallop Practice Result",
   "type": "object",
   "additionalProperties": false,
@@ -8,7 +8,7 @@
     "schema_version", "practice_id", "manifest_id", "subject", "topic",
     "questions_attempted", "questions_correct", "questions_incorrect", "score",
     "mistakes", "weakness_tags", "open_questions", "hints_used", "mastery_before",
-    "mastery_after", "difficulty", "started_at", "completed_at", "engine", "metadata"
+    "mastery_after", "difficulty", "started_at", "completed_at", "engine", "metadata", "integration_test"
   ],
   "properties": {
     "schema_version": {"const": "1.0"},

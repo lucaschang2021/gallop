@@ -28,9 +28,10 @@ class MasteryEngine:
     """Update mastery without treating one quiz as durable understanding."""
 
     def evaluate(self, current: int, evidence: MasteryEvidence) -> MasteryDecision:
-        if current not in MASTERY_LABELS:
+        if type(current) is not int or current not in MASTERY_LABELS:
             raise ValueError("mastery must be between 0 and 5")
-        if evidence.attempted < 0 or evidence.correct < 0:
+        if any(type(v) is not int or v < 0 for v in
+               (evidence.attempted, evidence.correct, evidence.hints_used, evidence.repeated_successes)):
             raise ValueError("attempt counts cannot be negative")
         if evidence.correct > evidence.attempted:
             raise ValueError("correct cannot exceed attempted")
@@ -39,15 +40,16 @@ class MasteryEngine:
 
         score = evidence.score
         if score < 0.4:
-            return MasteryDecision(current, max(1, current - 1), "weak performance")
+            return MasteryDecision(current, max(0, current - 1), "weak performance")
         if score < 0.6:
             return MasteryDecision(current, current, "mixed performance")
 
         if score >= 0.8 and evidence.independent and evidence.hints_used == 0:
-            proposed = min(4, current + 1)
+            ceiling = 4 if evidence.difficulty in {"medium", "hard", "research"} else 2
+            proposed = max(current, min(ceiling, current + 1))
             reason = "strong independent performance"
         else:
-            proposed = min(3, max(current, 2))
+            proposed = max(current, min(3, max(current, 2)))
             reason = "guided successful performance"
 
         robust = all(
@@ -59,9 +61,9 @@ class MasteryEngine:
                 evidence.transfer_success,
                 evidence.oral_explanation,
                 evidence.repeated_successes >= 2,
+                evidence.difficulty in {"medium", "hard", "research"},
             )
         )
         if current >= 4 and robust:
             return MasteryDecision(current, 5, "durable transfer evidence")
         return MasteryDecision(current, proposed, reason)
-

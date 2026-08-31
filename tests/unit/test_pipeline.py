@@ -7,6 +7,7 @@ from gallop.adapters.obsidian import ObsidianAdapter
 from gallop.core.sync import GallopPipeline
 from gallop.core.sync.logging import SyncLogger
 from gallop.core.validation import ProtocolValidationError
+from gallop.core.io import fingerprint
 
 
 def test_invalid_manifest_fails_before_practice_engine(tmp_path):
@@ -25,5 +26,5 @@ def test_sync_log_contains_metadata_not_manifest_body(tmp_path):
     )
     pipeline.generate_practice(manifest)
     record = json.loads(log_path.read_text(encoding="utf-8"))
-    assert record["manifest_id"] == "manifest-public-demo-001"
+    assert record["manifest_id"] == fingerprint("manifest-public-demo-001")
     assert "quantifier-order" not in log_path.read_text(encoding="utf-8")

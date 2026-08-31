@@ -40,4 +40,3 @@ A practice manifest can set `no_agent: true`. In this mode the practice engine
 must not immediately produce a complete solution; it should advance through the
 hint gradient only when requested. This is particularly useful for proofs,
 derivations, algorithms, coding, and statistical reasoning.
-

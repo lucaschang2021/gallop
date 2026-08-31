@@ -34,4 +34,3 @@
 - an open protocol for persistent AI learning systems
 - research-oriented learning workflows
 - a third-party adapter ecosystem
-

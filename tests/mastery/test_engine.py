@@ -35,4 +35,3 @@ def test_robust_mastery_requires_all_durable_evidence():
 def test_invalid_evidence_is_rejected():
     with pytest.raises(ValueError, match="correct cannot exceed attempted"):
         MasteryEngine().evaluate(1, MasteryEvidence(2, 1))
-

@@ -34,3 +34,9 @@ Gallop represents mastery as evidence-backed state, not a quiz score.
 The v0.1 algorithm is intentionally conservative and deterministic. Future
 versions may improve calibration without changing the protocol's evidence model.
 
+The import pipeline counts repeated success from distinct committed practice
+records, not an input claim. Independence defaults to unknown/false; zero hints
+alone does not prove independent completion. Easy exercises cannot establish
+independent application. Confidence is persisted as null (uncalibrated).
+Delayed, transfer and oral flags remain explicit observer-supplied evidence;
+Gallop cannot verify a person's behavior or the truth of self-reported results.

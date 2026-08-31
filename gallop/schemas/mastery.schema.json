@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gallop.dev/schemas/mastery.schema.json",
+  "$id": "urn:gallop:schema:mastery:1.0",
   "title": "Gallop Mastery State",
   "type": "object",
   "additionalProperties": false,
@@ -22,7 +22,7 @@
     "hint_dependency": {"type": "number", "minimum": 0, "maximum": 1},
     "delayed_recall": {"type": ["boolean", "null"]},
     "transfer_performance": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
-    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
     "history": {"type": "array", "items": {"type": "object"}}
   }
 }

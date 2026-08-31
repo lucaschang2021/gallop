@@ -42,4 +42,3 @@ private accounts. Never commit generated real-learning artifacts.
 
 Keep changes small and explain tests, privacy impact, and protocol impact. The
 project uses semantic versioning and Apache-2.0 contributions.
-

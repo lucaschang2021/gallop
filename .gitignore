@@ -23,6 +23,8 @@ venv/
 .gallop/
 demo-output/
 *-demo-output/
+demo-vault/
+*.answer-key.json
 logs/
 state/
 
