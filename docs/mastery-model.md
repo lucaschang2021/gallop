@@ -1,5 +1,10 @@
 # Mastery model
 
+> **Scope: legacy v0.1 pipeline** (`import-result` and the offline `demo`).
+> Automation V1 has a separate [Mastery Safety Gate](automation-safety.md):
+> course exposure never promotes mastery, confidence is explicit, and failure
+> does not mechanically reset an established level. Do not mix the two models.
+
 Gallop represents mastery as evidence-backed state, not a quiz score.
 
 | Level | Meaning |

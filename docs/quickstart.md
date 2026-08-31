@@ -1,7 +1,11 @@
 # Quickstart
 
-Requires Python 3.11–3.13. DeepTutor is optional for the offline demo and must
-be installed and authorized separately for live practice.
+Requires Python 3.11+; CI covers 3.11 and 3.13 on Windows and Ubuntu. DeepTutor
+must be installed and authorized separately only for live generation.
+
+Choose a path: **Automation V1** below is the current event-driven workflow.
+The **legacy walkthrough** later on this page preserves the v0.1 commands and
+their separate mastery rules. Neither example needs private learner data.
 
 ## 1. Clone and install
 
@@ -18,6 +22,71 @@ Activate the environment before installing:
 
 ```bash
 python -m pip install -e ".[dev]"
+```
+
+Use `python -m pip install -e .` instead if you do not need development tests.
+
+## 2. Try Automation V1 offline
+
+Run these from the repository root, leaving the example configuration unchanged:
+
+```bash
+python -m gallop --automation-config examples/automation/config.json intake examples/automation/session.json
+python -m gallop --automation-config examples/automation/config.json queue
+python -m gallop --automation-config examples/automation/config.json cycle
+python -m gallop --automation-config examples/automation/config.json status
+python -m gallop --automation-config examples/automation/config.json explain Continuity --subject mathematics
+```
+
+Expect one synthetic session/concept, a queued task, mastery 0 and confidence
+low. `cycle` reports `training_started: false`; it neither calls DeepTutor nor
+fabricates a response. Inspect `automation-runtime/integration_tests/vault/Today.md`
+and `vault/Gallop/Automation/Training Queue.md` under the same runtime root.
+The Reader directory there is an isolated local preview, not your cloud Reader.
+Re-running intake with the identical session does not duplicate evidence.
+
+To inspect a prepared human task, copy a `queue_id` from the queue output:
+
+```bash
+python -m gallop --automation-config examples/automation/config.json prepare QUEUE_ID
+```
+
+Replace `QUEUE_ID` with the actual ID; do not paste it literally. This writes
+`prepared/QUEUE_ID/manifest.json`, `practice.json`, `instructor.answer-key.json`
+and `result-template.json` below the runtime root. The task becomes `ready`,
+not completed. Default preparation is local: questions/answers can be empty,
+and the result template is intentionally incomplete. Never fill it with
+invented performance just to make an import pass.
+
+Configuration paths resolve relative to the JSON file, not the shell directory.
+Automation does not read `.env`. The root must initially be empty and is then
+bound to its namespace and targets. Do not repoint a bound root or remove its
+marker to bypass validation.
+
+## 3. Move toward real use deliberately
+
+Read [Automation V1](automation-v1.md), the [CLI reference](automation-cli.md),
+and [safety rules](automation-safety.md) before using namespace `learner`.
+Real intake requires an existing Obsidian Vault. `publish` and `cycle` additionally
+require the existing verified Gallop-Reader binding; a new user without that
+setup should stay in the isolated preview. This release does not provide a
+general first-run Reader provisioning wizard. Never recreate a Reader or reset
+an existing export receipt to make validation pass.
+
+External practice generation is opt-in: configure the separate DeepTutor
+executable/runtime, inspect the manifest, then use `prepare QUEUE_ID --send`,
+`poll JOB_ID` and `collect JOB_ID`. Supply `--automation-config FILE` before
+each subcommand. A timeout is not permission to start a duplicate provider job.
+See [DeepTutor bridge](deeptutor-integration.md) for recovery and human assessment.
+
+## Legacy v0.1 walkthrough (still supported)
+
+The following commands use the older file/CLI pipeline. Their demo's 1 → 2
+transition is synthetic and does not describe Automation promotion behavior.
+
+### L1. Run the complete synthetic demo
+
+```bash
 python -m gallop demo --output demo-output
 python -m pytest
 python scripts/validate_examples.py
@@ -27,7 +96,7 @@ The demo writes a synthetic manifest, practice, result, log and Markdown into
 `demo-output`. Its first run produces 7 questions, 5/7, mastery 1 → 2. Replaying
 the exact result is a no-op; it cannot count as another independent success.
 
-## 2. Configure a knowledge store
+### L2. Configure a legacy knowledge store
 
 Copy `.env.example` to `.env` (PowerShell: `Copy-Item .env.example .env`;
 Linux/macOS: `cp .env.example .env`). For an isolated trial, set:
@@ -49,7 +118,7 @@ Vault. Logs default to `<vault>/.gallop/sync.jsonl`.
 Open `demo-vault` as an Obsidian Vault if desired. Obsidian itself is not needed
 for Markdown operations.
 
-## 3. Sync a structured session and build a manifest
+### L3. Sync a structured session and build a manifest
 
 ```bash
 python -m gallop sync-session examples/mathematics/session.json --vault demo-vault
@@ -60,7 +129,7 @@ The session schema requires all arrays, including empty arrays. Session IDs are
 immutable: conflicting content under the same ID is rejected. No score or
 mastery is inferred from session text.
 
-## 4. Configure DeepTutor separately
+### L4. Configure DeepTutor separately
 
 Use [DeepTutor's installation instructions](https://github.com/HKUDS/DeepTutor).
 The supported transport was checked against 1.6.1. Set
@@ -71,7 +140,7 @@ provider credentials in DeepTutor's private settings, never in this repository.
 Embedding is optional. It affects semantic retrieval over large collections,
 not the basic session/practice/mastery/writeback loop.
 
-## 5. Generate live practice (external model call)
+### L5. Generate live practice (external model call)
 
 Review the selected manifest first. This command sends its learning context to
 the provider configured in DeepTutor:
@@ -86,7 +155,7 @@ hint-first workflow; it is not a guarantee that an external model never leaks
 an answer, nor a proctoring/security boundary. v0.1 generates diagnostic choice
 questions; actual proof and oral assessment remain tutor-led.
 
-## 6. Import an example result
+### L6. Import an example result
 
 ```bash
 python -m gallop import-result examples/mathematics/practice-result.json --vault demo-vault
@@ -110,7 +179,7 @@ demo-vault/.gallop/sync.jsonl
 Each practice note includes unchecked T+1/T+7/T+30 review entries. Check them in
 the knowledge store; Gallop does not start another background scheduler.
 
-## 7. Opt-in real transport acceptance
+### L7. Opt-in real transport acceptance
 
 ```bash
 python -m gallop live-demo --output live-demo-output --send
@@ -125,7 +194,7 @@ without `--send`: it reuses `practice.json`. If the transport timed out before
 saving it, inspect DeepTutor's own session before authorizing another call.
 There is no unsafe automatic “latest session” recovery.
 
-## 8. Recovery and limitations
+### L8. Legacy recovery and limitations
 
 - Result failures preserve the input file; writeback also stages a recoverable
   protocol file under `<vault>/.gallop/pending/<namespace>/`.
