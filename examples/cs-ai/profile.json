@@ -1,0 +1,6 @@
+{
+  "name": "Computer Science and AI",
+  "practice_modes": ["no-agent-coding", "algorithms", "systems", "machine-learning"],
+  "tracks": ["correctness", "complexity", "debugging", "independent-implementation"],
+  "no_agent_supported": true
+}

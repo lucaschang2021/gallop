@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:gallop:schema:mastery:1.0",
+  "title": "Gallop Mastery State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "subject", "topic", "mastery_current", "mastery_previous",
+    "evidence", "last_practice", "last_success", "last_failure", "hint_dependency",
+    "delayed_recall", "transfer_performance", "confidence", "history"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "subject": {"type": "string"},
+    "topic": {"type": "string"},
+    "mastery_current": {"type": "integer", "minimum": 0, "maximum": 5},
+    "mastery_previous": {"type": "integer", "minimum": 0, "maximum": 5},
+    "evidence": {"type": "array", "items": {"type": "object"}},
+    "last_practice": {"type": ["string", "null"]},
+    "last_success": {"type": ["string", "null"], "format": "date-time"},
+    "last_failure": {"type": ["string", "null"], "format": "date-time"},
+    "hint_dependency": {"type": "number", "minimum": 0, "maximum": 1},
+    "delayed_recall": {"type": ["boolean", "null"]},
+    "transfer_performance": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "history": {"type": "array", "items": {"type": "object"}}
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "subject": "mathematics",
+  "topic": "epsilon-delta continuity",
+  "mastery_current": 2,
+  "mastery_previous": 1,
+  "evidence": [{"practice_id": "practice-public-demo-001", "synthetic": true}],
+  "last_practice": "practice-public-demo-001",
+  "last_success": "2026-01-01T12:00:00Z",
+  "last_failure": null,
+  "hint_dependency": 0.14285714285714285,
+  "delayed_recall": null,
+  "transfer_performance": null,
+  "confidence": 0.3,
+  "history": [{"previous": 1, "current": 2, "reason": "guided successful performance"}]
+}

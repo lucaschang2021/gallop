@@ -1,0 +1,6 @@
+{
+  "name": "Mathematics",
+  "practice_modes": ["proof", "hard-problem", "oral-exam"],
+  "tracks": ["weakness", "hint-dependency", "independent-reasoning"],
+  "no_agent_supported": true
+}

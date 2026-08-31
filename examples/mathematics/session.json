@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "session_id": "session-public-demo-001",
+  "occurred_at": "2026-01-01T10:00:00Z",
+  "tutor": "structured-output-demo",
+  "subject": "mathematics",
+  "course": "introductory-analysis",
+  "title": "Quantifier order in epsilon-delta continuity",
+  "summary": "A fictional learner practiced reading and constructing continuity statements.",
+  "concepts": ["epsilon-delta continuity", "quantifier order"],
+  "proofs_derivations": [],
+  "hard_problem_sessions": [{"topic": "negating continuity", "completed": false}],
+  "oral_exams": [],
+  "simulation_labs": [],
+  "mistakes": [{"type": "quantifier-order", "observed": true}],
+  "weakness_tags": ["quantifier-order"],
+  "open_questions": ["How does uniform continuity change the quantifiers?"],
+  "connections": ["limits"],
+  "research_ideas": [],
+  "artifacts": []
+}

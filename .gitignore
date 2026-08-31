@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+pytest-cache-files-*/
+.test-tmp*/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Gallop local state and generated demonstrations
+.gallop/
+demo-output/
+*-demo-output/
+demo-vault/
+*.answer-key.json
+logs/
+state/
+
+# Knowledge stores and practice-engine private state
+vault/
+Vault/
+obsidian-vault/
+deeptutor-data/
+learning-os/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
