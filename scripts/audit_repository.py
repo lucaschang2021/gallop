@@ -7,6 +7,8 @@ import json
 import re
 import subprocess
 
+MACHINE_PATH = re.compile(r"(?<![A-Za-z0-9])[A-Za-z]:[\\/]")
+
 
 def git(*args: str) -> str:
     return subprocess.check_output(["git", *args], text=True, encoding="utf-8", errors="replace")
@@ -17,7 +19,7 @@ def main() -> int:
     parser.add_argument("--forbid", action="append", default=[])
     args = parser.parse_args()
     patterns = {
-        "machine-path": re.compile(r"[A-Za-z]:[\\/]"),
+        "machine-path": MACHINE_PATH,
         "provider-secret": re.compile(r"(?:gh[pousr]_|github_pat_|sk-proj-)[A-Za-z0-9_-]{20,}"),
         "private-key": re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
         "email": re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"),
