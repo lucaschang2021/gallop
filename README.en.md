@@ -4,7 +4,7 @@
 
 [简体中文](README.md) · [Quickstart](docs/quickstart.md) · [Architecture](docs/architecture.md) · [Current status](docs/current-status.md) · [Roadmap](docs/roadmap.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Apache-2.0](LICENSE)
 
-> **Current release: v1.0.0 / Automation V1; still an early-stage project.** The CLI workflow is implemented, while package metadata remains Alpha. There is no built-in chat interface or guarantee of learning outcomes. Try the isolated example before connecting real notes.
+> **Stable release: v1.0.0 / Automation V1; current candidate: v1.1.0rc2.** The candidate adds the Elite Training Protocol and Progressive Mentorship Engine. This remains an early-stage project with no guarantee of learning outcomes. Try the isolated example before connecting real notes.
 
 ## Why Gallop?
 
@@ -33,6 +33,7 @@ Automation currently ships policies for mathematics, statistics/econometrics, fi
 | Training and review | Four subject policies, P0–P4 priorities, T+1/T+7/T+30 review candidates | Explicit CLI runs, no daemon or automatic reminders |
 | Practice preparation | Local task specifications; optional DeepTutor diagnostics with durable submit/poll/collect jobs | DeepTutor is separate; choice questions cannot replace proof, oral, coding, or simulation work |
 | Mastery evaluation | Levels 0–5 and low/medium/high confidence from human-confirmed actual results | Generated material is not completed training; one correct answer does not promote mastery |
+| Elite training and progressive mentorship (v1.1 RC) | Distinguish independent, hinted, solution-seen, and AI-generated evidence; derive training zones, scaffolding, and prerequisite repair from an explicit target and current evidence | A target never raises current capability; guidance does not schedule work, and the Human Production E2E remains pending |
 | Notes and mobile reading | Managed Obsidian Markdown regions and filtered one-way Gallop-Reader export | Reader is not bidirectional sync; real publication requires an existing verified Reader binding |
 | Legacy compatibility | v0.1 session/manifest/generate/import-result commands and offline demo remain | Legacy configuration, state, and mastery rules are separate from Automation |
 
@@ -110,7 +111,7 @@ All Automation commands above require `--automation-config FILE` before the subc
 - Highest mastery requires independent success across days and task types, delayed recall, transfer, and oral evidence. These are conservative software heuristics, not validated educational measurements.
 - Human confirmation is not proctoring or identity verification; the hash chain is not tamper-proof against the machine owner. Export filtering cannot identify every kind of sensitive prose.
 
-Read [Security](SECURITY.md), [Automation mastery rules](docs/automation-safety.md), and [Reader boundaries](docs/mobile-export.md).
+Read [Security](SECURITY.md), [Automation mastery rules](docs/automation-safety.md), the [Elite Training Protocol](docs/elite-training-protocol.md), [Progressive Mentorship](docs/progressive-mentorship.md), and [Reader boundaries](docs/mobile-export.md).
 
 ## Code map and engineering status
 
