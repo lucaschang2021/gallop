@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gallop-learning"
-version = "1.0.0"
+version = "1.1.0rc2"
 description = "Local-first orchestration for deliberate practice and mastery tracking."
 readme = "README.md"
 requires-python = ">=3.11"

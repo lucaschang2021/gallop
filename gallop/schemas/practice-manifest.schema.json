@@ -5,40 +5,227 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "schema_version", "manifest_id", "session_id", "subject", "course", "topic",
-    "concepts", "weakness_tags", "mistakes", "open_questions", "difficulty",
-    "practice_priority", "source_notes", "requested_question_count", "practice_modes",
-    "no_agent", "hint_gradient", "created_at"
+    "schema_version",
+    "manifest_id",
+    "session_id",
+    "subject",
+    "course",
+    "topic",
+    "concepts",
+    "weakness_tags",
+    "mistakes",
+    "open_questions",
+    "difficulty",
+    "practice_priority",
+    "source_notes",
+    "requested_question_count",
+    "practice_modes",
+    "no_agent",
+    "hint_gradient",
+    "created_at"
   ],
   "properties": {
-    "schema_version": {"const": "1.0"},
-    "manifest_id": {"type": "string", "minLength": 1},
-    "session_id": {"type": "string", "minLength": 1},
-    "subject": {"type": "string", "minLength": 1},
-    "course": {"type": "string"},
-    "topic": {"type": "string", "minLength": 1},
-    "concepts": {"type": "array", "items": {"type": "string"}},
-    "weakness_tags": {"type": "array", "items": {"type": "string"}},
-    "mistakes": {"type": "array", "items": {}},
-    "open_questions": {"type": "array", "items": {}},
-    "difficulty": {"enum": ["introductory", "easy", "medium", "hard", "research"]},
-    "practice_priority": {"type": "integer", "minimum": 1, "maximum": 5},
-    "source_notes": {"type": "array", "items": {"type": "string"}},
-    "requested_question_count": {"type": "integer", "minimum": 1, "maximum": 100},
-    "practice_modes": {"type": "array", "items": {"type": "string"}, "minItems": 1},
-    "no_agent": {"type": "boolean"},
+    "schema_version": {
+      "const": "1.0"
+    },
+    "manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "course": {
+      "type": "string"
+    },
+    "topic": {
+      "type": "string",
+      "minLength": 1
+    },
+    "concepts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "weakness_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mistakes": {
+      "type": "array",
+      "items": {}
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {}
+    },
+    "difficulty": {
+      "enum": [
+        "introductory",
+        "easy",
+        "medium",
+        "hard",
+        "research"
+      ]
+    },
+    "practice_priority": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "source_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requested_question_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "practice_modes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "no_agent": {
+      "type": "boolean"
+    },
     "hint_gradient": {
       "type": "array",
       "prefixItems": [
-        {"const": "independent_attempt"},
-        {"const": "direction_only"},
-        {"const": "key_observation"},
-        {"const": "skeleton"},
-        {"const": "full_solution"}
+        {
+          "const": "independent_attempt"
+        },
+        {
+          "const": "direction_only"
+        },
+        {
+          "const": "key_observation"
+        },
+        {
+          "const": "skeleton"
+        },
+        {
+          "const": "full_solution"
+        }
       ],
       "minItems": 5,
       "maxItems": 5
     },
-    "created_at": {"type": "string", "format": "date-time"}
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "elite": {
+      "type": "object",
+      "properties": {
+        "desired_independence": {
+          "enum": [
+            "INDEPENDENT",
+            "HINT_1",
+            "HINT_2",
+            "ASSISTED",
+            "SOLUTION_SEEN",
+            "UNSOLVED"
+          ]
+        },
+        "hint_policy": {
+          "type": "object",
+          "properties": {
+            "max_level": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 5
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "task_type": {
+          "enum": [
+            "CONCEPT",
+            "PROOF",
+            "DERIVATION",
+            "HARD_PROBLEM",
+            "LONG_PROBLEM",
+            "SIMULATION",
+            "ORAL_EXAM",
+            "CODING",
+            "NO_AGENT_CODING",
+            "SYSTEMS_PROBLEM",
+            "EMPIRICAL",
+            "PAPER_READING",
+            "REPLICATION",
+            "RESEARCH",
+            "BENCHMARK",
+            "MINI_CONTEST"
+          ]
+        },
+        "assessment_context": {
+          "enum": [
+            "TRAINING",
+            "FORMATIVE",
+            "BENCHMARK",
+            "SUMMATIVE"
+          ]
+        },
+        "training_zone": {
+          "enum": [
+            "FOUNDATION",
+            "PRODUCTIVE",
+            "STRETCH",
+            "MONSTER_BENCHMARK"
+          ]
+        },
+        "scaffolding_policy": {
+          "type": "object",
+          "properties": {
+            "level": {
+              "enum": [
+                "S5",
+                "S4",
+                "S3",
+                "S2",
+                "S1",
+                "S0"
+              ]
+            },
+            "fading_rule": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "level"
+          ],
+          "additionalProperties": false
+        },
+        "target_capability_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
   }
 }

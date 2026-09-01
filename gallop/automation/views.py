@@ -80,6 +80,13 @@ def render(state, namespace):
                      "Response references: " + ", ".join(record["response_refs"])]) + "\n")
     if ideas:
         result["Gallop/Automation/Research Ideas.md"] = "# Research Ideas\n\n" + bullets(ideas, 1000) + "\n"
+    if "elite" in state:
+        from .elite_views import render_elite
+        views, homes = render_elite(state, namespace)
+        result.update(views)
+        for subject, extra in homes.items():
+            for name in (POLICIES[subject]["folder"] + "/Home.md", f"Gallop/Automation/Subjects/{subject}/Home.md"):
+                result[name] += extra
     return result
 
 

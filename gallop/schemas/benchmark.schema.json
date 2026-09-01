@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Benchmark Record 1.1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "namespace": {
+      "enum": [
+        "learner",
+        "integration_tests"
+      ]
+    },
+    "integration_test": {
+      "type": "boolean"
+    },
+    "benchmark_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "subject": {
+      "enum": [
+        "mathematics",
+        "statistics",
+        "finance",
+        "cs-ai"
+      ]
+    },
+    "benchmark_type": {
+      "enum": [
+        "IMC",
+        "YAU",
+        "MINI_CONTEST",
+        "CLOSED_BOOK",
+        "ORAL",
+        "NO_AGENT",
+        "COURSE_EXAM",
+        "CUSTOM"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "duration": {
+      "type": "number",
+      "minimum": 0
+    },
+    "closed_book": {
+      "type": "boolean"
+    },
+    "no_ai": {
+      "type": "boolean"
+    },
+    "problems_total": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "attempted": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "solved": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "partial": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "score": {
+      "type": "number",
+      "minimum": 0
+    },
+    "max_score": {
+      "type": "number",
+      "minimum": 0
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true
+    },
+    "notes": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "benchmark_id",
+    "name",
+    "subject",
+    "benchmark_type",
+    "source",
+    "date",
+    "evidence_refs"
+  ],
+  "additionalProperties": false
+}

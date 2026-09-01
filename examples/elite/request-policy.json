@@ -1,0 +1,8 @@
+{
+  "desired_independence": "INDEPENDENT",
+  "hint_policy": {
+    "max_level": 0
+  },
+  "task_type": "PROOF",
+  "assessment_context": "TRAINING"
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.1",
+  "namespace": "integration_tests",
+  "integration_test": true,
+  "evidence_id": "sample-mathematics",
+  "subject": "mathematics",
+  "concept": "Invariant proof",
+  "task_type": "PROOF",
+  "occurred_at": "2026-01-01T12:00:00Z",
+  "source": "Synthetic human-reviewed example",
+  "result": "PASS",
+  "independence_class": "INDEPENDENT",
+  "hint_level": 0,
+  "agent_usage": "NONE",
+  "time_spent": 1200,
+  "difficulty": "HARD",
+  "evidence_refs": [
+    "fictional-response"
+  ],
+  "assessment_context": "BENCHMARK",
+  "readiness_dimensions": [
+    "Proof Maturity"
+  ],
+  "metadata": {
+    "attempt_id": "example-mathematics",
+    "context_id": "example-context",
+    "closed_book": true,
+    "no_ai": true
+  },
+  "proof_quality": {
+    "logical_completeness": "SOLID",
+    "definition_precision": "SOLID",
+    "condition_awareness": "SOLID"
+  },
+  "benchmark_source": "IMC-style synthetic set"
+}

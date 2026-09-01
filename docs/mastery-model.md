@@ -45,3 +45,18 @@ alone does not prove independent completion. Easy exercises cannot establish
 independent application. Confidence is persisted as null (uncalibrated).
 Delayed, transfer and oral flags remain explicit observer-supplied evidence;
 Gallop cannot verify a person's behavior or the truth of self-reported results.
+
+## Elite safety gate (v1.1)
+
+Only confirmed, passing, independently performed evidence with zero hints,
+recorded agent provenance, response references, explicit assessment context and
+distinct attempt/context IDs can enter the Elite gate. Proofs and derivations
+also require recorded quality dimensions. Benchmark evidence requires explicit
+closed-book and no-AI conditions. Duplicate attempts count once; assistance
+disclosed for the same attempt disqualifies it.
+
+Progression requires repeated days, contexts and task types. Higher levels also
+require explicit novel transfer, a linked verified benchmark and delayed oral
+evidence. One event raises at most one level. Failures add weakness and lower
+confidence without mechanically erasing prior mastery. A benchmark record alone
+never changes mastery.

@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.1",
+  "namespace": "integration_tests",
+  "integration_test": true,
+  "evidence_id": "sample-finance",
+  "subject": "finance",
+  "concept": "Asset pricing derivation",
+  "task_type": "DERIVATION",
+  "occurred_at": "2026-01-01T12:00:00Z",
+  "source": "Synthetic human-reviewed example",
+  "result": "PASS",
+  "independence_class": "ASSISTED",
+  "hint_level": 4,
+  "agent_usage": "AI_ASSISTED",
+  "time_spent": 1200,
+  "difficulty": "HARD",
+  "evidence_refs": [
+    "fictional-response"
+  ],
+  "assessment_context": "TRAINING",
+  "readiness_dimensions": [
+    "Asset Pricing Theory"
+  ],
+  "metadata": {
+    "attempt_id": "example-finance",
+    "context_id": "example-context"
+  },
+  "failure_modes": [
+    "finance:MODEL_ASSUMPTION_IGNORED"
+  ],
+  "derivation_quality": {
+    "steps_valid": "SOLID",
+    "assumption_awareness": "SOLID",
+    "interpretation": "SOLID"
+  }
+}

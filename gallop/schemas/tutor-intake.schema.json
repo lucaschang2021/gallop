@@ -82,6 +82,67 @@
     "subject": {
       "type": "string",
       "minLength": 1
+    },
+    "elite_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "progressive_mentorship": {
+      "type": "object",
+      "properties": {
+        "target_capabilities": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "target_capability": {
+          "type": "object"
+        },
+        "current_capability": {
+          "type": "object"
+        },
+        "training_zone": {
+          "enum": [
+            "FOUNDATION",
+            "PRODUCTIVE",
+            "STRETCH",
+            "MONSTER_BENCHMARK"
+          ]
+        },
+        "scaffolding_level": {
+          "enum": [
+            "S5",
+            "S4",
+            "S3",
+            "S2",
+            "S1",
+            "S0"
+          ]
+        },
+        "prerequisite_gaps": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "productive_struggle": {
+          "type": "object"
+        },
+        "capability_gains": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "research_independence": {
+          "type": "object"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
     }
   },
   "additionalProperties": true,

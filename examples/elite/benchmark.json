@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.1",
+  "namespace": "integration_tests",
+  "integration_test": true,
+  "benchmark_id": "sample-imc",
+  "name": "IMC-style isolated example",
+  "subject": "mathematics",
+  "benchmark_type": "IMC",
+  "source": "IMC-style synthetic set",
+  "date": "2026-01-01",
+  "duration": 1200,
+  "closed_book": true,
+  "no_ai": true,
+  "problems_total": 1,
+  "attempted": 1,
+  "solved": 1,
+  "partial": 0,
+  "evidence_refs": [
+    "sample-mathematics"
+  ],
+  "notes": "Fictional local validation. Not an actual competition result."
+}

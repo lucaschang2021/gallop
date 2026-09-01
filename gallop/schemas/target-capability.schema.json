@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Target Capability 1.1 RC2",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "namespace": {
+      "enum": [
+        "learner",
+        "integration_tests"
+      ]
+    },
+    "integration_test": {
+      "type": "boolean"
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "subject": {
+      "enum": [
+        "mathematics",
+        "statistics",
+        "finance",
+        "cs-ai"
+      ]
+    },
+    "dimension": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "target_state": {
+      "enum": [
+        "EXPOSED",
+        "GUIDED",
+        "PARTIALLY_INDEPENDENT",
+        "INDEPENDENT",
+        "TRANSFERRED",
+        "RETAINED",
+        "RESEARCH_USABLE"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "north_star": {
+      "type": "boolean"
+    },
+    "prerequisite_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    }
+  },
+  "required": [
+    "schema_version",
+    "target_id",
+    "subject",
+    "dimension",
+    "target_state",
+    "description",
+    "north_star",
+    "prerequisite_refs",
+    "created_at",
+    "source"
+  ],
+  "additionalProperties": false
+}

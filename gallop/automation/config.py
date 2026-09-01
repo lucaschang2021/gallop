@@ -17,6 +17,7 @@ class AutomationConfig:
     binding: Path | None = None
     deeptutor: Path | None = None
     deeptutor_home: Path | None = None
+    failure_modes: Path | None = None
 
     @classmethod
     def load(cls, path):

@@ -18,6 +18,13 @@ There are no promised dates or assigned future version numbers. See
 These releases establish executable workflows, not validated learning outcomes.
 Legacy commands remain supported; historical state is not migrated implicitly.
 
+## Release candidate
+
+**v1.1.0rc2** implements Elite Training Protocol evidence and Progressive
+Mentorship support. It remains unreleased until its final gate is reviewed and
+release is explicitly authorized. Stable v1.0.0 remains immutable. The candidate
+does not add a new scheduler or silently reinterpret historical v1 evidence.
+
 ## Near-term priorities
 
 | Priority | Work to pursue | Evidence needed before calling it complete |

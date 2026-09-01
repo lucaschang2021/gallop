@@ -4,7 +4,7 @@
 
 [English](README.en.md) · [快速开始](docs/quickstart.md) · [架构](docs/architecture.md) · [当前状态](docs/current-status.md) · [路线图](docs/roadmap.md) · [贡献](CONTRIBUTING.md) · [安全](SECURITY.md) · [Apache-2.0](LICENSE)
 
-> **当前版本：v1.0.0 / Automation V1，仍属早期项目。** 已提供命令行学习工作流，包元数据仍标记 Alpha。它没有内置聊天界面，也不保证学习效果。先运行隔离示例，再考虑连接真实笔记库。
+> **稳定版本：v1.0.0 / Automation V1；当前候选版本：v1.1.0rc2。** 候选版本增加 Elite Training Protocol 与 Progressive Mentorship Engine，仍属早期项目，不保证学习效果。先运行隔离示例，再考虑连接真实笔记库。
 
 ## 为什么需要 Gallop？
 
@@ -33,6 +33,7 @@ Gallop 连接三个环节：**导师记录学了什么 → 安排下一次练什
 | 训练与复习 | 四学科策略、P0–P4 优先级、T+1/T+7/T+30 复习候选项 | 手动调用命令，无后台守护进程或自动提醒 |
 | 练习准备 | 本地任务说明；可选 DeepTutor 诊断题及持久 submit/poll/collect 任务 | DeepTutor 单独安装；当前选择题不能代替证明、口试、编程或模拟实验 |
 | 掌握度评估 | 根据人确认的真实结果更新 0–5 级状态与 low/medium/high 置信度 | 生成题目不等于完成训练；一次答对不会自动升级 |
+| 精英训练与渐进指导（v1.1 RC） | 区分独立、提示、看过答案和 AI 生成证据；根据显式目标与当前证据给出训练区间、支架和先修修复建议 | 目标不会抬高当前能力；建议不直接调度任务，Human Production E2E 尚待执行 |
 | 笔记与手机阅读 | Obsidian Markdown 受管区域、过滤后的单向 Gallop-Reader 导出 | Reader 是阅读镜像，不是双向同步；真实发布依赖现有已验证的 Reader 绑定 |
 | 兼容旧流程 | 保留 v0.1 的 session/manifest/generate/import-result 和离线 demo | 旧流程的配置、状态和掌握度规则与 Automation 分开 |
 
@@ -110,7 +111,7 @@ flowchart TD
 - 最高掌握度要求跨天、独立、多种任务、延迟回忆、迁移和口试证据。规则是软件中的保守启发式，不是经验证的教育测量工具。
 - 人确认不是监考或身份认证；本地哈希链不是对机器所有者的防篡改保证。导出过滤也不能保证识别所有敏感文字。
 
-参阅[安全策略](SECURITY.md)、[Automation 掌握度规则](docs/automation-safety.md)及 [Reader 边界](docs/mobile-export.md)。
+参阅[安全策略](SECURITY.md)、[Automation 掌握度规则](docs/automation-safety.md)、[Elite Training Protocol](docs/elite-training-protocol.md)、[Progressive Mentorship](docs/progressive-mentorship.md)及 [Reader 边界](docs/mobile-export.md)。
 
 ## 代码地图与工程状态
 

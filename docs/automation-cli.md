@@ -4,6 +4,31 @@ All commands join the existing Gallop parser. Place --automation-config FILE
 before the subcommand. Paths in the JSON configuration resolve relative to that
 file. Automation does not load the legacy .env file.
 
+## Elite Training Protocol commands (v1.1 RC)
+
+```text
+gallop --automation-config CONFIG evidence add RECORD --confirm-human
+gallop --automation-config CONFIG evidence show [EVIDENCE_ID] [--subject SUBJECT]
+gallop --automation-config CONFIG benchmark add RECORD --confirm-human
+gallop --automation-config CONFIG benchmark show [BENCHMARK_ID] [--subject SUBJECT]
+gallop --automation-config CONFIG readiness [--subject SUBJECT]
+gallop --automation-config CONFIG readiness explain DIMENSION --subject SUBJECT
+gallop --automation-config CONFIG prerequisite add RECORD
+gallop --automation-config CONFIG prerequisite show [LINK_ID]
+gallop --automation-config CONFIG target add TARGET
+gallop --automation-config CONFIG target show [TARGET_ID]
+gallop --automation-config CONFIG mentorship [TARGET_ID]
+```
+
+Without `--confirm-human`, evidence remains visible but cannot establish
+independent performance. `prepare` and `submit` accept optional `--elite-policy
+FILE`; it requests conditions and never reports actual performance.
+
+`mentorship` reports current capability, explicit target, training zone,
+recommended task design, scaffolding, deterministic action, prerequisite gaps,
+struggle records, capability gains, mentor role and research independence. It
+also states `scheduler_changed: false`.
+
 | Command | Behavior |
 | --- | --- |
 | intake FILE | Validate truthful v1 input, retain raw bytes, append session and transitions, refresh queue |
