@@ -105,6 +105,31 @@ The old five-layer Teacher / Knowledge / Practice / Mastery / Integration model
 still describes responsibilities. Automation adds explicit event authority;
 do not treat Markdown or a legacy score as new Automation evidence.
 
+## Elite evidence in v1.1
+
+Elite evidence, benchmark records and explicit prerequisite links enter the
+same immutable event store as v1 events. A separate deterministic `elite-v1.1`
+reducer derives readiness and audited readiness transitions. Legacy session,
+practice, assessment and mastery rules are unchanged: a history containing no
+v1.1 events produces the exact v1 state shape and projection bytes.
+
+The readiness reducer does not schedule work. The v1 queue remains the only
+scheduler. Explicit links are displayed with `curriculum_action: NONE`.
+
+## Progressive Mentorship Engine (RC2)
+
+The pure `gallop.progression` domain derives current capability, daily training
+zone, scaffolding, prerequisite diagnosis, productive struggle, progression
+action, capability gains, mentor role and research independence from RC1
+evidence. `gallop.mentorship` is its compatibility and policy-loading facade.
+Subject trajectories and rendering labels live in policy data rather than core
+branches. Explicit target capabilities are immutable events. Targets never
+initialize or raise current capability.
+
+Mentorship output is advisory. It annotates a current frontier and task-design
+recommendation but writes no queue event and makes no scheduling choice. This
+preserves the V1 queue and keeps adaptive curriculum work outside v1.1.
+
 ## Trust and extension boundaries
 
 Tutor text and provider output are untrusted data, not commands or proof of
@@ -115,3 +140,7 @@ No daemon, UI, autonomous grader, or built-in semantic retrieval is shipped.
 Extend subject policies, schemas and focused adapters with rejection cases and
 synthetic fixtures. Changes to replay rules or persistent formats need explicit
 versioning and migration design; never silently reinterpret old evidence.
+
+The executable dependency rules, evidence authority table, `state.py`
+responsibility map, time policy, and governed-file thresholds live in
+[Architecture Governance](architecture-governance.md) and `ARCHITECTURE.toml`.

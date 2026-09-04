@@ -56,6 +56,7 @@ def replay(events, *, verify=True):
     state = {"version": 1, "seq": 0, "head": "", "concepts": {}, "sessions": {},
              "queue": {}, "practices": {}, "results": {}, "transitions": []}
     seen_transitions = []
+    seen_readiness = []
 
     def update(event, subject, name, action):
         key = concept_key(subject, name)
@@ -100,6 +101,8 @@ def replay(events, *, verify=True):
             update(event, data["subject"], data["concept"], attempt)
         elif kind == "assessment":
             def assessment(item):
+                if data.get("elite_evidence"):
+                    return "Explicit Elite evidence owns performance credit; legacy envelope is provenance only"
                 outcome = data["outcome"]
                 union(item["weakness_tags"], data["weakness_tags"])
                 union(item["open_questions"], data["open_questions"])
@@ -135,6 +138,13 @@ def replay(events, *, verify=True):
             item["status_reason"] = data["reason"]
         elif kind == "prepared":
             state["practices"][data["queue_id"]] = data
+        elif kind in {"elite_evidence", "benchmark", "prerequisite_link", "target_capability"}:
+            from .elite_state import apply
+            apply(state, event, update)
+        elif kind == "readiness_transition":
+            if data not in state.get("elite", {}).get("readiness_transitions", []) or data in seen_readiness:
+                raise JournalConflict("Readiness transition does not match replayed evidence")
+            seen_readiness.append(data)
         elif kind == "state_transition":
             if data not in state["transitions"] or data in seen_transitions:
                 raise JournalConflict("State transition does not match replayed evidence")
@@ -144,6 +154,8 @@ def replay(events, *, verify=True):
         state["seq"], state["head"] = event["seq"], event["hash"]
     if verify and len(seen_transitions) != len(state["transitions"]):
         raise JournalConflict("Missing state transition audit events")
+    if verify and len(seen_readiness) != len(state.get("elite", {}).get("readiness_transitions", [])):
+        raise JournalConflict("Missing readiness transition audit events")
     return state
 
 

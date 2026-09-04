@@ -1,0 +1,455 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Elite Evidence 1.1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "namespace": {
+      "enum": [
+        "learner",
+        "integration_tests"
+      ]
+    },
+    "integration_test": {
+      "type": "boolean"
+    },
+    "evidence_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "subject": {
+      "enum": [
+        "mathematics",
+        "statistics",
+        "finance",
+        "cs-ai"
+      ]
+    },
+    "concept": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "task_type": {
+      "enum": [
+        "CONCEPT",
+        "PROOF",
+        "DERIVATION",
+        "HARD_PROBLEM",
+        "LONG_PROBLEM",
+        "SIMULATION",
+        "ORAL_EXAM",
+        "CODING",
+        "NO_AGENT_CODING",
+        "SYSTEMS_PROBLEM",
+        "EMPIRICAL",
+        "PAPER_READING",
+        "REPLICATION",
+        "RESEARCH",
+        "BENCHMARK",
+        "MINI_CONTEST"
+      ]
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "result": {
+      "enum": [
+        "PASS",
+        "PARTIAL",
+        "FAIL",
+        "UNSOLVED",
+        "NOT_RECORDED"
+      ]
+    },
+    "independence_class": {
+      "enum": [
+        "INDEPENDENT",
+        "HINT_1",
+        "HINT_2",
+        "ASSISTED",
+        "SOLUTION_SEEN",
+        "UNSOLVED"
+      ]
+    },
+    "hint_level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "time_spent": {
+      "type": "number",
+      "minimum": 0
+    },
+    "difficulty": {
+      "enum": [
+        "INTRODUCTORY",
+        "EASY",
+        "MEDIUM",
+        "HARD",
+        "RESEARCH",
+        "NOT_RECORDED"
+      ]
+    },
+    "failure_modes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*:[A-Z][A-Z0-9_]*$"
+      }
+    },
+    "benchmark_source": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "proof_quality": {
+      "type": "object",
+      "properties": {
+        "logical_completeness": {
+          "enum": [
+            "POOR",
+            "DEVELOPING",
+            "SOLID",
+            "STRONG",
+            "EXCEPTIONAL",
+            "UNKNOWN"
+          ]
+        },
+        "definition_precision": {
+          "enum": [
+            "POOR",
+            "DEVELOPING",
+            "SOLID",
+            "STRONG",
+            "EXCEPTIONAL",
+            "UNKNOWN"
+          ]
+        },
+        "condition_awareness": {
+          "enum": [
+            "POOR",
+            "DEVELOPING",
+            "SOLID",
+            "STRONG",
+            "EXCEPTIONAL",
+            "UNKNOWN"
+          ]
+        },
+        "notation": {
+          "enum": [
+            "POOR",
+            "DEVELOPING",
+            "SOLID",
+            "STRONG",
+            "EXCEPTIONAL",
+            "UNKNOWN"
+          ]
+        },
+        "clarity": {
+          "enum": [
+            "POOR",
+            "DEVELOPING",
+            "SOLID",
+            "STRONG",
+            "EXCEPTIONAL",
+            "UNKNOWN"
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "derivation_quality": {
+      "type": "object",
+      "properties": {
+        "steps_valid": {
+          "enum": [
+            "POOR",
+            "DEVELOPING",
+            "SOLID",
+            "STRONG",
+            "EXCEPTIONAL",
+            "UNKNOWN"
+          ]
+        },
+        "assumption_awareness": {
+          "enum": [
+            "POOR",
+            "DEVELOPING",
+            "SOLID",
+            "STRONG",
+            "EXCEPTIONAL",
+            "UNKNOWN"
+          ]
+        },
+        "interpretation": {
+          "enum": [
+            "POOR",
+            "DEVELOPING",
+            "SOLID",
+            "STRONG",
+            "EXCEPTIONAL",
+            "UNKNOWN"
+          ]
+        },
+        "notation": {
+          "enum": [
+            "POOR",
+            "DEVELOPING",
+            "SOLID",
+            "STRONG",
+            "EXCEPTIONAL",
+            "UNKNOWN"
+          ]
+        },
+        "clarity": {
+          "enum": [
+            "POOR",
+            "DEVELOPING",
+            "SOLID",
+            "STRONG",
+            "EXCEPTIONAL",
+            "UNKNOWN"
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "transfer_status": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "NOT_TESTED",
+            "FAILED",
+            "PARTIAL",
+            "SUCCESS"
+          ]
+        },
+        "source_context": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "target_context": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "independence_class": {
+          "enum": [
+            "INDEPENDENT",
+            "HINT_1",
+            "HINT_2",
+            "ASSISTED",
+            "SOLUTION_SEEN",
+            "UNSOLVED"
+          ]
+        },
+        "novelty": {
+          "enum": [
+            "NEAR_IDENTICAL",
+            "NEW_CONTEXT"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "agent_usage": {
+      "enum": [
+        "NONE",
+        "REFERENCE_ONLY",
+        "HINT_ONLY",
+        "AI_ASSISTED",
+        "AI_GENERATED",
+        "UNKNOWN"
+      ]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "assessment_context": {
+      "enum": [
+        "TRAINING",
+        "FORMATIVE",
+        "BENCHMARK",
+        "SUMMATIVE"
+      ]
+    },
+    "readiness_dimensions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true
+    },
+    "training_zone": {
+      "enum": [
+        "FOUNDATION",
+        "PRODUCTIVE",
+        "STRETCH",
+        "MONSTER_BENCHMARK"
+      ]
+    },
+    "scaffolding_level": {
+      "enum": [
+        "S5",
+        "S4",
+        "S3",
+        "S2",
+        "S1",
+        "S0"
+      ]
+    },
+    "prior_exposure": {
+      "enum": [
+        "NONE",
+        "LIMITED",
+        "FAMILIAR",
+        "REPEATED",
+        "NOT_RECORDED"
+      ]
+    },
+    "task_novelty": {
+      "enum": [
+        "REPEAT",
+        "VARIANT",
+        "NEW_CONTEXT",
+        "UNFAMILIAR",
+        "OPEN_ENDED",
+        "NOT_RECORDED"
+      ]
+    },
+    "transfer_type": {
+      "enum": [
+        "NEAR_TRANSFER",
+        "STRUCTURAL_TRANSFER",
+        "CROSS_TOPIC_TRANSFER",
+        "CROSS_SUBJECT_TRANSFER",
+        "RESEARCH_TRANSFER"
+      ]
+    },
+    "retention": {
+      "type": "object",
+      "properties": {
+        "delay_days": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "closed_book": {
+          "const": true
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        }
+      },
+      "required": [
+        "delay_days",
+        "closed_book",
+        "evidence_refs"
+      ],
+      "additionalProperties": false
+    },
+    "productive_struggle": {
+      "type": "object",
+      "properties": {
+        "classification": {
+          "enum": [
+            "PRODUCTIVE_FAILURE",
+            "PREREQUISITE_FAILURE",
+            "OVERCHALLENGE",
+            "CARELESS_FAILURE",
+            "CONCEPTUAL_FAILURE"
+          ]
+        },
+        "milestones": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "uniqueItems": true
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "classification",
+        "reason",
+        "evidence_refs"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "evidence_id",
+    "subject",
+    "concept",
+    "task_type",
+    "occurred_at",
+    "source",
+    "result"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,27 @@
+{
+  "math": [
+    "STRUCTURE_NOT_SEEN",
+    "PROOF_INCOMPLETE",
+    "DEFINITION_GAP"
+  ],
+  "stats": [
+    "IDENTIFICATION_GAP",
+    "DGP_MISUNDERSTOOD",
+    "ASYMPTOTIC_GAP"
+  ],
+  "finance": [
+    "ECONOMIC_INTUITION_GAP",
+    "NO_ARBITRAGE_EQUILIBRIUM_CONFUSION",
+    "MODEL_ASSUMPTION_IGNORED"
+  ],
+  "cs": [
+    "ALGORITHM_GAP",
+    "DEBUGGING_GAP",
+    "AI_DEPENDENCE",
+    "SYSTEMS_GAP"
+  ],
+  "core": [
+    "TIME_MANAGEMENT",
+    "PREMATURE_GIVE_UP"
+  ]
+}

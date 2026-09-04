@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.1",
+  "namespace": "integration_tests",
+  "integration_test": true,
+  "evidence_id": "sample-statistics",
+  "subject": "statistics",
+  "concept": "Identification",
+  "task_type": "HARD_PROBLEM",
+  "occurred_at": "2026-01-01T12:00:00Z",
+  "source": "Synthetic human-reviewed example",
+  "result": "PASS",
+  "independence_class": "HINT_2",
+  "hint_level": 3,
+  "agent_usage": "HINT_ONLY",
+  "time_spent": 1200,
+  "difficulty": "HARD",
+  "evidence_refs": [
+    "fictional-response"
+  ],
+  "assessment_context": "TRAINING",
+  "readiness_dimensions": [
+    "Identification"
+  ],
+  "metadata": {
+    "attempt_id": "example-statistics",
+    "context_id": "example-context"
+  },
+  "failure_modes": [
+    "stats:IDENTIFICATION_GAP"
+  ]
+}

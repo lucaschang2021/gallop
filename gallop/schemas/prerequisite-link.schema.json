@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Explicit Prerequisite Link 1.1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "namespace": {
+      "enum": [
+        "learner",
+        "integration_tests"
+      ]
+    },
+    "integration_test": {
+      "type": "boolean"
+    },
+    "link_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "source_subject": {
+      "enum": [
+        "mathematics",
+        "statistics",
+        "finance",
+        "cs-ai"
+      ]
+    },
+    "source_concept": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "target_subject": {
+      "enum": [
+        "mathematics",
+        "statistics",
+        "finance",
+        "cs-ai"
+      ]
+    },
+    "target_concept": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "relation": {
+      "enum": [
+        "PREREQUISITE",
+        "SUPPORTS",
+        "TRANSFER",
+        "RELATED"
+      ]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "link_id",
+    "source_subject",
+    "source_concept",
+    "target_subject",
+    "target_concept",
+    "relation",
+    "evidence_refs",
+    "created_at",
+    "source"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,80 @@
+[contract]
+schema_version = "1.0"
+name = "Gallop Architecture Contract"
+authority = "journal"
+derived_state_role = "cache_projection"
+progression_engine = "gallop.progression"
+
+[layers]
+domain = ["gallop/progression", "gallop/core/mastery"]
+application = ["gallop/automation"]
+persistence = ["gallop/automation/store.py"]
+adapters = ["gallop/adapters"]
+projection = ["gallop/automation/views.py", "gallop/automation/elite_views.py", "gallop/mobile.py"]
+cli = ["gallop/cli.py", "gallop/automation/cli.py"]
+bootstrap = ["gallop/core/config.py", "gallop/automation/config.py", "gallop/mentorship"]
+schemas = ["gallop/schemas"]
+
+[rules]
+domain_forbidden_imports = [
+  "gallop.adapters", "gallop.automation", "gallop.cli", "gallop.mobile",
+  "os", "pathlib", "subprocess", "socket", "requests", "urllib", "httpx"
+]
+adapter_forbidden_imports = [
+  "gallop.automation.state", "gallop.automation.elite_state", "gallop.automation.store",
+  "gallop.progression.capability", "gallop.progression.gains", "gallop.progression.zones"
+]
+projection_forbidden_imports = ["gallop.automation.store", "gallop.automation.service"]
+implicit_time_calls = ["date.today", "datetime.now", "time.time"]
+service_forbidden_methods = [
+  "calculate_current_capability", "determine_training_zone", "determine_scaffolding",
+  "diagnose_prerequisite", "classify_struggle", "calculate_capability_gain",
+  "determine_mentor_role"
+]
+state_forbidden_prefixes = ["capability", "scaffolding", "prerequisite", "struggle", "gain", "mentor_role"]
+
+[[growth]]
+path = "gallop/automation/service.py"
+role = "application orchestration"
+soft_bytes = 22000
+hard_review_bytes = 32000
+baseline_lines = 539
+
+[[growth]]
+path = "gallop/automation/state.py"
+role = "v1 reducer and queue reconstruction"
+soft_bytes = 10000
+hard_review_bytes = 16000
+baseline_lines = 193
+
+[[growth]]
+path = "gallop/mobile.py"
+role = "filtered one-way export"
+soft_bytes = 18000
+hard_review_bytes = 26000
+baseline_lines = 395
+
+[[growth]]
+path = "gallop/automation/jobs.py"
+role = "durable provider job lifecycle"
+soft_bytes = 10000
+hard_review_bytes = 18000
+baseline_lines = 231
+
+[[policy]]
+path = "gallop/schemas/training-policies.json"
+version = "training-v1"
+shape = "subject_map"
+
+[[policy]]
+path = "gallop/schemas/mentorship-policies.json"
+version = "1.1"
+shape = "mentorship_catalog"
+
+[[policy]]
+path = "gallop/schemas/readiness-dimensions.json"
+version = "elite-v1.1"
+shape = "dimension_map"
+
+[baseline]
+existing = []

@@ -1,0 +1,176 @@
+{
+  "schema_version": "1.1",
+  "principles": [
+    "CEILING_STAYS_FIXED",
+    "DIFFICULTY_ADAPTS",
+    "ASSISTANCE_FADES",
+    "EVIDENCE_DETERMINES_PROGRESSION",
+    "INDEPENDENCE_IS_DESTINATION"
+  ],
+  "zones": {
+    "default": "PRODUCTIVE",
+    "FOUNDATION": "repair prerequisites and build components",
+    "PRODUCTIVE": "default daily growth zone",
+    "STRETCH": "meaningfully above stable capability",
+    "MONSTER_BENCHMARK": "low-frequency external calibration and exposure"
+  },
+  "subjects": {
+    "mathematics": {
+      "trajectory": [
+        "understand",
+        "reconstruct",
+        "complete proof",
+        "independent proof",
+        "transfer",
+        "counterexample",
+        "tool selection",
+        "structure recognition",
+        "conjecture",
+        "open problem"
+      ],
+      "daily_guidance": {
+        "independently_approachable": "60-70%",
+        "hint_requiring": "20-30%",
+        "very_difficult": "about 10%; guidance, not enforcement"
+      },
+      "monster_benchmarks": [
+        "IMC",
+        "YAU"
+      ],
+      "mentor_labels": {
+        "TEACHER": "Teacher",
+        "COACH": "Coach",
+        "DOMAIN_MENTOR": "Research Mentor",
+        "RESEARCH_SUPERVISOR": "Research Mentor",
+        "EVALUATOR": "Evaluator"
+      }
+    },
+    "statistics": {
+      "trajectory": [
+        "Probability Foundations",
+        "Mathematical Statistics",
+        "Estimation/Inference",
+        "Linear Models",
+        "Econometrics",
+        "Identification",
+        "Causal Inference",
+        "Simulation",
+        "Replication",
+        "Robustness",
+        "Independent Research"
+      ],
+      "simulation_ladder": [
+        "observe",
+        "modify",
+        "construct DGP",
+        "diagnose",
+        "violate assumptions",
+        "design robustness",
+        "independent simulation"
+      ],
+      "empirical_ladder": [
+        "read",
+        "reconstruct identification",
+        "replicate",
+        "critique",
+        "modify",
+        "alternative identification",
+        "independent design"
+      ],
+      "mentor_labels": {
+        "TEACHER": "Teacher",
+        "COACH": "Coach",
+        "DOMAIN_MENTOR": "Empirical Supervisor",
+        "RESEARCH_SUPERVISOR": "Empirical Supervisor",
+        "EVALUATOR": "Evaluator"
+      }
+    },
+    "finance": {
+      "trajectory": [
+        "Financial Foundations",
+        "Micro Foundations",
+        "Optimization",
+        "Asset Pricing",
+        "No-Arbitrage",
+        "CAPM/APT",
+        "SDF",
+        "Intertemporal Models",
+        "Empirical Asset Pricing",
+        "Advanced Financial Economics",
+        "Paper Reconstruction",
+        "Critique",
+        "Replication",
+        "Extension",
+        "Independent Research"
+      ],
+      "derivation_ladder": [
+        "follow",
+        "fill steps",
+        "guided reconstruction",
+        "closed-book",
+        "modify assumptions",
+        "comparative statics",
+        "empirical prediction",
+        "extension",
+        "independent construction"
+      ],
+      "paper_ladder": [
+        "summary",
+        "reconstruct",
+        "assumptions",
+        "contribution",
+        "critique",
+        "replicate",
+        "extend",
+        "independent question"
+      ],
+      "mentor_labels": {
+        "TEACHER": "Teacher",
+        "COACH": "Model Coach",
+        "DOMAIN_MENTOR": "Research Supervisor",
+        "RESEARCH_SUPERVISOR": "Research Supervisor",
+        "EVALUATOR": "Evaluator"
+      }
+    },
+    "cs-ai": {
+      "trajectory": [
+        "Programming",
+        "Data Structures",
+        "Algorithms",
+        "Systems",
+        "OS/Network/Database",
+        "Software Engineering",
+        "ML",
+        "From-Scratch ML",
+        "DL",
+        "Transformer",
+        "LLM",
+        "Agents",
+        "AI Infra",
+        "Reproduction",
+        "Extension",
+        "Research"
+      ],
+      "coding_ladder": [
+        "read",
+        "explain",
+        "fill missing code",
+        "guided implementation",
+        "implement from spec",
+        "No-Agent",
+        "debug independently",
+        "architecture",
+        "reproduce",
+        "extend",
+        "research engineering"
+      ],
+      "mentor_labels": {
+        "TEACHER": "Teacher",
+        "COACH": "Coding Coach",
+        "DOMAIN_MENTOR": "Systems Mentor",
+        "RESEARCH_SUPERVISOR": "Research Supervisor",
+        "EVALUATOR": "Evaluator"
+      }
+    }
+  }
+}

@@ -1,0 +1,2003 @@
+{
+  "baseline_commit": "c8d0dfdcdee1dd002688ebf43d20bd2b48766fc8",
+  "description": "Synthetic journal and expected state produced by immutable v1.0.0 runtime.",
+  "events": [
+    {
+      "seq": 1,
+      "event_id": "session-7043c6796c281c40fc65199c68a39d23",
+      "kind": "session",
+      "timestamp": "2026-01-01T10:00:00Z",
+      "source": "tutor:mathematics",
+      "namespace": "integration_tests",
+      "raw_sha": "710e2934436e2f6a675acb4b612cd6fb72c638e44b1a50d32865685ba9be1451",
+      "payload": {
+        "artifacts": [],
+        "concepts": [
+          {
+            "definition": "Synthetic",
+            "name": "Continuity"
+          }
+        ],
+        "connections": [],
+        "course": "Synthetic Analysis",
+        "elite_evidence": [],
+        "hard_problem_sessions": [],
+        "mistakes": [],
+        "occurred_at": "2026-01-01T10:00:00Z",
+        "open_questions": [],
+        "oral_exams": [],
+        "proofs_derivations": [],
+        "research_ideas": [],
+        "schema_version": "1.0",
+        "session_id": "oracle-session-0",
+        "simulation_labs": [],
+        "summary": "Fictional protocol example.",
+        "title": "Synthetic continuity lesson",
+        "tutor": "mathematics",
+        "weakness_tags": [
+          "quantifiers"
+        ]
+      },
+      "previous_hash": "",
+      "hash": "147f1ad4c577f20ac65aacb993921099d87a7b9896ee0ed92b523f2bde32b829"
+    },
+    {
+      "seq": 2,
+      "event_id": "state_transition-5d1ce26b686f9ce0ae27d93f9e704a12",
+      "kind": "state_transition",
+      "timestamp": "2026-01-01T10:00:00Z",
+      "source": "session-7043c6796c281c40fc65199c68a39d23",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "after": 0,
+        "before": 0,
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "confidence": "low",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23"
+        ],
+        "reason": "Course exposure records context, never a mastery score or completed assessment",
+        "source_event": "session-7043c6796c281c40fc65199c68a39d23"
+      },
+      "previous_hash": "147f1ad4c577f20ac65aacb993921099d87a7b9896ee0ed92b523f2bde32b829",
+      "hash": "0896f366afaa02602415de17e80171782bf5cf0a70fc0621249ea1ea4364d4d3"
+    },
+    {
+      "seq": 3,
+      "event_id": "queue_created-8a44e9923007b44f3b8e994abbf4aeee",
+      "kind": "queue_created",
+      "timestamp": "2026-01-01T10:30:00Z",
+      "source": "deterministic-policy-v1",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "concept": "Continuity",
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "created_at": "2026-08-31",
+        "due_review": true,
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23"
+        ],
+        "focus": [
+          "proof",
+          "counterexample",
+          "definition reconstruction",
+          "hard problem"
+        ],
+        "priority": "P2",
+        "queue_id": "q-e8231dfdc5a93b12916a437a",
+        "reason": "Low confidence requires more independent evidence",
+        "review_key": null,
+        "status": "queued",
+        "subject": "mathematics",
+        "training_type": "proof"
+      },
+      "previous_hash": "0896f366afaa02602415de17e80171782bf5cf0a70fc0621249ea1ea4364d4d3",
+      "hash": "6d5ca25f6d795da72d61b447510a56a05f5724b262b63618681eb84e160b270a"
+    },
+    {
+      "seq": 4,
+      "event_id": "prepared-8a44e9923007b44f3b8e994abbf4aeee",
+      "kind": "prepared",
+      "timestamp": "2026-01-01T10:30:00Z",
+      "source": "deeptutor-bridge",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "manifest": {
+          "concepts": [
+            "Continuity"
+          ],
+          "course": "Synthetic Analysis",
+          "created_at": "2026-01-01T10:30:00Z",
+          "difficulty": "hard",
+          "hint_gradient": [
+            "independent_attempt",
+            "direction_only",
+            "key_observation",
+            "skeleton",
+            "full_solution"
+          ],
+          "manifest_id": "m-8a44e9923007b44f3b8e994a",
+          "mistakes": [],
+          "no_agent": true,
+          "open_questions": [],
+          "practice_modes": [
+            "proof"
+          ],
+          "practice_priority": 3,
+          "requested_question_count": 7,
+          "schema_version": "1.0",
+          "session_id": "session-7043c6796c281c40fc65199c68a39d23",
+          "source_notes": [],
+          "subject": "mathematics",
+          "topic": "Continuity",
+          "weakness_tags": [
+            "quantifiers"
+          ]
+        },
+        "manifest_id": "m-8a44e9923007b44f3b8e994a",
+        "practice": {
+          "answer_key": [],
+          "engine": "human-performance",
+          "manifest_id": "m-8a44e9923007b44f3b8e994a",
+          "practice_id": "p-8a44e9923007b44f3b8e994a",
+          "questions": [],
+          "task": "Independently perform proof on Continuity. Record your actual response and obtain human assessment; do not claim completion."
+        },
+        "practice_id": "p-8a44e9923007b44f3b8e994a",
+        "queue_id": "q-e8231dfdc5a93b12916a437a"
+      },
+      "previous_hash": "6d5ca25f6d795da72d61b447510a56a05f5724b262b63618681eb84e160b270a",
+      "hash": "a6288c90df44ec8796073b04c2411ed84defd7755502e593bf87885fc28a3f81"
+    },
+    {
+      "seq": 5,
+      "event_id": "queue_status-f3d87d3739a79b2f5a6fc59d2db03315",
+      "kind": "queue_status",
+      "timestamp": "2026-01-01T10:30:00Z",
+      "source": "training-queue",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "from": "queued",
+        "queue_id": "q-e8231dfdc5a93b12916a437a",
+        "reason": "Prepared only; waiting for human start",
+        "to": "ready"
+      },
+      "previous_hash": "a6288c90df44ec8796073b04c2411ed84defd7755502e593bf87885fc28a3f81",
+      "hash": "46f97a787a3a72ea15e53e0861ed0c3b043acf49824b1ba0c513f1a42bf95885"
+    },
+    {
+      "seq": 6,
+      "event_id": "queue_status-6bcb708f2f406d31bac12b469ca25181",
+      "kind": "queue_status",
+      "timestamp": "2026-01-01T10:30:00Z",
+      "source": "training-queue",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "from": "ready",
+        "queue_id": "q-e8231dfdc5a93b12916a437a",
+        "reason": "Human explicitly started the training",
+        "to": "in_progress"
+      },
+      "previous_hash": "46f97a787a3a72ea15e53e0861ed0c3b043acf49824b1ba0c513f1a42bf95885",
+      "hash": "cd96070e25dd7b4c992a0efd3860dfadaab6bf2412fdf67a9b5dd446597c7447"
+    },
+    {
+      "seq": 7,
+      "event_id": "practice-36d5d71db8457bf353729a39ddbb7860",
+      "kind": "practice",
+      "timestamp": "2026-01-01T12:00:00Z",
+      "source": "p-8a44e9923007b44f3b8e994a",
+      "namespace": "integration_tests",
+      "raw_sha": "332398c6249ec9d247021daf0ceced93bcffeed4c74d7a776953b6047eea1949",
+      "payload": {
+        "completed_at": "2026-01-01T12:00:00Z",
+        "concept": "Continuity",
+        "evidence_kind": "proof",
+        "grader": "human",
+        "grading_reason": "Synthetic fixture, not a real learner.",
+        "hints_used": 0,
+        "independent": true,
+        "integration_test": true,
+        "manifest_id": "m-8a44e9923007b44f3b8e994a",
+        "mistakes": [],
+        "namespace": "integration_tests",
+        "open_questions": [],
+        "outcome": "pass",
+        "practice_id": "p-8a44e9923007b44f3b8e994a",
+        "questions_attempted": 7,
+        "questions_correct": 7,
+        "queue_id": "q-e8231dfdc5a93b12916a437a",
+        "response_refs": [
+          "synthetic-answer-01"
+        ],
+        "result_id": "oracle-result-0",
+        "schema_version": "1.0",
+        "started_at": "2026-01-01T11:00:00Z",
+        "subject": "mathematics",
+        "transfer": false,
+        "weakness_tags": []
+      },
+      "previous_hash": "cd96070e25dd7b4c992a0efd3860dfadaab6bf2412fdf67a9b5dd446597c7447",
+      "hash": "20c23c6ea9bdfdce51b6d486c41bb080129e1903d8a1de1026bdf9ae44825cd9"
+    },
+    {
+      "seq": 8,
+      "event_id": "assessment-36d5d71db8457bf353729a39ddbb7860",
+      "kind": "assessment",
+      "timestamp": "2026-01-01T12:00:00Z",
+      "source": "human:oracle-result-0",
+      "namespace": "integration_tests",
+      "raw_sha": "332398c6249ec9d247021daf0ceced93bcffeed4c74d7a776953b6047eea1949",
+      "payload": {
+        "completed_at": "2026-01-01T12:00:00Z",
+        "concept": "Continuity",
+        "evidence_kind": "proof",
+        "grader": "human",
+        "grading_reason": "Synthetic fixture, not a real learner.",
+        "hints_used": 0,
+        "independent": true,
+        "integration_test": true,
+        "manifest_id": "m-8a44e9923007b44f3b8e994a",
+        "mistakes": [],
+        "namespace": "integration_tests",
+        "open_questions": [],
+        "outcome": "pass",
+        "practice_id": "p-8a44e9923007b44f3b8e994a",
+        "questions_attempted": 7,
+        "questions_correct": 7,
+        "queue_id": "q-e8231dfdc5a93b12916a437a",
+        "response_refs": [
+          "synthetic-answer-01"
+        ],
+        "result_id": "oracle-result-0",
+        "schema_version": "1.0",
+        "started_at": "2026-01-01T11:00:00Z",
+        "subject": "mathematics",
+        "transfer": false,
+        "weakness_tags": []
+      },
+      "previous_hash": "20c23c6ea9bdfdce51b6d486c41bb080129e1903d8a1de1026bdf9ae44825cd9",
+      "hash": "e018b92361cbd500c2c457cd202f11652a925b329d125237aee8eae8bf255244"
+    },
+    {
+      "seq": 9,
+      "event_id": "queue_status-6bab29c01df121820cfb6d15f6881543",
+      "kind": "queue_status",
+      "timestamp": "2026-01-01T10:30:00Z",
+      "source": "training-queue",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "from": "in_progress",
+        "queue_id": "q-e8231dfdc5a93b12916a437a",
+        "reason": "Learner response and human assessment recorded",
+        "to": "completed"
+      },
+      "previous_hash": "e018b92361cbd500c2c457cd202f11652a925b329d125237aee8eae8bf255244",
+      "hash": "1d363170fbf188a06629eb190540907bc3d8e2aa73f0e4456d64f3fabbd3d58a"
+    },
+    {
+      "seq": 10,
+      "event_id": "state_transition-334132d4696b63a66ad6b5d358d6dd6c",
+      "kind": "state_transition",
+      "timestamp": "2026-01-01T12:00:00Z",
+      "source": "practice-36d5d71db8457bf353729a39ddbb7860",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "after": 0,
+        "before": 0,
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "confidence": "low",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860"
+        ],
+        "reason": "Learner attempt recorded; grading is a separate confirmed assessment",
+        "source_event": "practice-36d5d71db8457bf353729a39ddbb7860"
+      },
+      "previous_hash": "1d363170fbf188a06629eb190540907bc3d8e2aa73f0e4456d64f3fabbd3d58a",
+      "hash": "92774217f68f1d52c5d0092ba68e8feb90cd98d2ef4efaff1c75ceee7d14ffcc"
+    },
+    {
+      "seq": 11,
+      "event_id": "state_transition-54121df25a43397abae60b219a100c28",
+      "kind": "state_transition",
+      "timestamp": "2026-01-01T12:00:00Z",
+      "source": "assessment-36d5d71db8457bf353729a39ddbb7860",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "after": 0,
+        "before": 0,
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "confidence": "low",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860"
+        ],
+        "reason": "Insufficient diverse, delayed, independent evidence for promotion; Synthetic fixture, not a real learner.",
+        "source_event": "assessment-36d5d71db8457bf353729a39ddbb7860"
+      },
+      "previous_hash": "92774217f68f1d52c5d0092ba68e8feb90cd98d2ef4efaff1c75ceee7d14ffcc",
+      "hash": "ba03857a5970f196ad5e0e6271fa5e54c62137ebdb9e80c007d9b7e69cb5999f"
+    },
+    {
+      "seq": 12,
+      "event_id": "queue_created-9d570d9c281dc2a18c9bc6cc75cda656",
+      "kind": "queue_created",
+      "timestamp": "2026-01-01T10:30:00Z",
+      "source": "deterministic-policy-v1",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "concept": "Continuity",
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "created_at": "2026-08-31",
+        "due_review": true,
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860"
+        ],
+        "focus": [
+          "proof",
+          "counterexample",
+          "definition reconstruction",
+          "hard problem"
+        ],
+        "priority": "P2",
+        "queue_id": "q-59bb88054748aee61947da60",
+        "reason": "Low confidence requires more independent evidence",
+        "review_key": null,
+        "status": "queued",
+        "subject": "mathematics",
+        "training_type": "hard_problem"
+      },
+      "previous_hash": "ba03857a5970f196ad5e0e6271fa5e54c62137ebdb9e80c007d9b7e69cb5999f",
+      "hash": "88d525111b25f342dcb04b546132c96fd9b40eb904d521cd0dbf6dfa5bd5b5bd"
+    },
+    {
+      "seq": 13,
+      "event_id": "session-89b424df437aa03ddb7f1eee70067151",
+      "kind": "session",
+      "timestamp": "2026-01-02T10:00:00Z",
+      "source": "tutor:mathematics",
+      "namespace": "integration_tests",
+      "raw_sha": "be0e6021e6d8d078ba5c04e1a0301a750c464ed7218ed8085f524f952d9b16ec",
+      "payload": {
+        "artifacts": [],
+        "concepts": [
+          {
+            "definition": "Synthetic",
+            "name": "Continuity"
+          }
+        ],
+        "connections": [],
+        "course": "Synthetic Analysis",
+        "elite_evidence": [],
+        "hard_problem_sessions": [],
+        "mistakes": [],
+        "occurred_at": "2026-01-02T10:00:00Z",
+        "open_questions": [],
+        "oral_exams": [],
+        "proofs_derivations": [],
+        "research_ideas": [],
+        "schema_version": "1.0",
+        "session_id": "oracle-session-1",
+        "simulation_labs": [],
+        "summary": "Fictional protocol example.",
+        "title": "Synthetic continuity lesson",
+        "tutor": "mathematics",
+        "weakness_tags": [
+          "quantifiers"
+        ]
+      },
+      "previous_hash": "88d525111b25f342dcb04b546132c96fd9b40eb904d521cd0dbf6dfa5bd5b5bd",
+      "hash": "8e1dbc2b2d67efe0ef008fe78ff65362c9f59a1d997e9ad49ced8b21cfa12d5c"
+    },
+    {
+      "seq": 14,
+      "event_id": "state_transition-5c4c8491c89dff348a299298d2007648",
+      "kind": "state_transition",
+      "timestamp": "2026-01-02T10:00:00Z",
+      "source": "session-89b424df437aa03ddb7f1eee70067151",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "after": 0,
+        "before": 0,
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "confidence": "low",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151"
+        ],
+        "reason": "Course exposure records context, never a mastery score or completed assessment",
+        "source_event": "session-89b424df437aa03ddb7f1eee70067151"
+      },
+      "previous_hash": "8e1dbc2b2d67efe0ef008fe78ff65362c9f59a1d997e9ad49ced8b21cfa12d5c",
+      "hash": "db3aa2a5239456f29f5d4c3694d2188c7089823f78f898fb8c85393aa119575a"
+    },
+    {
+      "seq": 15,
+      "event_id": "queue_status-675417256d2fb52649cdd825f9e6c25f",
+      "kind": "queue_status",
+      "timestamp": "2026-01-02T10:30:00Z",
+      "source": "training-queue",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "from": "queued",
+        "queue_id": "q-59bb88054748aee61947da60",
+        "reason": "Superseded by newer evidence",
+        "to": "cancelled"
+      },
+      "previous_hash": "db3aa2a5239456f29f5d4c3694d2188c7089823f78f898fb8c85393aa119575a",
+      "hash": "becc295f0e986557fc4b7d6a4c32fd756115301b1c9377bc5b05c68c5c87041e"
+    },
+    {
+      "seq": 16,
+      "event_id": "queue_created-f611b373c2274e2617bd388fe99cb44c",
+      "kind": "queue_created",
+      "timestamp": "2026-01-02T10:30:00Z",
+      "source": "deterministic-policy-v1",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "concept": "Continuity",
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "created_at": "2026-08-31",
+        "due_review": true,
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151"
+        ],
+        "focus": [
+          "proof",
+          "counterexample",
+          "definition reconstruction",
+          "hard problem"
+        ],
+        "priority": "P2",
+        "queue_id": "q-ec20e67ea6ee05a1d81aa852",
+        "reason": "Low confidence requires more independent evidence",
+        "review_key": null,
+        "status": "queued",
+        "subject": "mathematics",
+        "training_type": "hard_problem"
+      },
+      "previous_hash": "becc295f0e986557fc4b7d6a4c32fd756115301b1c9377bc5b05c68c5c87041e",
+      "hash": "2c4ca425e836b3c927592728d9eff9e69d5735d3f1c6c3ccc15c3cadaa3c3f00"
+    },
+    {
+      "seq": 17,
+      "event_id": "prepared-f611b373c2274e2617bd388fe99cb44c",
+      "kind": "prepared",
+      "timestamp": "2026-01-02T10:30:00Z",
+      "source": "deeptutor-bridge",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "manifest": {
+          "concepts": [
+            "Continuity"
+          ],
+          "course": "Synthetic Analysis",
+          "created_at": "2026-01-02T10:30:00Z",
+          "difficulty": "hard",
+          "hint_gradient": [
+            "independent_attempt",
+            "direction_only",
+            "key_observation",
+            "skeleton",
+            "full_solution"
+          ],
+          "manifest_id": "m-f611b373c2274e2617bd388f",
+          "mistakes": [],
+          "no_agent": true,
+          "open_questions": [],
+          "practice_modes": [
+            "hard_problem"
+          ],
+          "practice_priority": 3,
+          "requested_question_count": 7,
+          "schema_version": "1.0",
+          "session_id": "session-89b424df437aa03ddb7f1eee70067151",
+          "source_notes": [],
+          "subject": "mathematics",
+          "topic": "Continuity",
+          "weakness_tags": [
+            "quantifiers"
+          ]
+        },
+        "manifest_id": "m-f611b373c2274e2617bd388f",
+        "practice": {
+          "answer_key": [],
+          "engine": "human-performance",
+          "manifest_id": "m-f611b373c2274e2617bd388f",
+          "practice_id": "p-f611b373c2274e2617bd388f",
+          "questions": [],
+          "task": "Independently perform hard_problem on Continuity. Record your actual response and obtain human assessment; do not claim completion."
+        },
+        "practice_id": "p-f611b373c2274e2617bd388f",
+        "queue_id": "q-ec20e67ea6ee05a1d81aa852"
+      },
+      "previous_hash": "2c4ca425e836b3c927592728d9eff9e69d5735d3f1c6c3ccc15c3cadaa3c3f00",
+      "hash": "eb8dee6782c3d7a7fdff592fb06d5023f6808980f4da12a9305a2367894a7038"
+    },
+    {
+      "seq": 18,
+      "event_id": "queue_status-705a64707bf0e573b36df374ee0f9bea",
+      "kind": "queue_status",
+      "timestamp": "2026-01-02T10:30:00Z",
+      "source": "training-queue",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "from": "queued",
+        "queue_id": "q-ec20e67ea6ee05a1d81aa852",
+        "reason": "Prepared only; waiting for human start",
+        "to": "ready"
+      },
+      "previous_hash": "eb8dee6782c3d7a7fdff592fb06d5023f6808980f4da12a9305a2367894a7038",
+      "hash": "66017f924a846219e217a499e84674833a3632beadd1eb1c42e1c23ecad39a14"
+    },
+    {
+      "seq": 19,
+      "event_id": "queue_status-831019faff7e35704e4606ccc53123af",
+      "kind": "queue_status",
+      "timestamp": "2026-01-02T10:30:00Z",
+      "source": "training-queue",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "from": "ready",
+        "queue_id": "q-ec20e67ea6ee05a1d81aa852",
+        "reason": "Human explicitly started the training",
+        "to": "in_progress"
+      },
+      "previous_hash": "66017f924a846219e217a499e84674833a3632beadd1eb1c42e1c23ecad39a14",
+      "hash": "a51a680870bfa80a4f0fd3bd60407064125f89aef5f5e60d7678fc16e17d131b"
+    },
+    {
+      "seq": 20,
+      "event_id": "practice-2aab6452696ac162e957b5e6ce7e855d",
+      "kind": "practice",
+      "timestamp": "2026-01-02T12:00:00Z",
+      "source": "p-f611b373c2274e2617bd388f",
+      "namespace": "integration_tests",
+      "raw_sha": "b11519e3c0a619002867a053484f388c5d4d2a44f65615d3789df8195526b5d3",
+      "payload": {
+        "completed_at": "2026-01-02T12:00:00Z",
+        "concept": "Continuity",
+        "evidence_kind": "hard_problem",
+        "grader": "human",
+        "grading_reason": "Synthetic fixture, not a real learner.",
+        "hints_used": 0,
+        "independent": true,
+        "integration_test": true,
+        "manifest_id": "m-f611b373c2274e2617bd388f",
+        "mistakes": [],
+        "namespace": "integration_tests",
+        "open_questions": [],
+        "outcome": "pass",
+        "practice_id": "p-f611b373c2274e2617bd388f",
+        "questions_attempted": 7,
+        "questions_correct": 7,
+        "queue_id": "q-ec20e67ea6ee05a1d81aa852",
+        "response_refs": [
+          "synthetic-answer-01"
+        ],
+        "result_id": "oracle-result-1",
+        "schema_version": "1.0",
+        "started_at": "2026-01-02T11:00:00Z",
+        "subject": "mathematics",
+        "transfer": false,
+        "weakness_tags": []
+      },
+      "previous_hash": "a51a680870bfa80a4f0fd3bd60407064125f89aef5f5e60d7678fc16e17d131b",
+      "hash": "fa1ec1a6797762cdb7c377730378fcb40117eb096fcd1a32337c51776a5346eb"
+    },
+    {
+      "seq": 21,
+      "event_id": "assessment-2aab6452696ac162e957b5e6ce7e855d",
+      "kind": "assessment",
+      "timestamp": "2026-01-02T12:00:00Z",
+      "source": "human:oracle-result-1",
+      "namespace": "integration_tests",
+      "raw_sha": "b11519e3c0a619002867a053484f388c5d4d2a44f65615d3789df8195526b5d3",
+      "payload": {
+        "completed_at": "2026-01-02T12:00:00Z",
+        "concept": "Continuity",
+        "evidence_kind": "hard_problem",
+        "grader": "human",
+        "grading_reason": "Synthetic fixture, not a real learner.",
+        "hints_used": 0,
+        "independent": true,
+        "integration_test": true,
+        "manifest_id": "m-f611b373c2274e2617bd388f",
+        "mistakes": [],
+        "namespace": "integration_tests",
+        "open_questions": [],
+        "outcome": "pass",
+        "practice_id": "p-f611b373c2274e2617bd388f",
+        "questions_attempted": 7,
+        "questions_correct": 7,
+        "queue_id": "q-ec20e67ea6ee05a1d81aa852",
+        "response_refs": [
+          "synthetic-answer-01"
+        ],
+        "result_id": "oracle-result-1",
+        "schema_version": "1.0",
+        "started_at": "2026-01-02T11:00:00Z",
+        "subject": "mathematics",
+        "transfer": false,
+        "weakness_tags": []
+      },
+      "previous_hash": "fa1ec1a6797762cdb7c377730378fcb40117eb096fcd1a32337c51776a5346eb",
+      "hash": "087fdb5270a111b2d798399d398d4016e936845b07adca744106491757b3294a"
+    },
+    {
+      "seq": 22,
+      "event_id": "queue_status-d1f6e6d009e96502a8d6dba0c3faf99b",
+      "kind": "queue_status",
+      "timestamp": "2026-01-02T10:30:00Z",
+      "source": "training-queue",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "from": "in_progress",
+        "queue_id": "q-ec20e67ea6ee05a1d81aa852",
+        "reason": "Learner response and human assessment recorded",
+        "to": "completed"
+      },
+      "previous_hash": "087fdb5270a111b2d798399d398d4016e936845b07adca744106491757b3294a",
+      "hash": "b45f6076106b6b283810b40da00a017810b98cb7eff501e3c617bb47bdcde3c8"
+    },
+    {
+      "seq": 23,
+      "event_id": "state_transition-a8c60f89de7ad7d89d8957a6ead4faf2",
+      "kind": "state_transition",
+      "timestamp": "2026-01-02T12:00:00Z",
+      "source": "practice-2aab6452696ac162e957b5e6ce7e855d",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "after": 0,
+        "before": 0,
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "confidence": "low",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d"
+        ],
+        "reason": "Learner attempt recorded; grading is a separate confirmed assessment",
+        "source_event": "practice-2aab6452696ac162e957b5e6ce7e855d"
+      },
+      "previous_hash": "b45f6076106b6b283810b40da00a017810b98cb7eff501e3c617bb47bdcde3c8",
+      "hash": "d56efe8510e6ae28ff491d78bf8263a41ea266887542b1810973cf6d4201e752"
+    },
+    {
+      "seq": 24,
+      "event_id": "state_transition-52e608b14d642ef4673dd85faf0a910d",
+      "kind": "state_transition",
+      "timestamp": "2026-01-02T12:00:00Z",
+      "source": "assessment-2aab6452696ac162e957b5e6ce7e855d",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "after": 1,
+        "before": 0,
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "confidence": "medium",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d"
+        ],
+        "reason": "Independent evidence across distinct days and task types supports one level; Synthetic fixture, not a real learner.",
+        "source_event": "assessment-2aab6452696ac162e957b5e6ce7e855d"
+      },
+      "previous_hash": "d56efe8510e6ae28ff491d78bf8263a41ea266887542b1810973cf6d4201e752",
+      "hash": "673756133de8223efde307f4c5f52cf4b9c647e685acfe344e186da83404ef74"
+    },
+    {
+      "seq": 25,
+      "event_id": "queue_created-98ac3d16e4135436f1174f632995af60",
+      "kind": "queue_created",
+      "timestamp": "2026-01-02T10:30:00Z",
+      "source": "deterministic-policy-v1",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "concept": "Continuity",
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "created_at": "2026-08-31",
+        "due_review": true,
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d"
+        ],
+        "focus": [
+          "proof",
+          "counterexample",
+          "definition reconstruction",
+          "hard problem"
+        ],
+        "priority": "P3",
+        "queue_id": "q-81d8c0da2163c6bad7275f2f",
+        "reason": "Session review T+1 due 2026-01-02",
+        "review_key": "4850836f9bd26f8be0561c2415ebf31283aa84414f4de1efab28aa1c1973b051",
+        "status": "queued",
+        "subject": "mathematics",
+        "training_type": "review"
+      },
+      "previous_hash": "673756133de8223efde307f4c5f52cf4b9c647e685acfe344e186da83404ef74",
+      "hash": "60b08d323354185b6e4d8dc87b9cae6038fa6a8af6fb05d4d2f5b34349541bcd"
+    },
+    {
+      "seq": 26,
+      "event_id": "session-39645141e611e581d7fc5a5a5d4ce9a4",
+      "kind": "session",
+      "timestamp": "2026-01-03T10:00:00Z",
+      "source": "tutor:mathematics",
+      "namespace": "integration_tests",
+      "raw_sha": "0f94402a854ec92e1ae0b3a44f94bc6a01dd6e5dff79db953d0ab96da75c3cf7",
+      "payload": {
+        "artifacts": [],
+        "concepts": [
+          {
+            "definition": "Synthetic",
+            "name": "Continuity"
+          }
+        ],
+        "connections": [],
+        "course": "Synthetic Analysis",
+        "elite_evidence": [],
+        "hard_problem_sessions": [],
+        "mistakes": [],
+        "occurred_at": "2026-01-03T10:00:00Z",
+        "open_questions": [],
+        "oral_exams": [],
+        "proofs_derivations": [],
+        "research_ideas": [],
+        "schema_version": "1.0",
+        "session_id": "oracle-session-2",
+        "simulation_labs": [],
+        "summary": "Fictional protocol example.",
+        "title": "Synthetic continuity lesson",
+        "tutor": "mathematics",
+        "weakness_tags": [
+          "quantifiers"
+        ]
+      },
+      "previous_hash": "60b08d323354185b6e4d8dc87b9cae6038fa6a8af6fb05d4d2f5b34349541bcd",
+      "hash": "0046833f32bb040567b575a3374900a648289092ba29c0efec35b986ea14a3bb"
+    },
+    {
+      "seq": 27,
+      "event_id": "state_transition-fcc62fd5c2fe154e03165578a7a801e2",
+      "kind": "state_transition",
+      "timestamp": "2026-01-03T10:00:00Z",
+      "source": "session-39645141e611e581d7fc5a5a5d4ce9a4",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "after": 1,
+        "before": 1,
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "confidence": "medium",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d",
+          "session-39645141e611e581d7fc5a5a5d4ce9a4"
+        ],
+        "reason": "Course exposure records context, never a mastery score or completed assessment",
+        "source_event": "session-39645141e611e581d7fc5a5a5d4ce9a4"
+      },
+      "previous_hash": "0046833f32bb040567b575a3374900a648289092ba29c0efec35b986ea14a3bb",
+      "hash": "45a6e7a473c6b75fd4fc3ad7075e22a02ba1c8d3295bfd240a63fc74c4a25961"
+    },
+    {
+      "seq": 28,
+      "event_id": "queue_status-6291234d85d30ab9a5c58709fb9227f6",
+      "kind": "queue_status",
+      "timestamp": "2026-01-03T10:30:00Z",
+      "source": "training-queue",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "from": "queued",
+        "queue_id": "q-81d8c0da2163c6bad7275f2f",
+        "reason": "Superseded by newer evidence",
+        "to": "cancelled"
+      },
+      "previous_hash": "45a6e7a473c6b75fd4fc3ad7075e22a02ba1c8d3295bfd240a63fc74c4a25961",
+      "hash": "63d98d014aea7e6bedde49dff1bb5543ecad4b81fd60b14a4c9b965d7115a4e9"
+    },
+    {
+      "seq": 29,
+      "event_id": "queue_created-cefe09c5ba9e046f36102da1a2b47c4a",
+      "kind": "queue_created",
+      "timestamp": "2026-01-03T10:30:00Z",
+      "source": "deterministic-policy-v1",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "concept": "Continuity",
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "created_at": "2026-08-31",
+        "due_review": true,
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d",
+          "session-39645141e611e581d7fc5a5a5d4ce9a4"
+        ],
+        "focus": [
+          "proof",
+          "counterexample",
+          "definition reconstruction",
+          "hard problem"
+        ],
+        "priority": "P3",
+        "queue_id": "q-222d5170928f740cb25af5c1",
+        "reason": "Session review T+1 due 2026-01-02",
+        "review_key": "4850836f9bd26f8be0561c2415ebf31283aa84414f4de1efab28aa1c1973b051",
+        "status": "queued",
+        "subject": "mathematics",
+        "training_type": "review"
+      },
+      "previous_hash": "63d98d014aea7e6bedde49dff1bb5543ecad4b81fd60b14a4c9b965d7115a4e9",
+      "hash": "d599cc7c4b27957abc99bca6339a3192635f96a7c3d8de1d98f7b14d36bc8ab5"
+    },
+    {
+      "seq": 30,
+      "event_id": "prepared-cefe09c5ba9e046f36102da1a2b47c4a",
+      "kind": "prepared",
+      "timestamp": "2026-01-03T10:30:00Z",
+      "source": "deeptutor-bridge",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "manifest": {
+          "concepts": [
+            "Continuity"
+          ],
+          "course": "Synthetic Analysis",
+          "created_at": "2026-01-03T10:30:00Z",
+          "difficulty": "medium",
+          "hint_gradient": [
+            "independent_attempt",
+            "direction_only",
+            "key_observation",
+            "skeleton",
+            "full_solution"
+          ],
+          "manifest_id": "m-cefe09c5ba9e046f36102da1",
+          "mistakes": [],
+          "no_agent": true,
+          "open_questions": [],
+          "practice_modes": [
+            "review"
+          ],
+          "practice_priority": 4,
+          "requested_question_count": 7,
+          "schema_version": "1.0",
+          "session_id": "session-39645141e611e581d7fc5a5a5d4ce9a4",
+          "source_notes": [],
+          "subject": "mathematics",
+          "topic": "Continuity",
+          "weakness_tags": [
+            "quantifiers"
+          ]
+        },
+        "manifest_id": "m-cefe09c5ba9e046f36102da1",
+        "practice": {
+          "answer_key": [],
+          "engine": "human-performance",
+          "manifest_id": "m-cefe09c5ba9e046f36102da1",
+          "practice_id": "p-cefe09c5ba9e046f36102da1",
+          "questions": [],
+          "task": "Independently perform review on Continuity. Record your actual response and obtain human assessment; do not claim completion."
+        },
+        "practice_id": "p-cefe09c5ba9e046f36102da1",
+        "queue_id": "q-222d5170928f740cb25af5c1"
+      },
+      "previous_hash": "d599cc7c4b27957abc99bca6339a3192635f96a7c3d8de1d98f7b14d36bc8ab5",
+      "hash": "f488f748cfc9aafc3a239bbcdee16b4f23f167acf89acf28e629080b7ae326bc"
+    },
+    {
+      "seq": 31,
+      "event_id": "queue_status-d60a7b982babd2a2754e4d3f79ebc5da",
+      "kind": "queue_status",
+      "timestamp": "2026-01-03T10:30:00Z",
+      "source": "training-queue",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "from": "queued",
+        "queue_id": "q-222d5170928f740cb25af5c1",
+        "reason": "Prepared only; waiting for human start",
+        "to": "ready"
+      },
+      "previous_hash": "f488f748cfc9aafc3a239bbcdee16b4f23f167acf89acf28e629080b7ae326bc",
+      "hash": "58af3780e1f9414271863c66ca60e788b324ca3734e36022d7fad762fc3f8797"
+    },
+    {
+      "seq": 32,
+      "event_id": "queue_status-879502a50346dab94c1f1614d754e80d",
+      "kind": "queue_status",
+      "timestamp": "2026-01-03T10:30:00Z",
+      "source": "training-queue",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "from": "ready",
+        "queue_id": "q-222d5170928f740cb25af5c1",
+        "reason": "Human explicitly started the training",
+        "to": "in_progress"
+      },
+      "previous_hash": "58af3780e1f9414271863c66ca60e788b324ca3734e36022d7fad762fc3f8797",
+      "hash": "3d657c66a4d5b3168dd8ab6f519d75090f9f51fefc6a4129d849ed96197a68ea"
+    },
+    {
+      "seq": 33,
+      "event_id": "practice-dfb77f77a676626bf1d53fa5d334a353",
+      "kind": "practice",
+      "timestamp": "2026-01-03T12:00:00Z",
+      "source": "p-cefe09c5ba9e046f36102da1",
+      "namespace": "integration_tests",
+      "raw_sha": "2d28c86b0f01276c96e873d5621c7ce43c6f411501152685d235fe603e7e6d3f",
+      "payload": {
+        "completed_at": "2026-01-03T12:00:00Z",
+        "concept": "Continuity",
+        "evidence_kind": "review",
+        "grader": "human",
+        "grading_reason": "Synthetic fixture, not a real learner.",
+        "hints_used": 0,
+        "independent": true,
+        "integration_test": true,
+        "manifest_id": "m-cefe09c5ba9e046f36102da1",
+        "mistakes": [],
+        "namespace": "integration_tests",
+        "open_questions": [],
+        "outcome": "pass",
+        "practice_id": "p-cefe09c5ba9e046f36102da1",
+        "questions_attempted": 7,
+        "questions_correct": 7,
+        "queue_id": "q-222d5170928f740cb25af5c1",
+        "response_refs": [
+          "synthetic-answer-01"
+        ],
+        "result_id": "oracle-result-2",
+        "schema_version": "1.0",
+        "started_at": "2026-01-03T11:00:00Z",
+        "subject": "mathematics",
+        "transfer": false,
+        "weakness_tags": []
+      },
+      "previous_hash": "3d657c66a4d5b3168dd8ab6f519d75090f9f51fefc6a4129d849ed96197a68ea",
+      "hash": "cbf0db5311b137b2dac1ad62942978f8318cfed996f6047755556dbd0b6fc806"
+    },
+    {
+      "seq": 34,
+      "event_id": "assessment-dfb77f77a676626bf1d53fa5d334a353",
+      "kind": "assessment",
+      "timestamp": "2026-01-03T12:00:00Z",
+      "source": "human:oracle-result-2",
+      "namespace": "integration_tests",
+      "raw_sha": "2d28c86b0f01276c96e873d5621c7ce43c6f411501152685d235fe603e7e6d3f",
+      "payload": {
+        "completed_at": "2026-01-03T12:00:00Z",
+        "concept": "Continuity",
+        "evidence_kind": "review",
+        "grader": "human",
+        "grading_reason": "Synthetic fixture, not a real learner.",
+        "hints_used": 0,
+        "independent": true,
+        "integration_test": true,
+        "manifest_id": "m-cefe09c5ba9e046f36102da1",
+        "mistakes": [],
+        "namespace": "integration_tests",
+        "open_questions": [],
+        "outcome": "pass",
+        "practice_id": "p-cefe09c5ba9e046f36102da1",
+        "questions_attempted": 7,
+        "questions_correct": 7,
+        "queue_id": "q-222d5170928f740cb25af5c1",
+        "response_refs": [
+          "synthetic-answer-01"
+        ],
+        "result_id": "oracle-result-2",
+        "schema_version": "1.0",
+        "started_at": "2026-01-03T11:00:00Z",
+        "subject": "mathematics",
+        "transfer": false,
+        "weakness_tags": []
+      },
+      "previous_hash": "cbf0db5311b137b2dac1ad62942978f8318cfed996f6047755556dbd0b6fc806",
+      "hash": "84c452cefe33436bd26451e38e39d1769c5c7c01697f1663ea927c866be54208"
+    },
+    {
+      "seq": 35,
+      "event_id": "queue_status-9c6221eb6511d30acbccbbc38f2119b7",
+      "kind": "queue_status",
+      "timestamp": "2026-01-03T10:30:00Z",
+      "source": "training-queue",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "from": "in_progress",
+        "queue_id": "q-222d5170928f740cb25af5c1",
+        "reason": "Learner response and human assessment recorded",
+        "to": "completed"
+      },
+      "previous_hash": "84c452cefe33436bd26451e38e39d1769c5c7c01697f1663ea927c866be54208",
+      "hash": "50bb09511b3eb3f9015c9cc4a3192da251442c6c81c181204409824aff8d6453"
+    },
+    {
+      "seq": 36,
+      "event_id": "state_transition-26bfe5bae264771c17f3081efe028c7b",
+      "kind": "state_transition",
+      "timestamp": "2026-01-03T12:00:00Z",
+      "source": "practice-dfb77f77a676626bf1d53fa5d334a353",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "after": 1,
+        "before": 1,
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "confidence": "medium",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d",
+          "session-39645141e611e581d7fc5a5a5d4ce9a4",
+          "practice-dfb77f77a676626bf1d53fa5d334a353"
+        ],
+        "reason": "Learner attempt recorded; grading is a separate confirmed assessment",
+        "source_event": "practice-dfb77f77a676626bf1d53fa5d334a353"
+      },
+      "previous_hash": "50bb09511b3eb3f9015c9cc4a3192da251442c6c81c181204409824aff8d6453",
+      "hash": "aa77eea6c7940dbc9ab0a09b013288bcb3b92773a0bd763084db45d831381b49"
+    },
+    {
+      "seq": 37,
+      "event_id": "state_transition-588aee23fa38860f4d1659cf60dbd3b3",
+      "kind": "state_transition",
+      "timestamp": "2026-01-03T12:00:00Z",
+      "source": "assessment-dfb77f77a676626bf1d53fa5d334a353",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "after": 2,
+        "before": 1,
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "confidence": "medium",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d",
+          "session-39645141e611e581d7fc5a5a5d4ce9a4",
+          "practice-dfb77f77a676626bf1d53fa5d334a353",
+          "assessment-dfb77f77a676626bf1d53fa5d334a353"
+        ],
+        "reason": "Independent evidence across distinct days and task types supports one level; Synthetic fixture, not a real learner.",
+        "source_event": "assessment-dfb77f77a676626bf1d53fa5d334a353"
+      },
+      "previous_hash": "aa77eea6c7940dbc9ab0a09b013288bcb3b92773a0bd763084db45d831381b49",
+      "hash": "3ab27c235eba567d1e2df22e048797a7f53b90495e2eb1ca5e8c340d86599a5b"
+    },
+    {
+      "seq": 38,
+      "event_id": "queue_created-e249de8f79c88a8b296649c5831c690d",
+      "kind": "queue_created",
+      "timestamp": "2026-01-03T10:30:00Z",
+      "source": "deterministic-policy-v1",
+      "namespace": "integration_tests",
+      "raw_sha": null,
+      "payload": {
+        "concept": "Continuity",
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "created_at": "2026-08-31",
+        "due_review": true,
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d",
+          "session-39645141e611e581d7fc5a5a5d4ce9a4",
+          "practice-dfb77f77a676626bf1d53fa5d334a353",
+          "assessment-dfb77f77a676626bf1d53fa5d334a353"
+        ],
+        "focus": [
+          "proof",
+          "counterexample",
+          "definition reconstruction",
+          "hard problem"
+        ],
+        "priority": "P3",
+        "queue_id": "q-22b528cc2b1181bb5f1ab9fc",
+        "reason": "Session review T+1 due 2026-01-03",
+        "review_key": "d187a1e27ccde8f7058326ddec04b639a11275b9664c8cdf8ad7614dcbac52aa",
+        "status": "queued",
+        "subject": "mathematics",
+        "training_type": "review"
+      },
+      "previous_hash": "3ab27c235eba567d1e2df22e048797a7f53b90495e2eb1ca5e8c340d86599a5b",
+      "hash": "1fb9de245843c17dac5e195703bc7b74d90481d0e3ce8fb579ae7c96bf6a6777"
+    }
+  ],
+  "expected_state": {
+    "version": 1,
+    "seq": 38,
+    "head": "1fb9de245843c17dac5e195703bc7b74d90481d0e3ce8fb579ae7c96bf6a6777",
+    "concepts": {
+      "b0404d4fd35dcfdb448215f6": {
+        "subject": "mathematics",
+        "concept": "Continuity",
+        "mastery_level": 2,
+        "confidence": "medium",
+        "evidence_count": 9,
+        "last_seen": "2026-01-03T12:00:00Z",
+        "last_practiced": "2026-01-03T12:00:00Z",
+        "mistake_count": 0,
+        "success_count": 3,
+        "weakness_tags": [
+          "quantifiers"
+        ],
+        "open_questions": [],
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d",
+          "session-39645141e611e581d7fc5a5a5d4ce9a4",
+          "practice-dfb77f77a676626bf1d53fa5d334a353",
+          "assessment-dfb77f77a676626bf1d53fa5d334a353"
+        ],
+        "successes": [
+          {
+            "at": "2026-01-01T12:00:00Z",
+            "kind": "proof",
+            "independent": true,
+            "hints_used": 0,
+            "transfer": false,
+            "ref": "assessment-36d5d71db8457bf353729a39ddbb7860"
+          },
+          {
+            "at": "2026-01-02T12:00:00Z",
+            "kind": "hard_problem",
+            "independent": true,
+            "hints_used": 0,
+            "transfer": false,
+            "ref": "assessment-2aab6452696ac162e957b5e6ce7e855d"
+          },
+          {
+            "at": "2026-01-03T12:00:00Z",
+            "kind": "review",
+            "independent": true,
+            "hints_used": 0,
+            "transfer": false,
+            "ref": "assessment-dfb77f77a676626bf1d53fa5d334a353"
+          }
+        ],
+        "mistakes": [],
+        "history": [
+          {
+            "concept_key": "b0404d4fd35dcfdb448215f6",
+            "source_event": "session-7043c6796c281c40fc65199c68a39d23",
+            "before": 0,
+            "after": 0,
+            "confidence": "low",
+            "reason": "Course exposure records context, never a mastery score or completed assessment",
+            "evidence_refs": [
+              "session-7043c6796c281c40fc65199c68a39d23"
+            ]
+          },
+          {
+            "concept_key": "b0404d4fd35dcfdb448215f6",
+            "source_event": "practice-36d5d71db8457bf353729a39ddbb7860",
+            "before": 0,
+            "after": 0,
+            "confidence": "low",
+            "reason": "Learner attempt recorded; grading is a separate confirmed assessment",
+            "evidence_refs": [
+              "session-7043c6796c281c40fc65199c68a39d23",
+              "practice-36d5d71db8457bf353729a39ddbb7860"
+            ]
+          },
+          {
+            "concept_key": "b0404d4fd35dcfdb448215f6",
+            "source_event": "assessment-36d5d71db8457bf353729a39ddbb7860",
+            "before": 0,
+            "after": 0,
+            "confidence": "low",
+            "reason": "Insufficient diverse, delayed, independent evidence for promotion; Synthetic fixture, not a real learner.",
+            "evidence_refs": [
+              "session-7043c6796c281c40fc65199c68a39d23",
+              "practice-36d5d71db8457bf353729a39ddbb7860",
+              "assessment-36d5d71db8457bf353729a39ddbb7860"
+            ]
+          },
+          {
+            "concept_key": "b0404d4fd35dcfdb448215f6",
+            "source_event": "session-89b424df437aa03ddb7f1eee70067151",
+            "before": 0,
+            "after": 0,
+            "confidence": "low",
+            "reason": "Course exposure records context, never a mastery score or completed assessment",
+            "evidence_refs": [
+              "session-7043c6796c281c40fc65199c68a39d23",
+              "practice-36d5d71db8457bf353729a39ddbb7860",
+              "assessment-36d5d71db8457bf353729a39ddbb7860",
+              "session-89b424df437aa03ddb7f1eee70067151"
+            ]
+          },
+          {
+            "concept_key": "b0404d4fd35dcfdb448215f6",
+            "source_event": "practice-2aab6452696ac162e957b5e6ce7e855d",
+            "before": 0,
+            "after": 0,
+            "confidence": "low",
+            "reason": "Learner attempt recorded; grading is a separate confirmed assessment",
+            "evidence_refs": [
+              "session-7043c6796c281c40fc65199c68a39d23",
+              "practice-36d5d71db8457bf353729a39ddbb7860",
+              "assessment-36d5d71db8457bf353729a39ddbb7860",
+              "session-89b424df437aa03ddb7f1eee70067151",
+              "practice-2aab6452696ac162e957b5e6ce7e855d"
+            ]
+          },
+          {
+            "concept_key": "b0404d4fd35dcfdb448215f6",
+            "source_event": "assessment-2aab6452696ac162e957b5e6ce7e855d",
+            "before": 0,
+            "after": 1,
+            "confidence": "medium",
+            "reason": "Independent evidence across distinct days and task types supports one level; Synthetic fixture, not a real learner.",
+            "evidence_refs": [
+              "session-7043c6796c281c40fc65199c68a39d23",
+              "practice-36d5d71db8457bf353729a39ddbb7860",
+              "assessment-36d5d71db8457bf353729a39ddbb7860",
+              "session-89b424df437aa03ddb7f1eee70067151",
+              "practice-2aab6452696ac162e957b5e6ce7e855d",
+              "assessment-2aab6452696ac162e957b5e6ce7e855d"
+            ]
+          },
+          {
+            "concept_key": "b0404d4fd35dcfdb448215f6",
+            "source_event": "session-39645141e611e581d7fc5a5a5d4ce9a4",
+            "before": 1,
+            "after": 1,
+            "confidence": "medium",
+            "reason": "Course exposure records context, never a mastery score or completed assessment",
+            "evidence_refs": [
+              "session-7043c6796c281c40fc65199c68a39d23",
+              "practice-36d5d71db8457bf353729a39ddbb7860",
+              "assessment-36d5d71db8457bf353729a39ddbb7860",
+              "session-89b424df437aa03ddb7f1eee70067151",
+              "practice-2aab6452696ac162e957b5e6ce7e855d",
+              "assessment-2aab6452696ac162e957b5e6ce7e855d",
+              "session-39645141e611e581d7fc5a5a5d4ce9a4"
+            ]
+          },
+          {
+            "concept_key": "b0404d4fd35dcfdb448215f6",
+            "source_event": "practice-dfb77f77a676626bf1d53fa5d334a353",
+            "before": 1,
+            "after": 1,
+            "confidence": "medium",
+            "reason": "Learner attempt recorded; grading is a separate confirmed assessment",
+            "evidence_refs": [
+              "session-7043c6796c281c40fc65199c68a39d23",
+              "practice-36d5d71db8457bf353729a39ddbb7860",
+              "assessment-36d5d71db8457bf353729a39ddbb7860",
+              "session-89b424df437aa03ddb7f1eee70067151",
+              "practice-2aab6452696ac162e957b5e6ce7e855d",
+              "assessment-2aab6452696ac162e957b5e6ce7e855d",
+              "session-39645141e611e581d7fc5a5a5d4ce9a4",
+              "practice-dfb77f77a676626bf1d53fa5d334a353"
+            ]
+          },
+          {
+            "concept_key": "b0404d4fd35dcfdb448215f6",
+            "source_event": "assessment-dfb77f77a676626bf1d53fa5d334a353",
+            "before": 1,
+            "after": 2,
+            "confidence": "medium",
+            "reason": "Independent evidence across distinct days and task types supports one level; Synthetic fixture, not a real learner.",
+            "evidence_refs": [
+              "session-7043c6796c281c40fc65199c68a39d23",
+              "practice-36d5d71db8457bf353729a39ddbb7860",
+              "assessment-36d5d71db8457bf353729a39ddbb7860",
+              "session-89b424df437aa03ddb7f1eee70067151",
+              "practice-2aab6452696ac162e957b5e6ce7e855d",
+              "assessment-2aab6452696ac162e957b5e6ce7e855d",
+              "session-39645141e611e581d7fc5a5a5d4ce9a4",
+              "practice-dfb77f77a676626bf1d53fa5d334a353",
+              "assessment-dfb77f77a676626bf1d53fa5d334a353"
+            ]
+          }
+        ],
+        "observations": [
+          {
+            "source": "session-7043c6796c281c40fc65199c68a39d23",
+            "kind": "course_exposure",
+            "at": "2026-01-01T10:00:00Z"
+          },
+          {
+            "source": "practice-36d5d71db8457bf353729a39ddbb7860",
+            "kind": "practice_attempt"
+          },
+          {
+            "source": "session-89b424df437aa03ddb7f1eee70067151",
+            "kind": "course_exposure",
+            "at": "2026-01-02T10:00:00Z"
+          },
+          {
+            "source": "practice-2aab6452696ac162e957b5e6ce7e855d",
+            "kind": "practice_attempt"
+          },
+          {
+            "source": "session-39645141e611e581d7fc5a5a5d4ce9a4",
+            "kind": "course_exposure",
+            "at": "2026-01-03T10:00:00Z"
+          },
+          {
+            "source": "practice-dfb77f77a676626bf1d53fa5d334a353",
+            "kind": "practice_attempt"
+          }
+        ]
+      }
+    },
+    "sessions": {
+      "session-7043c6796c281c40fc65199c68a39d23": {
+        "artifacts": [],
+        "concepts": [
+          {
+            "definition": "Synthetic",
+            "name": "Continuity"
+          }
+        ],
+        "connections": [],
+        "course": "Synthetic Analysis",
+        "elite_evidence": [],
+        "hard_problem_sessions": [],
+        "mistakes": [],
+        "occurred_at": "2026-01-01T10:00:00Z",
+        "open_questions": [],
+        "oral_exams": [],
+        "proofs_derivations": [],
+        "research_ideas": [],
+        "schema_version": "1.0",
+        "session_id": "oracle-session-0",
+        "simulation_labs": [],
+        "summary": "Fictional protocol example.",
+        "title": "Synthetic continuity lesson",
+        "tutor": "mathematics",
+        "weakness_tags": [
+          "quantifiers"
+        ]
+      },
+      "session-89b424df437aa03ddb7f1eee70067151": {
+        "artifacts": [],
+        "concepts": [
+          {
+            "definition": "Synthetic",
+            "name": "Continuity"
+          }
+        ],
+        "connections": [],
+        "course": "Synthetic Analysis",
+        "elite_evidence": [],
+        "hard_problem_sessions": [],
+        "mistakes": [],
+        "occurred_at": "2026-01-02T10:00:00Z",
+        "open_questions": [],
+        "oral_exams": [],
+        "proofs_derivations": [],
+        "research_ideas": [],
+        "schema_version": "1.0",
+        "session_id": "oracle-session-1",
+        "simulation_labs": [],
+        "summary": "Fictional protocol example.",
+        "title": "Synthetic continuity lesson",
+        "tutor": "mathematics",
+        "weakness_tags": [
+          "quantifiers"
+        ]
+      },
+      "session-39645141e611e581d7fc5a5a5d4ce9a4": {
+        "artifacts": [],
+        "concepts": [
+          {
+            "definition": "Synthetic",
+            "name": "Continuity"
+          }
+        ],
+        "connections": [],
+        "course": "Synthetic Analysis",
+        "elite_evidence": [],
+        "hard_problem_sessions": [],
+        "mistakes": [],
+        "occurred_at": "2026-01-03T10:00:00Z",
+        "open_questions": [],
+        "oral_exams": [],
+        "proofs_derivations": [],
+        "research_ideas": [],
+        "schema_version": "1.0",
+        "session_id": "oracle-session-2",
+        "simulation_labs": [],
+        "summary": "Fictional protocol example.",
+        "title": "Synthetic continuity lesson",
+        "tutor": "mathematics",
+        "weakness_tags": [
+          "quantifiers"
+        ]
+      }
+    },
+    "queue": {
+      "q-e8231dfdc5a93b12916a437a": {
+        "concept": "Continuity",
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "created_at": "2026-08-31",
+        "due_review": true,
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23"
+        ],
+        "focus": [
+          "proof",
+          "counterexample",
+          "definition reconstruction",
+          "hard problem"
+        ],
+        "priority": "P2",
+        "queue_id": "q-e8231dfdc5a93b12916a437a",
+        "reason": "Low confidence requires more independent evidence",
+        "review_key": null,
+        "status": "completed",
+        "subject": "mathematics",
+        "training_type": "proof",
+        "status_reason": "Learner response and human assessment recorded"
+      },
+      "q-59bb88054748aee61947da60": {
+        "concept": "Continuity",
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "created_at": "2026-08-31",
+        "due_review": true,
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860"
+        ],
+        "focus": [
+          "proof",
+          "counterexample",
+          "definition reconstruction",
+          "hard problem"
+        ],
+        "priority": "P2",
+        "queue_id": "q-59bb88054748aee61947da60",
+        "reason": "Low confidence requires more independent evidence",
+        "review_key": null,
+        "status": "cancelled",
+        "subject": "mathematics",
+        "training_type": "hard_problem",
+        "status_reason": "Superseded by newer evidence"
+      },
+      "q-ec20e67ea6ee05a1d81aa852": {
+        "concept": "Continuity",
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "created_at": "2026-08-31",
+        "due_review": true,
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151"
+        ],
+        "focus": [
+          "proof",
+          "counterexample",
+          "definition reconstruction",
+          "hard problem"
+        ],
+        "priority": "P2",
+        "queue_id": "q-ec20e67ea6ee05a1d81aa852",
+        "reason": "Low confidence requires more independent evidence",
+        "review_key": null,
+        "status": "completed",
+        "subject": "mathematics",
+        "training_type": "hard_problem",
+        "status_reason": "Learner response and human assessment recorded"
+      },
+      "q-81d8c0da2163c6bad7275f2f": {
+        "concept": "Continuity",
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "created_at": "2026-08-31",
+        "due_review": true,
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d"
+        ],
+        "focus": [
+          "proof",
+          "counterexample",
+          "definition reconstruction",
+          "hard problem"
+        ],
+        "priority": "P3",
+        "queue_id": "q-81d8c0da2163c6bad7275f2f",
+        "reason": "Session review T+1 due 2026-01-02",
+        "review_key": "4850836f9bd26f8be0561c2415ebf31283aa84414f4de1efab28aa1c1973b051",
+        "status": "cancelled",
+        "subject": "mathematics",
+        "training_type": "review",
+        "status_reason": "Superseded by newer evidence"
+      },
+      "q-222d5170928f740cb25af5c1": {
+        "concept": "Continuity",
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "created_at": "2026-08-31",
+        "due_review": true,
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d",
+          "session-39645141e611e581d7fc5a5a5d4ce9a4"
+        ],
+        "focus": [
+          "proof",
+          "counterexample",
+          "definition reconstruction",
+          "hard problem"
+        ],
+        "priority": "P3",
+        "queue_id": "q-222d5170928f740cb25af5c1",
+        "reason": "Session review T+1 due 2026-01-02",
+        "review_key": "4850836f9bd26f8be0561c2415ebf31283aa84414f4de1efab28aa1c1973b051",
+        "status": "completed",
+        "subject": "mathematics",
+        "training_type": "review",
+        "status_reason": "Learner response and human assessment recorded"
+      },
+      "q-22b528cc2b1181bb5f1ab9fc": {
+        "concept": "Continuity",
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "created_at": "2026-08-31",
+        "due_review": true,
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d",
+          "session-39645141e611e581d7fc5a5a5d4ce9a4",
+          "practice-dfb77f77a676626bf1d53fa5d334a353",
+          "assessment-dfb77f77a676626bf1d53fa5d334a353"
+        ],
+        "focus": [
+          "proof",
+          "counterexample",
+          "definition reconstruction",
+          "hard problem"
+        ],
+        "priority": "P3",
+        "queue_id": "q-22b528cc2b1181bb5f1ab9fc",
+        "reason": "Session review T+1 due 2026-01-03",
+        "review_key": "d187a1e27ccde8f7058326ddec04b639a11275b9664c8cdf8ad7614dcbac52aa",
+        "status": "queued",
+        "subject": "mathematics",
+        "training_type": "review"
+      }
+    },
+    "practices": {
+      "q-e8231dfdc5a93b12916a437a": {
+        "manifest": {
+          "concepts": [
+            "Continuity"
+          ],
+          "course": "Synthetic Analysis",
+          "created_at": "2026-01-01T10:30:00Z",
+          "difficulty": "hard",
+          "hint_gradient": [
+            "independent_attempt",
+            "direction_only",
+            "key_observation",
+            "skeleton",
+            "full_solution"
+          ],
+          "manifest_id": "m-8a44e9923007b44f3b8e994a",
+          "mistakes": [],
+          "no_agent": true,
+          "open_questions": [],
+          "practice_modes": [
+            "proof"
+          ],
+          "practice_priority": 3,
+          "requested_question_count": 7,
+          "schema_version": "1.0",
+          "session_id": "session-7043c6796c281c40fc65199c68a39d23",
+          "source_notes": [],
+          "subject": "mathematics",
+          "topic": "Continuity",
+          "weakness_tags": [
+            "quantifiers"
+          ]
+        },
+        "manifest_id": "m-8a44e9923007b44f3b8e994a",
+        "practice": {
+          "answer_key": [],
+          "engine": "human-performance",
+          "manifest_id": "m-8a44e9923007b44f3b8e994a",
+          "practice_id": "p-8a44e9923007b44f3b8e994a",
+          "questions": [],
+          "task": "Independently perform proof on Continuity. Record your actual response and obtain human assessment; do not claim completion."
+        },
+        "practice_id": "p-8a44e9923007b44f3b8e994a",
+        "queue_id": "q-e8231dfdc5a93b12916a437a"
+      },
+      "q-ec20e67ea6ee05a1d81aa852": {
+        "manifest": {
+          "concepts": [
+            "Continuity"
+          ],
+          "course": "Synthetic Analysis",
+          "created_at": "2026-01-02T10:30:00Z",
+          "difficulty": "hard",
+          "hint_gradient": [
+            "independent_attempt",
+            "direction_only",
+            "key_observation",
+            "skeleton",
+            "full_solution"
+          ],
+          "manifest_id": "m-f611b373c2274e2617bd388f",
+          "mistakes": [],
+          "no_agent": true,
+          "open_questions": [],
+          "practice_modes": [
+            "hard_problem"
+          ],
+          "practice_priority": 3,
+          "requested_question_count": 7,
+          "schema_version": "1.0",
+          "session_id": "session-89b424df437aa03ddb7f1eee70067151",
+          "source_notes": [],
+          "subject": "mathematics",
+          "topic": "Continuity",
+          "weakness_tags": [
+            "quantifiers"
+          ]
+        },
+        "manifest_id": "m-f611b373c2274e2617bd388f",
+        "practice": {
+          "answer_key": [],
+          "engine": "human-performance",
+          "manifest_id": "m-f611b373c2274e2617bd388f",
+          "practice_id": "p-f611b373c2274e2617bd388f",
+          "questions": [],
+          "task": "Independently perform hard_problem on Continuity. Record your actual response and obtain human assessment; do not claim completion."
+        },
+        "practice_id": "p-f611b373c2274e2617bd388f",
+        "queue_id": "q-ec20e67ea6ee05a1d81aa852"
+      },
+      "q-222d5170928f740cb25af5c1": {
+        "manifest": {
+          "concepts": [
+            "Continuity"
+          ],
+          "course": "Synthetic Analysis",
+          "created_at": "2026-01-03T10:30:00Z",
+          "difficulty": "medium",
+          "hint_gradient": [
+            "independent_attempt",
+            "direction_only",
+            "key_observation",
+            "skeleton",
+            "full_solution"
+          ],
+          "manifest_id": "m-cefe09c5ba9e046f36102da1",
+          "mistakes": [],
+          "no_agent": true,
+          "open_questions": [],
+          "practice_modes": [
+            "review"
+          ],
+          "practice_priority": 4,
+          "requested_question_count": 7,
+          "schema_version": "1.0",
+          "session_id": "session-39645141e611e581d7fc5a5a5d4ce9a4",
+          "source_notes": [],
+          "subject": "mathematics",
+          "topic": "Continuity",
+          "weakness_tags": [
+            "quantifiers"
+          ]
+        },
+        "manifest_id": "m-cefe09c5ba9e046f36102da1",
+        "practice": {
+          "answer_key": [],
+          "engine": "human-performance",
+          "manifest_id": "m-cefe09c5ba9e046f36102da1",
+          "practice_id": "p-cefe09c5ba9e046f36102da1",
+          "questions": [],
+          "task": "Independently perform review on Continuity. Record your actual response and obtain human assessment; do not claim completion."
+        },
+        "practice_id": "p-cefe09c5ba9e046f36102da1",
+        "queue_id": "q-222d5170928f740cb25af5c1"
+      }
+    },
+    "results": {
+      "oracle-result-0": {
+        "completed_at": "2026-01-01T12:00:00Z",
+        "concept": "Continuity",
+        "evidence_kind": "proof",
+        "grader": "human",
+        "grading_reason": "Synthetic fixture, not a real learner.",
+        "hints_used": 0,
+        "independent": true,
+        "integration_test": true,
+        "manifest_id": "m-8a44e9923007b44f3b8e994a",
+        "mistakes": [],
+        "namespace": "integration_tests",
+        "open_questions": [],
+        "outcome": "pass",
+        "practice_id": "p-8a44e9923007b44f3b8e994a",
+        "questions_attempted": 7,
+        "questions_correct": 7,
+        "queue_id": "q-e8231dfdc5a93b12916a437a",
+        "response_refs": [
+          "synthetic-answer-01"
+        ],
+        "result_id": "oracle-result-0",
+        "schema_version": "1.0",
+        "started_at": "2026-01-01T11:00:00Z",
+        "subject": "mathematics",
+        "transfer": false,
+        "weakness_tags": []
+      },
+      "oracle-result-1": {
+        "completed_at": "2026-01-02T12:00:00Z",
+        "concept": "Continuity",
+        "evidence_kind": "hard_problem",
+        "grader": "human",
+        "grading_reason": "Synthetic fixture, not a real learner.",
+        "hints_used": 0,
+        "independent": true,
+        "integration_test": true,
+        "manifest_id": "m-f611b373c2274e2617bd388f",
+        "mistakes": [],
+        "namespace": "integration_tests",
+        "open_questions": [],
+        "outcome": "pass",
+        "practice_id": "p-f611b373c2274e2617bd388f",
+        "questions_attempted": 7,
+        "questions_correct": 7,
+        "queue_id": "q-ec20e67ea6ee05a1d81aa852",
+        "response_refs": [
+          "synthetic-answer-01"
+        ],
+        "result_id": "oracle-result-1",
+        "schema_version": "1.0",
+        "started_at": "2026-01-02T11:00:00Z",
+        "subject": "mathematics",
+        "transfer": false,
+        "weakness_tags": []
+      },
+      "oracle-result-2": {
+        "completed_at": "2026-01-03T12:00:00Z",
+        "concept": "Continuity",
+        "evidence_kind": "review",
+        "grader": "human",
+        "grading_reason": "Synthetic fixture, not a real learner.",
+        "hints_used": 0,
+        "independent": true,
+        "integration_test": true,
+        "manifest_id": "m-cefe09c5ba9e046f36102da1",
+        "mistakes": [],
+        "namespace": "integration_tests",
+        "open_questions": [],
+        "outcome": "pass",
+        "practice_id": "p-cefe09c5ba9e046f36102da1",
+        "questions_attempted": 7,
+        "questions_correct": 7,
+        "queue_id": "q-222d5170928f740cb25af5c1",
+        "response_refs": [
+          "synthetic-answer-01"
+        ],
+        "result_id": "oracle-result-2",
+        "schema_version": "1.0",
+        "started_at": "2026-01-03T11:00:00Z",
+        "subject": "mathematics",
+        "transfer": false,
+        "weakness_tags": []
+      }
+    },
+    "transitions": [
+      {
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "source_event": "session-7043c6796c281c40fc65199c68a39d23",
+        "before": 0,
+        "after": 0,
+        "confidence": "low",
+        "reason": "Course exposure records context, never a mastery score or completed assessment",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23"
+        ]
+      },
+      {
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "source_event": "practice-36d5d71db8457bf353729a39ddbb7860",
+        "before": 0,
+        "after": 0,
+        "confidence": "low",
+        "reason": "Learner attempt recorded; grading is a separate confirmed assessment",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860"
+        ]
+      },
+      {
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "source_event": "assessment-36d5d71db8457bf353729a39ddbb7860",
+        "before": 0,
+        "after": 0,
+        "confidence": "low",
+        "reason": "Insufficient diverse, delayed, independent evidence for promotion; Synthetic fixture, not a real learner.",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860"
+        ]
+      },
+      {
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "source_event": "session-89b424df437aa03ddb7f1eee70067151",
+        "before": 0,
+        "after": 0,
+        "confidence": "low",
+        "reason": "Course exposure records context, never a mastery score or completed assessment",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151"
+        ]
+      },
+      {
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "source_event": "practice-2aab6452696ac162e957b5e6ce7e855d",
+        "before": 0,
+        "after": 0,
+        "confidence": "low",
+        "reason": "Learner attempt recorded; grading is a separate confirmed assessment",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d"
+        ]
+      },
+      {
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "source_event": "assessment-2aab6452696ac162e957b5e6ce7e855d",
+        "before": 0,
+        "after": 1,
+        "confidence": "medium",
+        "reason": "Independent evidence across distinct days and task types supports one level; Synthetic fixture, not a real learner.",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d"
+        ]
+      },
+      {
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "source_event": "session-39645141e611e581d7fc5a5a5d4ce9a4",
+        "before": 1,
+        "after": 1,
+        "confidence": "medium",
+        "reason": "Course exposure records context, never a mastery score or completed assessment",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d",
+          "session-39645141e611e581d7fc5a5a5d4ce9a4"
+        ]
+      },
+      {
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "source_event": "practice-dfb77f77a676626bf1d53fa5d334a353",
+        "before": 1,
+        "after": 1,
+        "confidence": "medium",
+        "reason": "Learner attempt recorded; grading is a separate confirmed assessment",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d",
+          "session-39645141e611e581d7fc5a5a5d4ce9a4",
+          "practice-dfb77f77a676626bf1d53fa5d334a353"
+        ]
+      },
+      {
+        "concept_key": "b0404d4fd35dcfdb448215f6",
+        "source_event": "assessment-dfb77f77a676626bf1d53fa5d334a353",
+        "before": 1,
+        "after": 2,
+        "confidence": "medium",
+        "reason": "Independent evidence across distinct days and task types supports one level; Synthetic fixture, not a real learner.",
+        "evidence_refs": [
+          "session-7043c6796c281c40fc65199c68a39d23",
+          "practice-36d5d71db8457bf353729a39ddbb7860",
+          "assessment-36d5d71db8457bf353729a39ddbb7860",
+          "session-89b424df437aa03ddb7f1eee70067151",
+          "practice-2aab6452696ac162e957b5e6ce7e855d",
+          "assessment-2aab6452696ac162e957b5e6ce7e855d",
+          "session-39645141e611e581d7fc5a5a5d4ce9a4",
+          "practice-dfb77f77a676626bf1d53fa5d334a353",
+          "assessment-dfb77f77a676626bf1d53fa5d334a353"
+        ]
+      }
+    ]
+  }
+}

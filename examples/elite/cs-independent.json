@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.1",
+  "namespace": "integration_tests",
+  "integration_test": true,
+  "evidence_id": "sample-cs-ai",
+  "subject": "cs-ai",
+  "concept": "Binary search",
+  "task_type": "NO_AGENT_CODING",
+  "occurred_at": "2026-01-01T12:00:00Z",
+  "source": "Synthetic human-reviewed example",
+  "result": "PASS",
+  "independence_class": "INDEPENDENT",
+  "hint_level": 0,
+  "agent_usage": "NONE",
+  "time_spent": 1200,
+  "difficulty": "HARD",
+  "evidence_refs": [
+    "fictional-response"
+  ],
+  "assessment_context": "TRAINING",
+  "readiness_dimensions": [
+    "Algorithms"
+  ],
+  "metadata": {
+    "attempt_id": "example-cs-ai",
+    "context_id": "example-context"
+  }
+}

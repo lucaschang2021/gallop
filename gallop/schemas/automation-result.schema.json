@@ -124,6 +124,12 @@
     "completed_at": {
       "type": "string",
       "format": "date-time"
+    },
+    "elite_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
     }
   },
   "required": [

@@ -262,6 +262,7 @@ def test_prepare_uses_existing_deeptutor_transport_and_stable_linkage(app, tmp_p
     assert app.prepare(q["queue_id"]) == prepared
     assert len(calls) == 1
     assert not app.state()["results"]
+    assert app.explain("Continuity")["mastery_level"] == 0
 
 
 def test_backend_failure_only_changes_queue_status(app):

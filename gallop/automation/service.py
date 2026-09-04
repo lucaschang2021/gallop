@@ -14,6 +14,8 @@ from .protocol import digest, now, normalize_session, parse, synthetic, timestam
 from .state import POLICIES, concept_key, replay, training_candidate
 from .store import EventStore, JournalConflict
 from .jobs import Jobs, file_lock
+from .elite_protocol import DIMENSIONS, IDENTITIES, RULESET, event_time, failure_registry, validate as validate_elite
+from .elite_state import concept_evidence, empty, prerequisite_gaps, readiness_profile, rolling_benchmarks
 
 
 class Automation:
@@ -71,6 +73,12 @@ class Automation:
                         origin = by_id[transition["source_event"]]
                         self.store.append("state_transition", [transition["source_event"], transition["concept_key"]],
                                           transition, at=origin["timestamp"], source=origin["event_id"])
+                recorded_readiness = {digest(e["payload"]) for e in events if e["kind"] == "readiness_transition"}
+                for transition in provisional.get("elite", {}).get("readiness_transitions", []):
+                    if digest(transition) not in recorded_readiness:
+                        origin = by_id[transition["source_event"]]
+                        self.store.append("readiness_transition", [transition["source_event"], transition["profile_key"]],
+                                          transition, at=origin["timestamp"], source=origin["event_id"])
                 final = replay(self.store.events())
             # Journal commit comes first. A crash here leaves a recoverable stale cache.
             if not self.cache.exists() or json.loads(self.cache.read_text(encoding="utf-8")) != final:
@@ -94,13 +102,113 @@ class Automation:
         with self.lock():
             document, sha = self._read_input(path)
             session = normalize_session(document)
+            extensions = session.get("elite_evidence", [])
+            self._validate_extensions(extensions, session["tutor"])
+            mentorship = session.get("progressive_mentorship", {})
+            targets = list(mentorship.get("target_capabilities", []))
+            if mentorship.get('target_capability'):
+                targets.append(mentorship['target_capability'])
+            self._validate_targets(targets, session["tutor"])
             def append():
                 eid, added = self.store.append("session", session["session_id"], session,
                     at=session["occurred_at"], source="tutor:" + session["tutor"], raw_sha=sha)
+                if added:
+                    for record in extensions:
+                        self._append_elite("elite_evidence", record, False, sha)
+                    for record in targets:
+                        self._append_elite("target_capability", record, False, sha)
                 return {"event_id": eid, "duplicate": not added}
             result = self._mutate(append)
             self.refresh_queue()
             return result
+
+    def _validate_extensions(self, records, subject, concept=None):
+        identities = set()
+        registry = failure_registry(self.config.failure_modes)
+        for record in records:
+            validate_elite("elite_evidence", record, namespace=self.config.namespace, registry=registry)
+            if record["subject"] != subject or (concept is not None and record["concept"] != concept):
+                raise ValueError("Elite evidence does not match its parent subject/concept")
+            if record["evidence_id"] in identities:
+                raise ValueError("Duplicate Elite evidence in one input")
+            identities.add(record["evidence_id"])
+
+    def _append_elite(self, kind, record, confirmed, sha):
+        payload = dict(ruleset=RULESET, confirmed=confirmed, record=record)
+        eid, added = self.store.append(kind, record[IDENTITIES[kind]], payload,
+                                      at=event_time(kind, record), source=record["source"], raw_sha=sha)
+        return {"event_id": eid, "duplicate": not added, IDENTITIES[kind]: record[IDENTITIES[kind]]}
+
+    def _validate_targets(self, targets, subject):
+        identities=set()
+        for record in targets:
+            validate_elite("target_capability", record, namespace=self.config.namespace)
+            if record['subject'] != subject:
+                raise ValueError('Target capability does not match its tutor subject')
+            if record['target_id'] in identities:
+                raise ValueError('Duplicate target capability in one input')
+            identities.add(record['target_id'])
+
+    def add_record(self, kind, path, *, confirm_human=False):
+        if kind not in IDENTITIES:
+            raise ValueError("Unsupported Elite record kind")
+        if type(confirm_human) is not bool:
+            raise ValueError("Human confirmation must be an explicit boolean")
+        with self.lock():
+            record, sha = self._read_input(path)
+            validate_elite(kind, record, namespace=self.config.namespace,
+                           registry=failure_registry(self.config.failure_modes))
+            if kind == "benchmark":
+                evidence = self.state().get("elite", empty())["evidence"]
+                for ref in record["evidence_refs"]:
+                    if ref not in evidence or evidence[ref]["record"]["subject"] != record["subject"]:
+                        raise ValueError("Benchmark references must identify recorded evidence in this subject")
+            return self._mutate(lambda: self._append_elite(kind, record, bool(confirm_human), sha))
+
+    def records(self, kind, identity=None, *, subject=None):
+        key = {"elite_evidence": "evidence", "benchmark": "benchmarks", "prerequisite_link": "links",
+               "target_capability":"targets"}[kind]
+        with self.lock():
+            elite = self.state().get("elite", empty())
+            collection=elite.get(key,{})
+            if identity is not None and identity not in collection:
+                raise ValueError("Record identity not found")
+            rows = list(collection.values())
+            rows = [r for r in rows if subject is None or r["record"].get("subject", r["record"].get("source_subject")) == subject]
+            if kind == "benchmark":
+                rows = rolling_benchmarks(rows, elite)
+            return [r for r in rows if identity is None or r['record'][IDENTITIES[kind]] == identity]
+
+    def mentorship(self, target_id=None):
+        from gallop.mentorship import plan, weekly_feedback
+        with self.lock():
+            state=self.state(); targets=list(state.get('elite',empty()).get('targets',{}).values())
+            if target_id is not None:
+                targets=[t for t in targets if t['record']['target_id']==target_id]
+                if not targets: raise ValueError('Target capability not found')
+            plans=[plan(state,t) for t in targets]
+            return {'principles':['Ceiling stays fixed','Training difficulty adapts','Assistance gradually fades',
+                    'Evidence determines progression','Independence is the destination'],
+                    'plans':plans,'weekly_feedback':weekly_feedback(state,plans),
+                    'daily_default':'PRODUCTIVE when evidence supports it; no rigid global percentage',
+                    'scheduler_changed':False}
+
+    def readiness(self, *, subject=None, dimension=None):
+        if subject is not None and subject not in DIMENSIONS:
+            raise ValueError("Unknown readiness subject")
+        with self.lock():
+            state = self.state()
+            profiles = [readiness_profile(s, state.get("elite", empty())) for s in ([subject] if subject else DIMENSIONS)]
+            if dimension is None:
+                return profiles
+            rows = [(p["subject"], r) for p in profiles for r in p["dimensions"] if r["dimension"] == dimension]
+            if len(rows) != 1:
+                raise ValueError("Dimension not found or ambiguous; specify subject")
+            s, row = rows[0]
+            concepts = {e["record"]["concept"] for e in state.get("elite", empty())["evidence"].values()
+                        if e["event_id"] in row["evidence_refs"]}
+            return {"subject": s, **row, "prerequisite_gaps": [gap for c in sorted(concepts)
+                    for gap in prerequisite_gaps(state, s, c)]}
 
     def _status(self, item, status, reason):
         allowed = {"queued": {"ready", "cancelled", "failed"}, "ready": {"in_progress", "cancelled", "failed"},
@@ -142,15 +250,17 @@ class Automation:
         with self.lock():
             return sorted(self.state()["queue"].values(), key=lambda q: (q["priority"], q["created_at"], q["queue_id"]))
 
-    def prepare(self, queue_id, *, send=False, engine=None, question_count=7, _defer=False):
+    def prepare(self, queue_id, *, send=False, engine=None, question_count=7, elite=None, _defer=False):
         if send and engine is None:
-            return self.submit(queue_id, question_count=question_count)
+            return self.submit(queue_id, question_count=question_count, elite=elite)
         if type(question_count) is not int or not 1 <= question_count <= 100:
             raise ValueError("Question count must be between 1 and 100")
         with self.lock():
             state = self.state()
             if queue_id in state["practices"]:
                 prepared = state["practices"][queue_id]
+                if elite is not None and prepared["manifest"].get("elite") != elite:
+                    raise JournalConflict("Elite request cannot change after preparation")
                 self._write_prepared(prepared)
                 return prepared
             item = state["queue"][queue_id]
@@ -170,9 +280,13 @@ class Automation:
                 requested_question_count=question_count, practice_modes=[item["training_type"]],
                 no_agent=True, hint_gradient=["independent_attempt", "direction_only", "key_observation",
                                              "skeleton", "full_solution"], created_at=now())
-            validate_protocol("practice-manifest.schema.json", manifest)
             directory = check_path(self.config.root / "prepared" / queue_id)
             manifest_path = check_path(directory / "manifest.json")
+            if elite is None and manifest_path.exists():
+                elite = json.loads(manifest_path.read_text(encoding="utf-8")).get("elite")
+            if elite is not None:
+                manifest["elite"] = elite
+            validate_protocol("practice-manifest.schema.json", manifest)
             if manifest_path.exists():
                 saved = json.loads(manifest_path.read_text(encoding="utf-8"))
                 if {k: v for k, v in saved.items() if k != "created_at"} != {
@@ -204,6 +318,8 @@ class Automation:
                     task.update(diagnostic_questions=diagnostic["questions"],
                                 answer_key=diagnostic.get("answer_key", []), engine="deeptutor",
                                 provider_practice_id=diagnostic["practice_id"])
+                    if diagnostic.get("telemetry"):
+                        task["provider_telemetry"] = diagnostic["telemetry"]
                     task["notice"] = "Choice diagnostics are preparation, never proof/oral/coding assessment."
                 except Exception:
                     self._mutate(lambda: self._status(item, "failed", "DeepTutor generation failed; no learner evidence"))
@@ -217,13 +333,13 @@ class Automation:
             self._write_prepared(prepared)
             return prepared
 
-    def submit(self, queue_id, *, question_count=7, retry=False, deadline=240):
+    def submit(self, queue_id, *, question_count=7, retry=False, deadline=240, elite=None):
         with self.lock():
             if self.config.deeptutor is None:
                 raise ValueError("DeepTutor executable is not configured")
             if queue_id in self.state()["practices"]:
                 raise ValueError("Practice already prepared; do not submit it again")
-            pending = self.prepare(queue_id, question_count=question_count, _defer=True)
+            pending = self.prepare(queue_id, question_count=question_count, elite=elite, _defer=True)
             adapter = DeepTutorAdapter(self.config.deeptutor, home=self.config.deeptutor_home)
             jobs = Jobs(self.config.root)
             job_id = jobs.prepare(queue_id, pending["manifest"], adapter)
@@ -303,6 +419,18 @@ class Automation:
                 raise ValueError("Result namespace mismatch")
             if not confirm_human or data["grader"] != "human" or data["outcome"] == "ungraded":
                 raise ValueError("Assessment is pending: actual human grading and confirmation required")
+            extensions = data.get("elite_evidence", [])
+            self._validate_extensions(extensions, data["subject"], data["concept"])
+            for record in extensions:
+                if (timestamp(record["occurred_at"]) < timestamp(data["started_at"])
+                        or timestamp(record["occurred_at"]) > timestamp(data["completed_at"])):
+                    raise ValueError("Elite evidence falls outside the actual practice interval")
+                if (data["independent"] and record.get("independence_class") not in {None, "INDEPENDENT"}
+                        or not data["independent"] and record.get("independence_class") == "INDEPENDENT"
+                        or "hint_level" in record and record["hint_level"] != data["hints_used"]
+                        or data["transfer"] and record.get("transfer_status", {}).get("status") != "SUCCESS"
+                        or record["result"] != data["outcome"].upper()):
+                    raise ValueError("Elite evidence contradicts its assessment envelope")
             def append():
                 state = self.state()
                 prior = state["results"].get(data["result_id"])
@@ -331,6 +459,8 @@ class Automation:
                                   source=prepared["practice_id"], raw_sha=sha)
                 self.store.append("assessment", data["result_id"], data, at=data["completed_at"],
                                   source="human:" + data["result_id"], raw_sha=sha)
+                for record in extensions:
+                    self._append_elite("elite_evidence", record, True, sha)
                 self._status(item, "completed", "Learner response and human assessment recorded")
                 return {"duplicate": False, "result_id": data["result_id"]}
             result = self._mutate(append)
@@ -361,15 +491,18 @@ class Automation:
             if len(found) != 1:
                 raise ValueError("Concept not found or ambiguous; specify subject")
             item = found[0]
-            return {**item, "next_training": [q for q in state["queue"].values()
+            report = {**item, "next_training": [q for q in state["queue"].values()
                     if q["concept_key"] == concept_key(item["subject"], concept)
                     and q["status"] in {"queued", "ready", "in_progress"}]}
+            if "elite" in state:
+                report["elite"] = concept_evidence(state, item["subject"], concept)
+            return report
 
     def project(self):
         from .views import project
         with self.lock():
             state = self.state()
-            if not state["sessions"] and not state["results"]:
+            if not state["sessions"] and not state["results"] and not state.get("elite"):
                 return {"views": 0, "written": 0}
             return project(self.config, state)
 
@@ -378,7 +511,7 @@ class Automation:
             state = self.state()
             if self.config.namespace == "learner" and self.config.binding is None:
                 raise ValueError("Learner publishing requires the existing verified Reader binding")
-            if not dry_run and not state["sessions"] and not state["results"]:
+            if not dry_run and not state["sessions"] and not state["results"] and not state.get("elite"):
                 return {"written": 0, "reason": "No automation evidence; existing Reader retained"}
             if not dry_run:
                 self.project()

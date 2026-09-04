@@ -31,3 +31,17 @@ gallop/schemas/session.schema.json remains the strict legacy string-concept
 protocol for sync-session/manifest and is not changed by Automation.
 
 See the entirely synthetic [example](../examples/automation/session.json).
+
+## Optional v1.1 extension
+
+An otherwise valid v1 payload may include `elite_evidence: []`. Every item must
+match the tutor subject. Tutor items are retained as **unconfirmed** provenance
+and cannot raise mastery or independent readiness. A later explicit human
+attestation may refer to the same attempt; contradictory assistance disclosures
+disqualify that attempt. Omitting the extension preserves v1 replay semantics.
+
+RC2 also accepts optional `progressive_mentorship`. Normative singular or plural
+target capability records are validated and appended. Tutor-proposed current
+capability, zone, scaffolding, gaps, gains, struggle and research independence
+remain attributed session context only; the engine never treats those claims as
+derived state without supporting Elite evidence.
