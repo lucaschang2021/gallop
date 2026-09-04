@@ -117,7 +117,9 @@ Read [Security](SECURITY.md), [Automation mastery rules](docs/automation-safety.
 
 ```text
 gallop/
+├── ARCHITECTURE.toml       # executable architecture contract and drift baseline
 ├── gallop/automation/       # intake, journal, state, queue, jobs, views, CLI
+├── gallop/progression/      # pure capability, zone, scaffolding, and mentorship decisions
 ├── gallop/adapters/         # DeepTutor, Obsidian, offline mock
 ├── gallop/core/             # legacy validation, sync, mastery, and review
 ├── gallop/schemas/          # JSON protocols and four subject policies
@@ -129,6 +131,9 @@ gallop/
 ```
 
 CI runs tests, example validation, repository audit, the offline demo, and a wheel build on pushes and PRs. The v1.0.0 release record reports 177 local tests and an isolated real DeepTutor acceptance run. This does not validate every environment, model, or long-term learning outcome.
+
+Dependency direction, evidence authority, explicit time, and hotspot growth are
+governed by [Architecture Governance](docs/architecture-governance.md) and its executable CI gate.
 
 As of 2026-08-31, the v1.0.0 GitHub Release has no attached wheel/checksum assets, and CI does not automatically upload release assets. Use source installation above; the v0.1.0 wheel is not v1.0.0. [Current status and evidence](docs/current-status.md) separates implementation, historical validation, and remaining work.
 

@@ -5,6 +5,8 @@ import json
 
 from gallop.core.validation import validate_protocol
 from gallop.mobile import check_path
+from gallop.progression.evidence import (eligible, independent, performances,
+                                         quality_sufficient, transfer_success)
 from .protocol import now, parse, timestamp
 
 
@@ -118,59 +120,3 @@ def validate_evidence(record, registry):
             raise ValueError('Near-identical exercises cannot establish transfer success')
         if transfer['independence_class'] == 'INDEPENDENT' and independence != 'INDEPENDENT':
             raise ValueError('Independent transfer conflicts with the recorded performance')
-
-
-def quality_sufficient(record):
-    solid = {'SOLID', 'STRONG', 'EXCEPTIONAL'}
-    if record['task_type'] == 'PROOF':
-        return all(record.get('proof_quality', {}).get(k) in solid
-                   for k in ('logical_completeness', 'definition_precision', 'condition_awareness'))
-    if record['task_type'] == 'DERIVATION':
-        return all(record.get('derivation_quality', {}).get(k) in solid
-                   for k in ('steps_valid', 'assumption_awareness', 'interpretation'))
-    return True
-
-
-def independent(entry):
-    r = entry['record']
-    return bool(entry['confirmed'] and r.get('independence_class') == 'INDEPENDENT'
-                and r.get('hint_level') == 0 and r.get('agent_usage') in {'NONE', 'REFERENCE_ONLY'}
-                and r.get('evidence_refs'))
-
-
-def eligible(entry):
-    r = entry['record']
-    metadata = r.get('metadata', {})
-    benchmark_ok = (r.get('assessment_context') != 'BENCHMARK' or
-                    bool(r.get('benchmark_source') and metadata.get('closed_book') is True and metadata.get('no_ai') is True
-                         and r.get('agent_usage') == 'NONE'))
-    designed_support_ok = r.get('scaffolding_level') in {None, 'S1', 'S0'}
-    return bool(independent(entry) and designed_support_ok and r['result'] == 'PASS' and quality_sufficient(r)
-                and r.get('assessment_context') in {'TRAINING', 'FORMATIVE', 'BENCHMARK', 'SUMMATIVE'}
-                and metadata.get('context_id') and metadata.get('attempt_id') and benchmark_ok)
-
-
-def transfer_success(entry):
-    return bool(eligible(entry) and entry['record'].get('transfer_status', {}).get('status') == 'SUCCESS'
-                and entry['record']['transfer_status']['independence_class'] == 'INDEPENDENT')
-
-
-def performances(entries):
-    """One attempt cannot become multiple independent performances by changing IDs."""
-    groups = {}
-    for entry in entries:
-        r = entry['record']
-        key = r.get('metadata', {}).get('attempt_id')
-        if key:
-            groups.setdefault(key, []).append(entry)
-    result = []
-    for group in groups.values():
-        # A later human attestation may confirm an identical unconfirmed observation.
-        # Contradictory assistance, context or date never becomes a second performance.
-        signatures = {(e['record']['subject'], e['record']['concept'], e['record']['task_type'],
-                       e['record']['occurred_at'], e['record'].get('metadata', {}).get('context_id')) for e in group}
-        if len(signatures) == 1 and all(eligible({**e, 'confirmed': True}) for e in group):
-            confirmed = next((e for e in group if e['confirmed']), None)
-            if confirmed:
-                result.append(confirmed)
-    return result

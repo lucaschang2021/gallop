@@ -1,6 +1,8 @@
 # Progressive Mentorship Engine — RC2
 
-The engine keeps the summit fixed and builds an evidence-backed path toward it.
+The pure `gallop.progression` domain keeps the summit fixed and builds an
+evidence-backed path toward it. `gallop.mentorship` loads validated policy data
+and preserves the RC2 public interface; Automation only orchestrates the call.
 Its permanent principles are: ceiling stays fixed, difficulty adapts,
 assistance fades, evidence determines progression, and independence is the
 destination.

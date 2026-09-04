@@ -117,7 +117,9 @@ flowchart TD
 
 ```text
 gallop/
+├── ARCHITECTURE.toml       # 可执行架构契约与漂移基线
 ├── gallop/automation/       # 接入、事件库、状态、队列、任务恢复、视图、CLI
+├── gallop/progression/      # 无 I/O 的能力、训练区间、支架与指导决策
 ├── gallop/adapters/         # DeepTutor、Obsidian、离线 mock
 ├── gallop/core/             # 旧流程的校验、同步、掌握度和复习
 ├── gallop/schemas/          # JSON 协议与四学科策略
@@ -129,6 +131,9 @@ gallop/
 ```
 
 CI 对 push/PR 运行测试、示例校验、仓库审计、离线 demo 和 wheel 构建。v1.0.0 的发布记录报告了 177 项本地测试及一次隔离的真实 DeepTutor 验证；这不证明所有环境、模型或长期学习效果都已验证。
+
+架构依赖、证据权限、时间输入和热点文件增长由
+[Architecture Governance](docs/architecture-governance.md) 与 CI 中的可执行 Gate 约束。
 
 截至 2026-08-31，v1.0.0 GitHub Release 没有附加 wheel/checksum 资产，当前 CI 也不自动上传发布资产。请使用上面的源码安装方式；不要把 v0.1.0 wheel 当成 v1.0.0。[当前状态与证据](docs/current-status.md)区分已实现、历史验证和待完善项。
 
