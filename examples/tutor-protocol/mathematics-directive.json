@@ -8,10 +8,36 @@
   "authority": "ADVISORY",
   "source_event_ids": ["evt.math.session.001"],
   "payload": {
-    "current_capability": "UNKNOWN",
-    "target_capability": "GUIDED",
-    "recent_evidence": [],
-    "recent_failures": [],
-    "max_items": 20
+    "context_packet": {
+      "schema_version": "1.2",
+      "subject": "mathematics",
+      "session_id": "session.math.001",
+      "active_concept_id": null,
+      "current_capability": {
+        "state": "UNKNOWN",
+        "source": "not_recorded",
+        "mastery_level": null,
+        "confidence": null
+      },
+      "target_capability": null,
+      "active_prerequisites": [],
+      "scaffold_level": null,
+      "training_zone": null,
+      "recent_evidence": [],
+      "recent_failures": [],
+      "recent_gains": [],
+      "reviews_due": [],
+      "retests_due": [],
+      "unfinished_tasks": [],
+      "previous_relevant_summary": "Synthetic mathematics tutor session start.",
+      "next_recommended_action": "CONTINUE_TEACHING_WITHOUT_UNSUPPORTED_STATE_CLAIMS",
+      "source_event_ids": ["evt.math.session.001"],
+      "truncation": {
+        "applied": false,
+        "omitted_items": 0,
+        "max_items": 10,
+        "max_chars": 12000
+      }
+    }
   }
 }

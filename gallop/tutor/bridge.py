@@ -7,12 +7,13 @@ from typing import Any, Callable
 
 from gallop.automation.config import AutomationConfig
 from gallop.automation.elite_protocol import RULESET
-from gallop.automation.protocol import canonical, synthetic, timestamp
+from gallop.automation.protocol import canonical, digest, synthetic, timestamp
 from gallop.automation.service import Automation
 from gallop.automation.store import JournalConflict
 
-from .protocol import SUBJECT_TUTORS, validate_event
+from .context import build_context
 from .evidence import candidate_record
+from .protocol import SUBJECT_TUTORS, validate_directive, validate_event
 
 
 class TutorBridge:
@@ -44,6 +45,34 @@ class TutorBridge:
         if session is None:
             raise ValueError("Tutor session not found")
         return deepcopy(session)
+
+    def get_learning_context(
+        self,
+        subject: str,
+        session_id: str,
+        *,
+        max_items: int = 10,
+        max_chars: int = 12000,
+    ) -> dict[str, Any]:
+        state = self.automation.state()
+        session = state.get("tutor", {}).get("sessions", {}).get(session_id)
+        if session is None or session["subject"] != subject:
+            raise ValueError("Context session does not exist for this subject")
+        packet = build_context(
+            state, subject, session_id, max_items=max_items, max_chars=max_chars
+        )
+        document = {
+            "schema_version": "1.2",
+            "directive_id": "context:" + digest([subject, session_id, state["head"]])[:32],
+            "session_id": session_id,
+            "subject": subject,
+            "directive_type": "learning_context",
+            "issued_at": session["last_event_at"],
+            "authority": "ADVISORY",
+            "source_event_ids": packet["source_event_ids"],
+            "payload": {"context_packet": packet},
+        }
+        return validate_directive(document)
 
     def open_or_resume_session(self, subject: str, session_id: str) -> dict[str, Any]:
         if subject not in SUBJECT_TUTORS:
@@ -158,6 +187,7 @@ class TutorBridge:
     def dispatch(self, operation: str, arguments: dict[str, Any]) -> dict[str, Any]:
         operations: dict[str, Callable[..., dict[str, Any]]] = {
             "open_or_resume_session": self.open_or_resume_session,
+            "get_learning_context": self.get_learning_context,
             "record_learning_event": self.record_learning_event,
             "checkpoint_session": self.checkpoint_session,
             "finalize_session": self.finalize_session,

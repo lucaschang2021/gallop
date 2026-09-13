@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:gallop:schema:learning-context:1.2",
+  "title": "Gallop Learning Context Packet 1.2",
+  "type": "object",
+  "required": ["schema_version", "subject", "session_id", "active_concept_id", "current_capability", "target_capability", "active_prerequisites", "scaffold_level", "training_zone", "recent_evidence", "recent_failures", "recent_gains", "reviews_due", "retests_due", "unfinished_tasks", "previous_relevant_summary", "next_recommended_action", "source_event_ids", "truncation"],
+  "properties": {
+    "schema_version": {"const": "1.2"},
+    "subject": {"enum": ["mathematics", "statistics", "finance", "cs-ai"]},
+    "session_id": {"$ref": "#/$defs/stable_id"},
+    "active_concept_id": {"type": ["string", "null"], "maxLength": 128},
+    "current_capability": {
+      "type": "object",
+      "required": ["state", "source", "mastery_level", "confidence"],
+      "properties": {
+        "state": {"enum": ["UNKNOWN", "EXPOSED", "GUIDED", "PARTIALLY_INDEPENDENT", "INDEPENDENT", "TRANSFERRED", "RETAINED", "RESEARCH_USABLE"]},
+        "source": {"enum": ["journal_evidence", "not_recorded"]},
+        "mastery_level": {"type": ["integer", "null"], "minimum": 0, "maximum": 5},
+        "confidence": {"type": ["string", "null"], "maxLength": 32}
+      },
+      "additionalProperties": false
+    },
+    "target_capability": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "required": ["target_id", "dimension", "target_state", "description"],
+          "properties": {
+            "target_id": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "\\S"},
+            "dimension": {"$ref": "#/$defs/bounded_text"},
+            "target_state": {"enum": ["EXPOSED", "GUIDED", "PARTIALLY_INDEPENDENT", "INDEPENDENT", "TRANSFERRED", "RETAINED", "RESEARCH_USABLE"]},
+            "description": {"$ref": "#/$defs/bounded_text"}
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "active_prerequisites": {"type": "array", "maxItems": 50, "items": {"type": "object"}},
+    "scaffold_level": {"type": ["string", "null"], "enum": ["S5", "S4", "S3", "S2", "S1", "S0", null]},
+    "training_zone": {"type": ["string", "null"], "enum": ["FOUNDATION", "PRODUCTIVE", "STRETCH", "MONSTER_BENCHMARK", null]},
+    "recent_evidence": {"type": "array", "maxItems": 50, "items": {"type": "object"}},
+    "recent_failures": {"type": "array", "maxItems": 50, "items": {"type": "object"}},
+    "recent_gains": {"type": "array", "maxItems": 50, "items": {"type": "object"}},
+    "reviews_due": {"type": "array", "maxItems": 50, "items": {"type": "object"}},
+    "retests_due": {"type": "array", "maxItems": 50, "items": {"type": "object"}},
+    "unfinished_tasks": {"type": "array", "maxItems": 50, "items": {"$ref": "#/$defs/bounded_text"}},
+    "previous_relevant_summary": {"type": ["string", "null"], "maxLength": 500},
+    "next_recommended_action": {"$ref": "#/$defs/bounded_text"},
+    "source_event_ids": {"type": "array", "maxItems": 50, "items": {"$ref": "#/$defs/stable_id"}, "uniqueItems": true},
+    "truncation": {
+      "type": "object",
+      "required": ["applied", "omitted_items", "max_items", "max_chars"],
+      "properties": {
+        "applied": {"type": "boolean"},
+        "omitted_items": {"type": "integer", "minimum": 0},
+        "max_items": {"type": "integer", "minimum": 1, "maximum": 50},
+        "max_chars": {"type": "integer", "minimum": 2000, "maximum": 20000}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "stable_id": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"},
+    "bounded_text": {"type": "string", "minLength": 1, "maxLength": 500, "pattern": "\\S"}
+  }
+}

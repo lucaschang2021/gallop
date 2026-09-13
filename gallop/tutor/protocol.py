@@ -55,7 +55,7 @@ DIRECTIVE_TYPES = (
 )
 
 DIRECTIVE_PAYLOAD_FIELDS = {
-    "learning_context": "current_capability",
+    "learning_context": "context_packet",
     "training_zone": "training_zone",
     "scaffold_level": "scaffold_level",
     "target_capability": "target_capability",
@@ -109,4 +109,13 @@ def validate_directive(document: dict[str, Any]) -> dict[str, Any]:
     required = DIRECTIVE_PAYLOAD_FIELDS[document["directive_type"]]
     if required not in document["payload"]:
         raise ValueError(f"{document['directive_type']} directive requires {required}")
+    if document["directive_type"] == "learning_context":
+        packet = document["payload"]["context_packet"]
+        validate_protocol("learning-context-v1.2.schema.json", packet)
+        if (packet["subject"], packet["session_id"]) != (
+            document["subject"], document["session_id"]
+        ):
+            raise ValueError("Learning context does not match its directive identity")
+        if packet["source_event_ids"] != document["source_event_ids"]:
+            raise ValueError("Learning context source events do not match its directive")
     return document

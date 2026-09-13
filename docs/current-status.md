@@ -25,14 +25,14 @@ Its exact counts and drift results are in the
 
 ## Target v1.2 architecture
 
-The first four sequential v1.2 stages, a versioned bidirectional
+The first five sequential v1.2 stages, a versioned bidirectional
 [Tutor Protocol](v1.2-tutor-protocol.md) and its transport-neutral Runtime
 Bridge plus incremental unconfirmed candidate-evidence admission, are
 implemented on the v1.2 branch together with automatic privacy-filtered
-Obsidian projection into the existing four subject roots.
+Obsidian projection into the existing four subject roots and deterministic,
+bounded, journal-derived learning context packets.
 It targets four GPT tutor conversations as the complete learner-facing surface,
-backed by one Gallop Journal/application. Bounded context packets,
-fresh-chat restoration,
+backed by one Gallop Journal/application. Fresh-chat restoration,
 four-subject Golden E2E, dogfood, stability, and release remain later stages.
 
 ## Legacy compatibility

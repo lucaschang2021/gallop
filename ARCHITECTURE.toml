@@ -67,7 +67,14 @@ path = "gallop/tutor/bridge.py"
 role = "transport-neutral tutor runtime orchestration"
 soft_bytes = 12000
 hard_review_bytes = 20000
-baseline_lines = 169
+baseline_lines = 199
+
+[[growth]]
+path = "gallop/tutor/context.py"
+role = "deterministic bounded journal-derived Tutor context"
+soft_bytes = 14000
+hard_review_bytes = 22000
+baseline_lines = 217
 
 [[growth]]
 path = "gallop/tutor/evidence.py"

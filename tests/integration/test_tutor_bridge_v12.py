@@ -7,6 +7,7 @@ import sys
 import pytest
 
 from gallop.automation.config import AutomationConfig
+from gallop.automation.protocol import canonical
 from gallop.automation.ports import Clock
 from gallop.automation.store import JournalConflict
 from gallop.tutor import SUBJECT_TUTORS, TutorBridge
@@ -328,4 +329,123 @@ def test_projection_failure_reports_failed_but_keeps_journal_and_retries(tmp_pat
     assert document["event_id"] in bridge.get_session("session.math.001")["event_ids"]
     monkeypatch.setattr(views, "atomic_text", original)
     assert bridge.automation.project()["written"] >= 1
+    bridge.close()
+
+
+def test_learning_context_is_deterministic_private_and_authority_safe(tmp_path):
+    cfg = config(tmp_path)
+    bridge = open_bridge(cfg)
+    bridge.open_or_resume_session("mathematics", "session.math.001")
+    bridge.open_or_resume_session("statistics", "session.statistics.001")
+    foreign = tutor_event(
+        "checkpoint",
+        event_id="event.statistics.checkpoint.001",
+        session_id="session.statistics.001",
+        subject="statistics",
+    )
+    bridge.record_learning_event(foreign)
+    task = tutor_event("task_issued", event_id="event.math.task.context.001")
+    task["payload"].update({
+        "concept_id": "concept.synthetic-proof",
+        "task_id": "task.math.context.001",
+        "task_type": "PROOF",
+        "prompt_reference": "prompt://private/context-001",
+    })
+    bridge.record_learning_event(task)
+    attempt = tutor_event("proof_submission", event_id="event.math.attempt.context.001")
+    attempt["payload"].update({
+        "task_id": "task.math.context.001",
+        "attempt_id": "attempt.math.context.001",
+        "learner_response_reference": "response://private/context-001",
+    })
+    bridge.record_learning_event(attempt)
+    candidate = tutor_event(
+        "candidate_assessment", event_id="event.math.assessment.context.001"
+    )
+    bridge.record_learning_event(candidate)
+    private_checkpoint = tutor_event(
+        "checkpoint", event_id="event.math.checkpoint.private.001"
+    )
+    private_checkpoint["occurred_at"] = "2026-09-13T11:02:00Z"
+    private_machine_path = "C:" + r"\Users\learner\private.md"
+    private_checkpoint["payload"].update({
+        "summary": "password=never-echo-this",
+        "next_action": "Read " + private_machine_path,
+        "unfinished_work": ["Keep the proof obligation explicit."],
+    })
+    bridge.record_learning_event(private_checkpoint)
+
+    target_path = tmp_path / "target.json"
+    target_path.write_text(json.dumps({
+        "schema_version": "1.1",
+        "namespace": "integration_tests",
+        "integration_test": True,
+        "target_id": "target.math.research",
+        "subject": "mathematics",
+        "dimension": "Proof Maturity",
+        "target_state": "RESEARCH_USABLE",
+        "description": "Independent unfamiliar rigorous proof and research use",
+        "north_star": True,
+        "prerequisite_refs": [],
+        "created_at": "2026-09-13T10:00:00Z",
+        "source": "Synthetic context-builder test",
+    }), encoding="utf-8")
+    bridge.automation.add_record("target_capability", target_path)
+    sentinel = "VAULT_SENTINEL_MUST_NOT_ENTER_CONTEXT"
+    note = cfg.vault / "01-Mathematics" / "unrelated.md"
+    note.parent.mkdir(parents=True, exist_ok=True)
+    note.write_text(sentinel, encoding="utf-8")
+
+    before_queue = deepcopy(bridge.automation.state()["queue"])
+    first = bridge.get_learning_context("mathematics", "session.math.001")
+    second = bridge.get_learning_context("mathematics", "session.math.001")
+    packet = first["payload"]["context_packet"]
+    serialized = canonical(first)
+    assert first == second
+    assert first["authority"] == "ADVISORY"
+    assert packet["current_capability"]["state"] == "EXPOSED"
+    assert packet["current_capability"]["mastery_level"] == 0
+    assert packet["target_capability"]["target_state"] == "RESEARCH_USABLE"
+    assert packet["recent_evidence"][0]["confirmed"] is False
+    assert packet["previous_relevant_summary"] == "[private reference omitted]"
+    assert packet["next_recommended_action"] != "Read " + private_machine_path
+    assert all("statistics" not in event_id for event_id in packet["source_event_ids"])
+    assert sentinel not in serialized
+    assert "never-echo-this" not in serialized
+    assert "prompt://private" not in serialized
+    assert "response://private" not in serialized
+    assert bridge.automation.state()["queue"] == before_queue
+    bridge.close()
+
+
+def test_learning_context_enforces_item_and_character_bounds(tmp_path):
+    bridge = open_bridge(config(tmp_path))
+    bridge.open_or_resume_session("finance", "session.finance.001")
+    for index in range(8):
+        document = tutor_event(
+            "checkpoint",
+            event_id=f"event.finance.checkpoint.{index:03d}",
+            session_id="session.finance.001",
+            subject="finance",
+        )
+        document["payload"].update({
+            "summary": "bounded summary " + ("x" * 400),
+            "unfinished_work": [f"unfinished-{index}"],
+        })
+        bridge.record_learning_event(document)
+    directive = bridge.get_learning_context(
+        "finance", "session.finance.001", max_items=2, max_chars=2000
+    )
+    packet = directive["payload"]["context_packet"]
+    assert len(canonical(packet)) <= 2000
+    assert all(len(packet[field]) <= 2 for field in (
+        "recent_evidence", "recent_failures", "recent_gains", "reviews_due",
+        "retests_due", "unfinished_tasks", "source_event_ids",
+    ))
+    assert packet["truncation"]["applied"] is True
+    assert packet["truncation"]["omitted_items"] > 0
+    with pytest.raises(ValueError, match="governed range"):
+        bridge.get_learning_context(
+            "finance", "session.finance.001", max_items=0, max_chars=2000
+        )
     bridge.close()

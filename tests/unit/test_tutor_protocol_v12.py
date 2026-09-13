@@ -56,6 +56,29 @@ def event(event_type: str = "checkpoint", subject: str = "mathematics") -> dict:
 
 def directive(directive_type: str = "learning_context") -> dict:
     payload = {
+        "context_packet": {
+            "schema_version": "1.2",
+            "subject": "mathematics",
+            "session_id": "session.mathematics.001",
+            "active_concept_id": None,
+            "current_capability": {"state": "UNKNOWN", "source": "not_recorded",
+                                   "mastery_level": None, "confidence": None},
+            "target_capability": None,
+            "active_prerequisites": [],
+            "scaffold_level": None,
+            "training_zone": None,
+            "recent_evidence": [],
+            "recent_failures": [],
+            "recent_gains": [],
+            "reviews_due": [],
+            "retests_due": [],
+            "unfinished_tasks": [],
+            "previous_relevant_summary": None,
+            "next_recommended_action": "CONTINUE_TEACHING",
+            "source_event_ids": ["event.mathematics.checkpoint.001"],
+            "truncation": {"applied": False, "omitted_items": 0,
+                           "max_items": 10, "max_chars": 12000},
+        },
         "current_capability": "UNKNOWN",
         "target_capability": "GUIDED",
         "training_zone": "FOUNDATION",
@@ -151,4 +174,15 @@ def test_directives_are_advisory_and_do_not_mutate_inputs():
     assert document == before
     document["authority"] = "AUTHORITATIVE"
     with pytest.raises(ProtocolValidationError):
+        validate_directive(document)
+
+
+def test_learning_context_identity_and_sources_match_directive():
+    document = directive()
+    document["payload"]["context_packet"]["subject"] = "finance"
+    with pytest.raises(ValueError, match="identity"):
+        validate_directive(document)
+    document = directive()
+    document["payload"]["context_packet"]["source_event_ids"] = []
+    with pytest.raises(ValueError, match="source events"):
         validate_directive(document)

@@ -31,14 +31,15 @@
         "recent_failures": {"type": "array", "items": {"$ref": "#/$defs/stable_id"}, "uniqueItems": true},
         "recent_gains": {"type": "array", "items": {"$ref": "#/$defs/stable_id"}, "uniqueItems": true},
         "previous_summary": {"$ref": "#/$defs/nonempty"},
-        "max_items": {"type": "integer", "minimum": 1, "maximum": 100}
+        "max_items": {"type": "integer", "minimum": 1, "maximum": 100},
+        "context_packet": {"type": "object"}
       },
       "additionalProperties": false
     }
   },
   "additionalProperties": false,
   "allOf": [
-    {"if": {"properties": {"directive_type": {"const": "learning_context"}}}, "then": {"properties": {"payload": {"required": ["current_capability"]}}}},
+    {"if": {"properties": {"directive_type": {"const": "learning_context"}}}, "then": {"properties": {"payload": {"required": ["context_packet"]}}}},
     {"if": {"properties": {"directive_type": {"const": "training_zone"}}}, "then": {"properties": {"payload": {"required": ["training_zone"]}}}},
     {"if": {"properties": {"directive_type": {"const": "scaffold_level"}}}, "then": {"properties": {"payload": {"required": ["scaffold_level"]}}}},
     {"if": {"properties": {"directive_type": {"const": "target_capability"}}}, "then": {"properties": {"payload": {"required": ["target_capability"]}}}},
