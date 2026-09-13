@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.2",
+  "event_id": "evt.math.session.001",
+  "session_id": "session.math.001",
+  "tutor_id": "mathematics-tutor",
+  "subject": "mathematics",
+  "event_type": "session_start",
+  "occurred_at": "2026-09-13T09:00:00Z",
+  "payload": {
+    "summary": "Synthetic mathematics tutor session start."
+  },
+  "provenance": {
+    "actor": "tutor",
+    "recorded_by": "mathematics-tutor",
+    "source": "synthetic-protocol-example",
+    "content_scope": "learning_relevant_only",
+    "synthetic": true
+  }
+}

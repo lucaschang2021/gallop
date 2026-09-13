@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.2",
+  "directive_id": "dir.math.context.001",
+  "session_id": "session.math.001",
+  "subject": "mathematics",
+  "directive_type": "learning_context",
+  "issued_at": "2026-09-13T09:00:01Z",
+  "authority": "ADVISORY",
+  "source_event_ids": ["evt.math.session.001"],
+  "payload": {
+    "current_capability": "UNKNOWN",
+    "target_capability": "GUIDED",
+    "recent_evidence": [],
+    "recent_failures": [],
+    "max_items": 20
+  }
+}

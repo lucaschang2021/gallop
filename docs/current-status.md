@@ -1,10 +1,8 @@
 # Current status
 
-**Snapshot: 2026-09-13.** Governance work starts from RC2 candidate
-`8bc4dbf7e55f6bbb33f921cf25e2f64e2dafe36b` on
-`feat/elite-training-v1.1`. Governance closure changes after that SHA remain a
-candidate until the full G12 regression passes and a governed baseline SHA is
-recorded. This page does not claim release or Zero-Touch completion.
+**Snapshot: 2026-09-13.** The RC2 governance baseline is frozen at record commit
+`22a3fe2c27b4128fc1124eefe003fbad6194b127`. The v1.2 product build now proceeds
+sequentially from that exact base. This page does not claim Zero-Touch release.
 
 Gallop is headless. The frozen target product definition is:
 
@@ -19,18 +17,20 @@ the filtered Reader exporter, and the pure advisory Progressive Mentorship
 domain. CLI/file operations remain the current operational interface; Gallop
 ships no learner UI.
 
-The governance candidate adds a non-destructive exact-commit privacy-debt gate,
+The governed baseline adds a non-destructive exact-commit privacy-debt gate,
 Ruff and scoped Mypy gates, a mutation-free construction/composition boundary,
 explicit application Clock/Journal seams, and expanded architecture checks.
-Final counts and drift results belong to the governed-baseline record after G12.
+Its exact counts and drift results are in the
+[governed-baseline record](baselines/rc2-governed-baseline.md).
 
 ## Target v1.2 architecture
 
-After Governance Closure PASS, v1.2 targets four GPT tutor conversations as the
-complete learner-facing surface, backed by one Gallop Journal/application,
-incremental evidence checkpoints, Obsidian projection, bounded context packets,
-and fresh-chat restoration. None of that Zero-Touch runtime integration is
-reported as implemented here.
+The first sequential v1.2 stage, a versioned bidirectional
+[Tutor Protocol](v1.2-tutor-protocol.md), is implemented on the v1.2 branch.
+It targets four GPT tutor conversations as the complete learner-facing surface,
+backed by one Gallop Journal/application. Runtime bridge, incremental journal
+admission, Obsidian projection, bounded context packets, fresh-chat restoration,
+four-subject Golden E2E, dogfood, stability, and release remain later stages.
 
 ## Legacy compatibility
 

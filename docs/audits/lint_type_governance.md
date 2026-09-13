@@ -25,8 +25,13 @@ ports in `gallop/automation/ports.py`. These are the highest-authority boundary
 for current capability/progression decisions and the construction/time seams
 added by governance closure.
 
+Gallop v1.2 expands the boundary to `gallop.tutor`, beginning with its pure
+protocol validator. Mypy consequently follows the typed Gallop validation
+wrapper; the installed `jsonschema` package does not expose typed interfaces,
+so a package-specific `jsonschema`/`jsonschema.*` missing-import override is
+declared in `pyproject.toml`. It does not suppress findings in Gallop code.
+
 The legacy application, adapters, CLI, and projection modules remain outside
-this first type boundary. Broad annotation churn in those modules is not a
-closure requirement. The configured type scope must remain green; expansion is
-allowed only by an explicit reviewed configuration change, and suppressions may
-not grow silently.
+this type boundary. Broad annotation churn in those modules is not required.
+The configured type scope must remain green; expansion is allowed only by an
+explicit reviewed configuration change, and suppressions may not grow silently.

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:gallop:schema:tutor-directive:1.2",
+  "title": "Gallop Tutor Directive 1.2",
+  "type": "object",
+  "required": ["schema_version", "directive_id", "session_id", "subject", "directive_type", "issued_at", "authority", "source_event_ids", "payload"],
+  "properties": {
+    "schema_version": {"const": "1.2"},
+    "directive_id": {"$ref": "#/$defs/stable_id"},
+    "session_id": {"$ref": "#/$defs/stable_id"},
+    "subject": {"enum": ["mathematics", "statistics", "finance", "cs-ai"]},
+    "directive_type": {"enum": ["learning_context", "training_zone", "scaffold_level", "target_capability", "prerequisite_focus", "task_type", "review_due", "retest_due", "independence_requirement", "assessment_boundary", "next_action", "unfinished_work"]},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "authority": {"const": "ADVISORY"},
+    "source_event_ids": {"type": "array", "items": {"$ref": "#/$defs/stable_id"}, "uniqueItems": true},
+    "payload": {
+      "type": "object",
+      "properties": {
+        "current_capability": {"enum": ["UNKNOWN", "EXPOSED", "GUIDED", "PARTIALLY_INDEPENDENT", "INDEPENDENT", "TRANSFERRED", "RETAINED", "RESEARCH_USABLE"]},
+        "target_capability": {"enum": ["EXPOSED", "GUIDED", "PARTIALLY_INDEPENDENT", "INDEPENDENT", "TRANSFERRED", "RETAINED", "RESEARCH_USABLE"]},
+        "training_zone": {"enum": ["FOUNDATION", "PRODUCTIVE", "STRETCH", "MONSTER_BENCHMARK"]},
+        "scaffold_level": {"enum": ["S5", "S4", "S3", "S2", "S1", "S0"]},
+        "prerequisite_focus": {"type": "array", "items": {"$ref": "#/$defs/stable_id"}, "uniqueItems": true},
+        "task_type": {"enum": ["CONCEPT", "PROOF", "DERIVATION", "HARD_PROBLEM", "LONG_PROBLEM", "SIMULATION", "ORAL_EXAM", "CODING", "NO_AGENT_CODING", "SYSTEMS_PROBLEM", "EMPIRICAL", "PAPER_READING", "REPLICATION", "RESEARCH", "BENCHMARK", "MINI_CONTEST"]},
+        "due_at": {"type": "string", "format": "date-time"},
+        "independence_requirement": {"enum": ["ANY", "LIMITED_HINT", "INDEPENDENT", "NO_AGENT"]},
+        "assessment_boundary": {"enum": ["TEACHING_ONLY", "CANDIDATE_ONLY", "HUMAN_CONFIRMATION_REQUIRED"]},
+        "next_action": {"$ref": "#/$defs/nonempty"},
+        "unfinished_work": {"type": "array", "items": {"$ref": "#/$defs/nonempty"}, "uniqueItems": true},
+        "recent_evidence": {"type": "array", "items": {"$ref": "#/$defs/stable_id"}, "uniqueItems": true},
+        "recent_failures": {"type": "array", "items": {"$ref": "#/$defs/stable_id"}, "uniqueItems": true},
+        "recent_gains": {"type": "array", "items": {"$ref": "#/$defs/stable_id"}, "uniqueItems": true},
+        "previous_summary": {"$ref": "#/$defs/nonempty"},
+        "max_items": {"type": "integer", "minimum": 1, "maximum": 100}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {"if": {"properties": {"directive_type": {"const": "learning_context"}}}, "then": {"properties": {"payload": {"required": ["current_capability"]}}}},
+    {"if": {"properties": {"directive_type": {"const": "training_zone"}}}, "then": {"properties": {"payload": {"required": ["training_zone"]}}}},
+    {"if": {"properties": {"directive_type": {"const": "scaffold_level"}}}, "then": {"properties": {"payload": {"required": ["scaffold_level"]}}}},
+    {"if": {"properties": {"directive_type": {"const": "target_capability"}}}, "then": {"properties": {"payload": {"required": ["target_capability"]}}}},
+    {"if": {"properties": {"directive_type": {"const": "prerequisite_focus"}}}, "then": {"properties": {"payload": {"required": ["prerequisite_focus"]}}}},
+    {"if": {"properties": {"directive_type": {"const": "task_type"}}}, "then": {"properties": {"payload": {"required": ["task_type"]}}}},
+    {"if": {"properties": {"directive_type": {"enum": ["review_due", "retest_due"]}}}, "then": {"properties": {"payload": {"required": ["due_at"]}}}},
+    {"if": {"properties": {"directive_type": {"const": "independence_requirement"}}}, "then": {"properties": {"payload": {"required": ["independence_requirement"]}}}},
+    {"if": {"properties": {"directive_type": {"const": "assessment_boundary"}}}, "then": {"properties": {"payload": {"required": ["assessment_boundary"]}}}},
+    {"if": {"properties": {"directive_type": {"const": "next_action"}}}, "then": {"properties": {"payload": {"required": ["next_action"]}}}},
+    {"if": {"properties": {"directive_type": {"const": "unfinished_work"}}}, "then": {"properties": {"payload": {"required": ["unfinished_work"]}}}}
+  ],
+  "$defs": {
+    "stable_id": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"},
+    "nonempty": {"type": "string", "minLength": 1, "pattern": "\\S"}
+  }
+}

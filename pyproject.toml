@@ -46,7 +46,13 @@ select = ["E9", "F63", "F7", "F82"]
 
 [tool.mypy]
 python_version = "3.11"
-files = ["gallop/progression", "gallop/automation/ports.py"]
+files = ["gallop/progression", "gallop/automation/ports.py", "gallop/tutor"]
 check_untyped_defs = true
 no_implicit_optional = true
 warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+# jsonschema does not expose typed interfaces in the installed runtime package.
+# Keep the exception package-specific; Gallop's validation wrapper remains typed.
+module = ["jsonschema", "jsonschema.*"]
+ignore_missing_imports = true

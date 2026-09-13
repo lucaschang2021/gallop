@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.2",
+  "event_id": "evt.finance.assessment.001",
+  "session_id": "session.finance.001",
+  "tutor_id": "finance-tutor",
+  "subject": "finance",
+  "event_type": "candidate_assessment",
+  "occurred_at": "2026-09-13T09:20:00Z",
+  "payload": {
+    "concept_id": "concept.sdf",
+    "capability_id": "capability.derivation",
+    "task_id": "task.finance.derivation.001",
+    "attempt_id": "attempt.finance.derivation.001",
+    "correctness": "CORRECT",
+    "evaluator_confidence": "MEDIUM",
+    "authority_class": "CANDIDATE_EVIDENCE",
+    "evidence_refs": ["attempt.finance.derivation.001"]
+  },
+  "provenance": {
+    "actor": "tutor",
+    "recorded_by": "finance-tutor",
+    "source": "synthetic-protocol-example",
+    "content_scope": "learning_relevant_only",
+    "synthetic": true
+  }
+}

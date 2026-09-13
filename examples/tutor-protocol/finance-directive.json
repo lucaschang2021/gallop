@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.2",
+  "directive_id": "dir.finance.boundary.001",
+  "session_id": "session.finance.001",
+  "subject": "finance",
+  "directive_type": "assessment_boundary",
+  "issued_at": "2026-09-13T09:15:00Z",
+  "authority": "ADVISORY",
+  "source_event_ids": [],
+  "payload": {
+    "assessment_boundary": "CANDIDATE_ONLY"
+  }
+}

@@ -7,7 +7,7 @@ progression_engine = "gallop.progression"
 
 [layers]
 domain = ["gallop/progression", "gallop/core/mastery"]
-application = ["gallop/automation"]
+application = ["gallop/automation", "gallop/tutor"]
 persistence = ["gallop/automation/store.py"]
 adapters = ["gallop/adapters"]
 projection = ["gallop/automation/views.py", "gallop/automation/elite_views.py", "gallop/mobile.py"]

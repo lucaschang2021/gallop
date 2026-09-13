@@ -1,5 +1,10 @@
 # Tutor Output Protocol v1
 
+This document describes the legacy batch/session intake contract. The v1.2
+incremental bidirectional boundary is documented separately in the
+[Gallop v1.2 Tutor Protocol](v1.2-tutor-protocol.md). The two contracts do not
+silently reinterpret historical v1 journal data.
+
 A tutor session is an observation record. Record what actually occurred and
 never invent scores, completed work, mastery, confidence or research output.
 

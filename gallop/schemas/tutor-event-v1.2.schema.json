@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:gallop:schema:tutor-event:1.2",
+  "title": "Gallop Tutor Event 1.2",
+  "type": "object",
+  "required": ["schema_version", "event_id", "session_id", "tutor_id", "subject", "event_type", "occurred_at", "payload", "provenance"],
+  "properties": {
+    "schema_version": {"const": "1.2"},
+    "event_id": {"$ref": "#/$defs/stable_id"},
+    "session_id": {"$ref": "#/$defs/stable_id"},
+    "tutor_id": {"enum": ["mathematics-tutor", "statistics-econometrics-tutor", "finance-tutor", "cs-ai-tutor"]},
+    "subject": {"enum": ["mathematics", "statistics", "finance", "cs-ai"]},
+    "event_type": {
+      "enum": [
+        "session_start", "context_request", "concept_exposed", "task_issued",
+        "learner_attempt", "hint_given", "feedback_given", "candidate_assessment",
+        "mistake_observed", "prerequisite_issue", "repair_attempt",
+        "reconstruction_attempt", "independent_success", "oral_response",
+        "proof_submission", "coding_submission", "simulation_result",
+        "paper_activity", "checkpoint", "session_idle", "session_finalize"
+      ]
+    },
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "payload": {
+      "type": "object",
+      "properties": {
+        "concept_id": {"$ref": "#/$defs/stable_id"},
+        "target_concept_id": {"$ref": "#/$defs/stable_id"},
+        "prerequisite_concept_id": {"$ref": "#/$defs/stable_id"},
+        "capability_id": {"$ref": "#/$defs/stable_id"},
+        "task_id": {"$ref": "#/$defs/stable_id"},
+        "attempt_id": {"$ref": "#/$defs/stable_id"},
+        "task_type": {
+          "enum": ["CONCEPT", "PROOF", "DERIVATION", "HARD_PROBLEM", "LONG_PROBLEM", "SIMULATION", "ORAL_EXAM", "CODING", "NO_AGENT_CODING", "SYSTEMS_PROBLEM", "EMPIRICAL", "PAPER_READING", "REPLICATION", "RESEARCH", "BENCHMARK", "MINI_CONTEST"]
+        },
+        "prompt_reference": {"$ref": "#/$defs/nonempty"},
+        "learner_response_reference": {"$ref": "#/$defs/nonempty"},
+        "assistance_level": {"type": "integer", "minimum": 0, "maximum": 5},
+        "independence_class": {"enum": ["INDEPENDENT", "HINT_1", "HINT_2", "ASSISTED", "SOLUTION_SEEN", "UNSOLVED", "UNKNOWN"]},
+        "agent_usage": {"enum": ["NONE", "REFERENCE_ONLY", "HINT_ONLY", "AI_ASSISTED", "AI_GENERATED", "UNKNOWN"]},
+        "correctness": {"enum": ["CORRECT", "PARTIAL", "INCORRECT", "UNASSESSED"]},
+        "reasoning_quality": {"enum": ["POOR", "DEVELOPING", "SOLID", "STRONG", "EXCEPTIONAL", "UNKNOWN"]},
+        "failure_tags": {"type": "array", "items": {"$ref": "#/$defs/nonempty"}, "uniqueItems": true},
+        "evaluator_confidence": {"enum": ["LOW", "MEDIUM", "HIGH", "UNKNOWN"]},
+        "authority_class": {"enum": ["OBSERVATION", "CANDIDATE_EVIDENCE", "HUMAN_ATTESTATION"]},
+        "evidence_refs": {"type": "array", "items": {"$ref": "#/$defs/stable_id"}, "uniqueItems": true},
+        "artifact_refs": {"type": "array", "items": {"$ref": "#/$defs/nonempty"}, "uniqueItems": true},
+        "summary": {"$ref": "#/$defs/nonempty"},
+        "unfinished_work": {"type": "array", "items": {"$ref": "#/$defs/nonempty"}, "uniqueItems": true},
+        "next_action": {"$ref": "#/$defs/nonempty"},
+        "checkpoint_reason": {"$ref": "#/$defs/nonempty"},
+        "metadata": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["actor", "recorded_by", "source", "content_scope"],
+      "properties": {
+        "actor": {"enum": ["learner", "tutor", "human", "system"]},
+        "recorded_by": {"enum": ["mathematics-tutor", "statistics-econometrics-tutor", "finance-tutor", "cs-ai-tutor"]},
+        "source": {"$ref": "#/$defs/nonempty"},
+        "content_scope": {"const": "learning_relevant_only"},
+        "synthetic": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {"if": {"properties": {"event_type": {"enum": ["concept_exposed", "mistake_observed", "prerequisite_issue"]}}}, "then": {"properties": {"payload": {"required": ["concept_id"]}}}},
+    {"if": {"properties": {"event_type": {"const": "task_issued"}}}, "then": {"properties": {"payload": {"required": ["concept_id", "task_id", "task_type", "prompt_reference"]}}}},
+    {"if": {"properties": {"event_type": {"enum": ["learner_attempt", "repair_attempt", "reconstruction_attempt", "oral_response", "proof_submission", "coding_submission", "simulation_result"]}}}, "then": {"properties": {"payload": {"required": ["task_id", "attempt_id", "learner_response_reference"]}}}},
+    {"if": {"properties": {"event_type": {"const": "hint_given"}}}, "then": {"properties": {"payload": {"required": ["task_id", "attempt_id", "assistance_level"]}}}},
+    {"if": {"properties": {"event_type": {"enum": ["candidate_assessment", "independent_success"]}}}, "then": {"properties": {"payload": {"properties": {"authority_class": {"const": "CANDIDATE_EVIDENCE"}, "evidence_refs": {"minItems": 1}}, "required": ["concept_id", "capability_id", "task_id", "attempt_id", "correctness", "evaluator_confidence", "authority_class", "evidence_refs"]}}}},
+    {"if": {"properties": {"event_type": {"const": "mistake_observed"}}}, "then": {"properties": {"payload": {"required": ["attempt_id", "failure_tags"]}}}},
+    {"if": {"properties": {"event_type": {"const": "prerequisite_issue"}}}, "then": {"properties": {"payload": {"required": ["target_concept_id", "prerequisite_concept_id"]}}}},
+    {"if": {"properties": {"event_type": {"const": "checkpoint"}}}, "then": {"properties": {"payload": {"required": ["checkpoint_reason"]}}}},
+    {"if": {"properties": {"event_type": {"const": "independent_success"}}}, "then": {"properties": {"payload": {"properties": {"independence_class": {"const": "INDEPENDENT"}, "assistance_level": {"const": 0}}, "required": ["independence_class", "assistance_level"]}}}}
+  ],
+  "$defs": {
+    "stable_id": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"},
+    "nonempty": {"type": "string", "minLength": 1, "pattern": "\\S"}
+  }
+}

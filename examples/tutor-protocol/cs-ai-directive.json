@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.2",
+  "directive_id": "dir.cs.independence.001",
+  "session_id": "session.cs.001",
+  "subject": "cs-ai",
+  "directive_type": "independence_requirement",
+  "issued_at": "2026-09-13T09:25:00Z",
+  "authority": "ADVISORY",
+  "source_event_ids": [],
+  "payload": {
+    "independence_requirement": "NO_AGENT"
+  }
+}

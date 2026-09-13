@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.2",
+  "event_id": "evt.stats.simulation.001",
+  "session_id": "session.stats.001",
+  "tutor_id": "statistics-econometrics-tutor",
+  "subject": "statistics",
+  "event_type": "simulation_result",
+  "occurred_at": "2026-09-13T09:10:00Z",
+  "payload": {
+    "concept_id": "concept.sampling-distribution",
+    "task_id": "task.stats.sim.001",
+    "attempt_id": "attempt.stats.sim.001",
+    "learner_response_reference": "artifact://synthetic/simulation-001",
+    "agent_usage": "NONE",
+    "independence_class": "INDEPENDENT",
+    "assistance_level": 0
+  },
+  "provenance": {
+    "actor": "learner",
+    "recorded_by": "statistics-econometrics-tutor",
+    "source": "synthetic-protocol-example",
+    "content_scope": "learning_relevant_only",
+    "synthetic": true
+  }
+}

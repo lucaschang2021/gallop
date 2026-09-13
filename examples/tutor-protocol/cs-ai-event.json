@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.2",
+  "event_id": "evt.cs.coding.001",
+  "session_id": "session.cs.001",
+  "tutor_id": "cs-ai-tutor",
+  "subject": "cs-ai",
+  "event_type": "coding_submission",
+  "occurred_at": "2026-09-13T09:30:00Z",
+  "payload": {
+    "concept_id": "concept.binary-search",
+    "task_id": "task.cs.code.001",
+    "attempt_id": "attempt.cs.code.001",
+    "learner_response_reference": "artifact://synthetic/code-001",
+    "task_type": "NO_AGENT_CODING",
+    "agent_usage": "NONE",
+    "independence_class": "INDEPENDENT",
+    "assistance_level": 0
+  },
+  "provenance": {
+    "actor": "learner",
+    "recorded_by": "cs-ai-tutor",
+    "source": "synthetic-protocol-example",
+    "content_scope": "learning_relevant_only",
+    "synthetic": true
+  }
+}

@@ -14,6 +14,14 @@ PAIRS = [
     ("practice-manifest.schema.json", "examples/mathematics/practice-manifest.json"),
     ("practice-result.schema.json", "examples/mathematics/practice-result.json"),
     ("mastery.schema.json", "examples/mathematics/mastery.json"),
+    ("tutor-event-v1.2.schema.json", "examples/tutor-protocol/mathematics-event.json"),
+    ("tutor-directive-v1.2.schema.json", "examples/tutor-protocol/mathematics-directive.json"),
+    ("tutor-event-v1.2.schema.json", "examples/tutor-protocol/statistics-event.json"),
+    ("tutor-directive-v1.2.schema.json", "examples/tutor-protocol/statistics-directive.json"),
+    ("tutor-event-v1.2.schema.json", "examples/tutor-protocol/finance-event.json"),
+    ("tutor-directive-v1.2.schema.json", "examples/tutor-protocol/finance-directive.json"),
+    ("tutor-event-v1.2.schema.json", "examples/tutor-protocol/cs-ai-event.json"),
+    ("tutor-directive-v1.2.schema.json", "examples/tutor-protocol/cs-ai-directive.json"),
 ]
 
 
