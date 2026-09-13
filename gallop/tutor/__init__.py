@@ -8,12 +8,14 @@ from .protocol import (
     validate_directive,
     validate_event,
 )
+from .bridge import TutorBridge
 
 __all__ = [
     "DIRECTIVE_TYPES",
     "EVENT_TYPES",
     "PROTOCOL_VERSION",
     "SUBJECT_TUTORS",
+    "TutorBridge",
     "validate_directive",
     "validate_event",
 ]

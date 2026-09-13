@@ -39,14 +39,14 @@ path = "gallop/automation/service.py"
 role = "application orchestration"
 soft_bytes = 22000
 hard_review_bytes = 34000
-baseline_lines = 561
+baseline_lines = 568
 
 [[growth]]
 path = "gallop/automation/state.py"
 role = "v1 reducer and queue reconstruction"
 soft_bytes = 10000
 hard_review_bytes = 16000
-baseline_lines = 193
+baseline_lines = 196
 
 [[growth]]
 path = "gallop/mobile.py"
@@ -61,6 +61,13 @@ role = "durable provider job lifecycle"
 soft_bytes = 10000
 hard_review_bytes = 18000
 baseline_lines = 231
+
+[[growth]]
+path = "gallop/tutor/bridge.py"
+role = "transport-neutral tutor runtime orchestration"
+soft_bytes = 12000
+hard_review_bytes = 20000
+baseline_lines = 139
 
 [[policy]]
 path = "gallop/schemas/training-policies.json"

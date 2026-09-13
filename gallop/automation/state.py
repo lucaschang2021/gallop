@@ -141,6 +141,9 @@ def replay(events, *, verify=True):
         elif kind in {"elite_evidence", "benchmark", "prerequisite_link", "target_capability"}:
             from .elite_state import apply
             apply(state, event, update)
+        elif kind == "tutor_event":
+            from gallop.tutor.state import apply_tutor_event
+            apply_tutor_event(state, event)
         elif kind == "readiness_transition":
             if data not in state.get("elite", {}).get("readiness_transitions", []) or data in seen_readiness:
                 raise JournalConflict("Readiness transition does not match replayed evidence")

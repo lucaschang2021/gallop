@@ -1,5 +1,4 @@
 """Durable DeepTutor submission. A caller deadline never kills or forgets a job."""
-from contextlib import contextmanager
 import ctypes
 import hashlib
 import json
@@ -12,32 +11,8 @@ import time
 from gallop.adapters.deeptutor import DeepTutorAdapter
 from gallop.core.io import atomic_json, identifier
 from gallop.mobile import check_path
+from .locking import file_lock
 from .protocol import digest
-
-
-@contextmanager
-def file_lock(path):
-    """OS releases the lock on crash; keep its inode/file stable between callers."""
-    path = check_path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open('a+b') as handle:
-        if not path.stat().st_size:
-            handle.write(b'0'); handle.flush()
-        handle.seek(0)
-        if os.name == 'nt':
-            import msvcrt
-            msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
-        else:
-            import fcntl
-            fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        try:
-            yield
-        finally:
-            handle.seek(0)
-            if os.name == 'nt':
-                msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
-            else:
-                fcntl.flock(handle, fcntl.LOCK_UN)
 
 
 def process_identity(pid):

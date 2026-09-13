@@ -5,7 +5,6 @@ import json
 import os
 from pathlib import Path
 
-from gallop.adapters.deeptutor import DeepTutorAdapter
 from gallop.core.io import atomic_json
 from gallop.core.validation import validate_protocol
 from gallop.mobile import check_path, export_mobile
@@ -13,9 +12,15 @@ from .ports import Clock, JournalStore, SystemClock
 from .protocol import digest, normalize_session, parse, synthetic, timestamp, validate_result
 from .state import POLICIES, concept_key, replay, training_candidate
 from .store import EventStore, JournalConflict
-from .jobs import Jobs, file_lock
+from .locking import file_lock
 from .elite_protocol import DIMENSIONS, IDENTITIES, RULESET, event_time, failure_registry, validate as validate_elite
 from .elite_state import concept_evidence, empty, prerequisite_gaps, readiness_profile, rolling_benchmarks
+
+
+def DeepTutorAdapter(*args, **kwargs):
+    """Compatibility seam that keeps the legacy adapter import lazy."""
+    from gallop.adapters.deeptutor import DeepTutorAdapter as Adapter
+    return Adapter(*args, **kwargs)
 
 
 class Automation:
@@ -81,7 +86,7 @@ class Automation:
                 raise JournalConflict("Derived state disagrees with its journal prefix; preserve it and investigate")
         return replay(events)
 
-    def _mutate(self, operation):
+    def mutate(self, operation):
         with self.lock():
             with self.store.transaction():
                 self.state()
@@ -140,7 +145,7 @@ class Automation:
                     for record in targets:
                         self._append_elite("target_capability", record, False, sha)
                 return {"event_id": eid, "duplicate": not added}
-            result = self._mutate(append)
+            result = self.mutate(append)
             self.refresh_queue()
             return result
 
@@ -185,7 +190,7 @@ class Automation:
                 for ref in record["evidence_refs"]:
                     if ref not in evidence or evidence[ref]["record"]["subject"] != record["subject"]:
                         raise ValueError("Benchmark references must identify recorded evidence in this subject")
-            return self._mutate(lambda: self._append_elite(kind, record, bool(confirm_human), sha))
+            return self.mutate(lambda: self._append_elite(kind, record, bool(confirm_human), sha))
 
     def records(self, kind, identity=None, *, subject=None):
         key = {"elite_evidence": "evidence", "benchmark": "benchmarks", "prerequisite_link": "links",
@@ -265,7 +270,7 @@ class Automation:
                 self.store.append("queue_created", candidate["queue_id"], candidate,
                                   at=self.clock.now(), source="deterministic-policy-v1")
             return None
-        self._mutate(refresh)
+        self.mutate(refresh)
         return self.queue()
 
     def queue(self):
@@ -344,18 +349,19 @@ class Automation:
                         task["provider_telemetry"] = diagnostic["telemetry"]
                     task["notice"] = "Choice diagnostics are preparation, never proof/oral/coding assessment."
                 except Exception:
-                    self._mutate(lambda: self._status(item, "failed", "DeepTutor generation failed; no learner evidence"))
+                    self.mutate(lambda: self._status(item, "failed", "DeepTutor generation failed; no learner evidence"))
                     raise
             prepared = {"queue_id": queue_id, "manifest_id": manifest_id, "practice_id": task["practice_id"],
                         "manifest": manifest, "practice": task}
             def commit():
                 self.store.append("prepared", queue_id, prepared, at=manifest["created_at"], source="deeptutor-bridge")
                 self._status(item, "ready", "Prepared only; waiting for human start")
-            self._mutate(commit)
+            self.mutate(commit)
             self._write_prepared(prepared)
             return prepared
 
     def submit(self, queue_id, *, question_count=7, retry=False, deadline=240, elite=None):
+        from .jobs import Jobs
         with self.lock():
             if self.config.deeptutor is None:
                 raise ValueError("DeepTutor executable is not configured")
@@ -368,6 +374,7 @@ class Automation:
             return jobs.submit(job_id, retry=retry, deadline=deadline)
 
     def poll(self, job_id):
+        from .jobs import Jobs
         return Jobs(self.config.root).poll(job_id)
 
     def collect(self, job_id):
@@ -425,13 +432,13 @@ class Automation:
                 return {"status": "in_progress"}
             self._status(item, "in_progress", "Human explicitly started the training")
             return {"status": "in_progress"}
-        return self._mutate(change)
+        return self.mutate(change)
 
     def cancel(self, queue_id):
-        return self._mutate(lambda: self._status(self.state()["queue"][queue_id], "cancelled", "User cancelled"))
+        return self.mutate(lambda: self._status(self.state()["queue"][queue_id], "cancelled", "User cancelled"))
 
     def retry(self, queue_id):
-        return self._mutate(lambda: self._status(self.state()["queue"][queue_id], "queued", "User requested retry"))
+        return self.mutate(lambda: self._status(self.state()["queue"][queue_id], "queued", "User requested retry"))
 
     def ingest_result(self, path, *, confirm_human=False):
         with self.lock():
@@ -485,7 +492,7 @@ class Automation:
                     self._append_elite("elite_evidence", record, True, sha)
                 self._status(item, "completed", "Learner response and human assessment recorded")
                 return {"duplicate": False, "result_id": data["result_id"]}
-            result = self._mutate(append)
+            result = self.mutate(append)
             self.refresh_queue()
             return result
 

@@ -25,11 +25,11 @@ ports in `gallop/automation/ports.py`. These are the highest-authority boundary
 for current capability/progression decisions and the construction/time seams
 added by governance closure.
 
-Gallop v1.2 expands the boundary to `gallop.tutor`, beginning with its pure
-protocol validator. Mypy consequently follows the typed Gallop validation
-wrapper; the installed `jsonschema` package does not expose typed interfaces,
-so a package-specific `jsonschema`/`jsonschema.*` missing-import override is
-declared in `pyproject.toml`. It does not suppress findings in Gallop code.
+Gallop v1.2 expands the boundary to every module in `gallop.tutor`. All files in
+the configured progression, ports, and tutor roots are checked directly.
+`follow_imports = "skip"` prevents this scoped gate from silently absorbing the
+documented legacy Automation/adapter/projection type debt through imports; it
+does not skip or suppress findings in any configured source file.
 
 The legacy application, adapters, CLI, and projection modules remain outside
 this type boundary. Broad annotation churn in those modules is not required.
