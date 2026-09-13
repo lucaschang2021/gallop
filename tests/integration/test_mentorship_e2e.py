@@ -32,7 +32,7 @@ def save(app,value,name):
 def isolated(tmp_path):
     root=tmp_path/'rc2-isolated'
     untouched=tmp_path/'real-boundary-sentinel'; untouched.write_bytes(b'unchanged')
-    app=Automation(AutomationConfig.from_dict({'namespace':'integration_tests','root':str(root),
+    app=Automation.open(AutomationConfig.from_dict({'namespace':'integration_tests','root':str(root),
         'vault':str(root/'vault'),'reader':str(root/'reader/Gallop-Reader'),'export_state':str(root/'export')}))
     yield app,untouched
     app.close()

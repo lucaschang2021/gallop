@@ -164,6 +164,10 @@ def audit(root: Path, contract: dict) -> dict:
     for layer in ('domain', 'adapters', 'projection'):
         for path in python_files(root, contract['layers'][layer]):
             violations.extend(inspect_module(path, layer, rules, path.relative_to(root)))
+    cli_files = {path.resolve() for path in python_files(root, contract['layers']['cli'])}
+    for path in python_files(root, contract['layers']['application']):
+        if path.resolve() not in cli_files:
+            violations.extend(inspect_module(path, 'application', rules, path.relative_to(root)))
     for path in sorted((root / 'gallop').rglob('*.py')):
         violations.extend(inspect_runtime_module(path, path.relative_to(root)))
 

@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from gallop.automation.elite_protocol import DIMENSIONS, failure_registry, resource, validate
-from gallop.automation.elite_state import benchmark_summary, empty, readiness_profile
+from gallop.automation.elite_state import benchmark_summary, concept_evidence, empty, readiness_profile
 from gallop.automation.protocol import digest
 from gallop.automation.service import Automation
 from gallop.automation.state import replay
@@ -66,6 +66,14 @@ def test_all_readiness_dimensions_unknown_without_mutation(app):
     assert app.state() == before
     with pytest.raises(ValueError, match='ambiguous'):
         app.readiness(dimension='Independence')
+
+
+def test_shared_dimension_evidence_never_becomes_other_concept_evidence():
+    entry = {'event_id': 'event-a', 'confirmed': True, 'record': record(concept='Concept A')}
+    history = {'elite': empty()}
+    history['elite']['evidence']['event-a'] = entry
+    assert concept_evidence(history, 'mathematics', 'Concept A')['evidence_refs'] == ['event-a']
+    assert concept_evidence(history, 'mathematics', 'Concept B')['evidence_refs'] == []
 
 
 @pytest.mark.parametrize('changes', [

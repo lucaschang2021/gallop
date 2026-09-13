@@ -22,7 +22,7 @@ def test_golden_cli_end_to_end_and_external_vault_unchanged(tmp_path, monkeypatc
     config.write_text(json.dumps(dict(namespace="integration_tests", root=str(root),
         vault=str(root / "vault"), reader=str(root / "reader/Gallop-Reader"),
         export_state=str(root / "export"), deeptutor=str(executable))), encoding="utf-8")
-    monkeypatch.setattr("gallop.automation.service.now", lambda: "2026-01-01T10:30:00Z")
+    monkeypatch.setattr("gallop.automation.ports.SystemClock.now", lambda self: "2026-01-01T10:30:00Z")
     def runner(command, **kwargs):
         assert kwargs["shell"] is False
         output = {"questions": [{"question": "Synthetic diagnostic " + str(i), "correct_answer": "A"} for i in range(7)]}
@@ -75,7 +75,7 @@ def test_golden_cli_end_to_end_and_external_vault_unchanged(tmp_path, monkeypatc
     assert command("ingest-result", str(result), "--confirm-human")["duplicate"]
     assert command("status")["namespace"] == "integration_tests"
     assert untouched.read_bytes() == original
-    app = Automation(AutomationConfig.load(config))
+    app = Automation.open(AutomationConfig.load(config))
     try:
         assert {"session", "practice", "assessment", "state_transition"} <= {e["kind"] for e in app.store.events()}
         assert "Today's Training" in (app.config.reader / "Today.md").read_text(encoding="utf-8")

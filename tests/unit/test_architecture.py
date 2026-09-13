@@ -54,6 +54,13 @@ def test_gate_detects_projection_and_adapter_boundary_crossing(tmp_path):
     assert GATE['inspect_module'](adapter, 'adapters', rules)[0]['rule'] == 'adapter-forbidden-import'
 
 
+def test_gate_detects_application_to_cli_dependency(tmp_path):
+    application = tmp_path / 'application.py'
+    application.write_text('from gallop.automation.cli import main\n', encoding='utf-8')
+    rules = GATE['load_contract'](ROOT)['rules']
+    assert GATE['inspect_module'](application, 'application', rules)[0]['rule'] == 'application-forbidden-import'
+
+
 def test_import_gallop_has_no_filesystem_side_effect(tmp_path):
     before = set(tmp_path.iterdir())
     env = {**os.environ, 'PYTHONPATH': str(ROOT)}

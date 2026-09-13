@@ -1,6 +1,5 @@
 """Small single-writer application service. Every durable decision has an event."""
 from contextlib import contextmanager
-from datetime import date
 import hashlib
 import json
 import os
@@ -10,7 +9,8 @@ from gallop.adapters.deeptutor import DeepTutorAdapter
 from gallop.core.io import atomic_json
 from gallop.core.validation import validate_protocol
 from gallop.mobile import check_path, export_mobile
-from .protocol import digest, now, normalize_session, parse, synthetic, timestamp, validate_result
+from .ports import Clock, JournalStore, SystemClock
+from .protocol import digest, normalize_session, parse, synthetic, timestamp, validate_result
 from .state import POLICIES, concept_key, replay, training_candidate
 from .store import EventStore, JournalConflict
 from .jobs import Jobs, file_lock
@@ -19,15 +19,37 @@ from .elite_state import concept_evidence, empty, prerequisite_gaps, readiness_p
 
 
 class Automation:
-    def __init__(self, config):
+    def __init__(self, config, *, store: JournalStore | None = None,
+                 clock: Clock | None = None):
         self.config = config
-        config.bind()
-        self.store = EventStore(config.root, config.namespace)
+        self._store = store
+        self.clock = clock or SystemClock()
         self.cache = check_path(config.root / "derived-state.json")
         self._depth = 0
 
+    @classmethod
+    def open(cls, config, *, clock: Clock | None = None):
+        """Explicit composition root for a writable runtime."""
+        service = cls(config, clock=clock)
+        service._initialize()
+        return service
+
+    def _initialize(self):
+        if self._store is None:
+            self.config.bind()
+            self._store = EventStore(self.config.root, self.config.namespace)
+
+    @property
+    def store(self) -> JournalStore:
+        # Lazy initialization preserves the v1 constructor call shape while
+        # keeping construction itself free of filesystem mutation.
+        self._initialize()
+        assert self._store is not None
+        return self._store
+
     def close(self):
-        self.store.close()
+        if self._store is not None:
+            self._store.close()
 
     @contextmanager
     def lock(self):
@@ -221,10 +243,10 @@ class Automation:
         revision = sum(e["kind"] == "queue_status" and e["payload"]["queue_id"] == item["queue_id"]
                        for e in self.store.events()) + 1
         self.store.append("queue_status", [item["queue_id"], revision], payload,
-                          at=now(), source="training-queue")
+                          at=self.clock.now(), source="training-queue")
 
     def refresh_queue(self, *, day=None):
-        day = day or date.today()
+        day = day or self.clock.today()
         def refresh():
             state = self.state()
             for concept in state["concepts"].values():
@@ -241,7 +263,7 @@ class Automation:
                     if previous["status"] == "queued":
                         self._status(previous, "cancelled", "Superseded by newer evidence")
                 self.store.append("queue_created", candidate["queue_id"], candidate,
-                                  at=now(), source="deterministic-policy-v1")
+                                  at=self.clock.now(), source="deterministic-policy-v1")
             return None
         self._mutate(refresh)
         return self.queue()
@@ -279,7 +301,7 @@ class Automation:
                 practice_priority=int(item["priority"][1:]) + 1, source_notes=[],
                 requested_question_count=question_count, practice_modes=[item["training_type"]],
                 no_agent=True, hint_gradient=["independent_attempt", "direction_only", "key_observation",
-                                             "skeleton", "full_solution"], created_at=now())
+                                             "skeleton", "full_solution"], created_at=self.clock.now())
             directory = check_path(self.config.root / "prepared" / queue_id)
             manifest_path = check_path(directory / "manifest.json")
             if elite is None and manifest_path.exists():

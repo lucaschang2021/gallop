@@ -16,6 +16,17 @@ from gallop.automation.store import JournalConflict
 from gallop.automation.views import START, END
 
 
+class FakeJournal:
+    def __init__(self, events=()):
+        self._events = list(events)
+
+    def events(self):
+        return copy.deepcopy(self._events)
+
+    def close(self):
+        pass
+
+
 def session(**changes):
     return {"schema_version": "1.0", "session_id": "synthetic-session-01",
             "tutor": "mathematics", "course": "Synthetic Analysis", "title": "Synthetic continuity lesson",
@@ -26,14 +37,26 @@ def session(**changes):
 
 @pytest.fixture
 def app(tmp_path, monkeypatch):
-    monkeypatch.setattr("gallop.automation.service.now", lambda: "2026-01-01T10:30:00Z")
+    monkeypatch.setattr("gallop.automation.ports.SystemClock.now", lambda self: "2026-01-01T10:30:00Z")
     root = tmp_path / "isolated"
     cfg = AutomationConfig.from_dict({"namespace": "integration_tests", "root": str(root),
         "vault": str(root / "vault"), "reader": str(root / "reader/Gallop-Reader"),
         "export_state": str(root / "export")})
-    instance = Automation(cfg)
+    instance = Automation.open(cfg)
     yield instance
     instance.close()
+
+
+def test_construction_is_side_effect_free_and_fake_persistence_can_replay(tmp_path):
+    root = tmp_path / "isolated"
+    cfg = AutomationConfig.from_dict({"namespace": "integration_tests", "root": str(root),
+        "vault": str(root / "vault"), "reader": str(root / "reader/Gallop-Reader"),
+        "export_state": str(root / "export")})
+    service = Automation(cfg, store=FakeJournal())
+    assert not root.exists()
+    assert service.state() == replay([])
+    assert not root.exists()
+    service.close()
 
 
 def put(app, document, name="input.json"):
@@ -139,7 +162,7 @@ def test_namespace_root_cannot_be_rebound_or_point_to_real_targets(app, tmp_path
     data["reader"] = str(app.config.reader)
     data["vault"] = str(app.config.root / "other-vault")
     with pytest.raises(ValueError):
-        Automation(AutomationConfig.from_dict(data))
+        Automation.open(AutomationConfig.from_dict(data))
 
 
 def test_learner_rejects_synthetic_envelope_before_state(tmp_path):
@@ -148,7 +171,7 @@ def test_learner_rejects_synthetic_envelope_before_state(tmp_path):
     root = tmp_path / "private"
     cfg = AutomationConfig.from_dict(dict(root=str(root), vault=str(vault),
         reader=str(tmp_path / "reader/Gallop-Reader"), export_state=str(root / "export"), namespace="learner"))
-    app = Automation(cfg)
+    app = Automation.open(cfg)
     try:
         with pytest.raises(ValueError):
             accept(app, session(integration_test=True))

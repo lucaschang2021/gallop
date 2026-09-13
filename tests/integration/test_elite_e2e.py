@@ -70,7 +70,7 @@ def test_four_subject_golden_cli_projection_and_isolation(tmp_path,capsys,subjec
     assert command('publish')['written']==0
     assert command('evidence','add',str(EXAMPLES/(sample_name+'.json')),'--confirm-human')['duplicate']
     assert command('rebuild-state')['replaced']
-    app=Automation(AutomationConfig.load(config))
+    app=Automation.open(AutomationConfig.load(config))
     try:
         assert replay(app.store.events())==app.state()
         assert app.config.binding is None and reader.is_relative_to(root)
@@ -84,7 +84,7 @@ def test_synthetic_elite_cannot_enter_learner_or_cloud(tmp_path):
     (vault/'.obsidian').mkdir(parents=True)
     root=tmp_path/'private-events'
     config=AutomationConfig(root,vault,tmp_path/'Gallop-Reader',root/'export','learner')
-    app=Automation(config)
+    app=Automation.open(config)
     try:
         for name,kind in [('mathematics','elite_evidence'),('benchmark','benchmark'),('prerequisite','prerequisite_link')]:
             with pytest.raises(ValueError,match='Synthetic/integration'):

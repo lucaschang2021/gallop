@@ -59,7 +59,7 @@ def transfer_success(entry):
 
 def performances(entries):
     """One attempt cannot become multiple independent performances by changing IDs."""
-    groups = {}
+    groups: dict[str, list[dict]] = {}
     for entry in entries:
         key = entry['record'].get('metadata', {}).get('attempt_id')
         if key:

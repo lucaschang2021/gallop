@@ -20,6 +20,7 @@ domain_forbidden_imports = [
   "gallop.adapters", "gallop.automation", "gallop.cli", "gallop.mobile",
   "os", "pathlib", "subprocess", "socket", "requests", "urllib", "httpx"
 ]
+application_forbidden_imports = ["gallop.cli", "gallop.automation.cli"]
 adapter_forbidden_imports = [
   "gallop.automation.state", "gallop.automation.elite_state", "gallop.automation.store",
   "gallop.progression.capability", "gallop.progression.gains", "gallop.progression.zones"
@@ -37,8 +38,8 @@ state_forbidden_prefixes = ["capability", "scaffolding", "prerequisite", "strugg
 path = "gallop/automation/service.py"
 role = "application orchestration"
 soft_bytes = 22000
-hard_review_bytes = 32000
-baseline_lines = 539
+hard_review_bytes = 34000
+baseline_lines = 561
 
 [[growth]]
 path = "gallop/automation/state.py"

@@ -9,6 +9,21 @@ The contract protects the useful chain already present in the project:
 This is a drift-control boundary, not a template-driven rewrite. Stable v1
 journal, mastery, queue, DeepTutor, Obsidian, and Reader behavior remain intact.
 
+## Product and compatibility ruling
+
+The governed product definition is:
+
+> GPT = TEACH · GALLOP = GOVERN · OBSIDIAN = REMEMBER · EVIDENCE = PROVE
+
+Gallop is headless. In target v1.2, the four GPT tutor conversations are the
+learner-facing product surface. The Tutor runtime bridge and Zero-Touch workflow
+are not implemented by RC2 and cannot begin before governance closure passes.
+
+DeepTutor is `LEGACY`, `OPTIONAL`, `NON-AUTHORITATIVE`, and not part of the
+future primary workflow. Existing compatibility may remain isolated; no new
+DeepTutor abstraction or feature dependency is permitted, and v1.2 must have
+zero required DeepTutor runtime dependencies.
+
 ## Authority and evidence
 
 The Event Journal is authoritative. `derived-state.json`, prepared artifacts,
@@ -73,6 +88,21 @@ acquire the current time for a new command or event, then records that time so
 replay does not ask the clock again. Importing `gallop` must not create state,
 write a Vault, launch DeepTutor, append an event, or start a process.
 
+`automation/ports.py` defines only the seams proven necessary during closure:
+the Journal contract used by application orchestration and an explicit Clock.
+`Automation.open()` is the composition root that binds paths and opens SQLite.
+Plain `Automation(config)` construction is lazy and performs no filesystem
+mutation; an injected fake Journal can replay without initializing runtime
+storage. ProjectionWriter is unnecessary because rendering is already a pure
+call plus explicit dispatch. TutorLearningInterface belongs to the future Tutor
+Protocol and must not be invented as a DeepTutor wrapper during RC2 closure.
+
+Current time calls are classified as follows: progression and V1 scheduling
+consume explicit evidence timestamps or an explicit day; application event and
+queue creation use the injected Clock; protocol validation compares new input
+against runtime UTC; provider jobs use elapsed wall time for process lifecycle;
+logging/export timestamps describe runtime I/O. Replay never reads wall time.
+
 Policy data is separate from runtime state and evidence. The architecture
 contract assigns a version and shape to each policy catalog. The gate validates
 all four supported subjects and the mentorship catalog's embedded schema
@@ -92,7 +122,8 @@ baseline contains no accepted violations. Size thresholds emit warnings and
 governed-file growth fails until a responsibility review deliberately updates
 the recorded line baseline; file size alone never triggers automatic splitting.
 
-The gate checks forbidden dependency directions, hidden domain time, domain
+The gate checks forbidden dependency directions including application-to-CLI,
+hidden domain time, domain
 module state/import side effects, adapter access to reducer internals,
 projection access to authoritative mutation, policy validity, new domain
 methods in `Automation`, progression methods in `state.py`, and growth of the

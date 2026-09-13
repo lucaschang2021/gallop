@@ -7,6 +7,36 @@ Its permanent principles are: ceiling stays fixed, difficulty adapts,
 assistance fades, evidence determines progression, and independence is the
 destination.
 
+## Current implementation
+
+RC2 implements deterministic, advisory-only mentorship over the shared
+four-subject evidence architecture. It emits no queue mutation and requires no
+provider, filesystem, Obsidian, CLI, or current wall clock.
+
+Readiness dimensions are subject-level aggregates, while concept evidence and
+mastery remain keyed by subject plus concept. Evidence attributed to Concept A
+does not become Concept B evidence. A shared readiness label may summarize its
+explicitly labelled source records, but it cannot certify another concept.
+
+## Target v1.2 architecture
+
+After governance closure, the same engine may supply bounded training directives
+to the four GPT tutors through the Tutor Protocol. Gallop continues to own
+training policy; GPT owns explanation and task presentation. This bridge and
+fresh-chat restoration are not RC2 features.
+
+## Legacy compatibility
+
+`gallop.mentorship` preserves the RC2 public/policy-loading call shape. The V1
+queue remains the scheduler. DeepTutor output, where the legacy optional adapter
+is used, is provider material rather than learner capability evidence.
+
+## Historical V1 baseline
+
+Histories without RC2 records replay to the exact V1 state/projection shape.
+The historical V1 mastery and review rules are compatibility constraints, not
+claims that the future Zero-Touch tutor workflow already exists.
+
 ## Current and target capability
 
 A target is explicit and immutable: subject, readiness dimension, target state,

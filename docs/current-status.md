@@ -1,9 +1,50 @@
 # Current status
 
-**Snapshot: 2026-08-31.** Implementation baseline:
-[`c8d0dfd`](https://github.com/lucaschang2021/gallop/commit/c8d0dfdcdee1dd002688ebf43d20bd2b48766fc8),
-the main commit tagged `v1.0.0`. This is a dated review, not a live status page.
-Documentation changes after that commit do not imply new runtime capabilities.
+**Snapshot: 2026-09-13.** Governance work starts from RC2 candidate
+`8bc4dbf7e55f6bbb33f921cf25e2f64e2dafe36b` on
+`feat/elite-training-v1.1`. Governance closure changes after that SHA remain a
+candidate until the full G12 regression passes and a governed baseline SHA is
+recorded. This page does not claim release or Zero-Touch completion.
+
+Gallop is headless. The frozen target product definition is:
+
+> GPT = TEACH · GALLOP = GOVERN · OBSIDIAN = REMEMBER · EVIDENCE = PROVE
+
+## Current RC2 implementation
+
+Automation V1 provides explicit tutor intake, raw-byte preservation, append-only
+SQLite evidence, replayable learning state, four-subject queues, conservative
+mastery/confidence rules, human start/assessment gates, Obsidian projections,
+the filtered Reader exporter, and the pure advisory Progressive Mentorship
+domain. CLI/file operations remain the current operational interface; Gallop
+ships no learner UI.
+
+The governance candidate adds a non-destructive exact-commit privacy-debt gate,
+Ruff and scoped Mypy gates, a mutation-free construction/composition boundary,
+explicit application Clock/Journal seams, and expanded architecture checks.
+Final counts and drift results belong to the governed-baseline record after G12.
+
+## Target v1.2 architecture
+
+After Governance Closure PASS, v1.2 targets four GPT tutor conversations as the
+complete learner-facing surface, backed by one Gallop Journal/application,
+incremental evidence checkpoints, Obsidian projection, bounded context packets,
+and fresh-chat restoration. None of that Zero-Touch runtime integration is
+reported as implemented here.
+
+## Legacy compatibility
+
+DeepTutor is legacy, optional, non-authoritative, and not part of the target
+primary workflow. Existing isolated adapter/job compatibility remains to avoid
+unnecessary migration risk; v1.2 must require zero DeepTutor runtime
+dependencies. Legacy v0.1 commands and their separate state also remain
+available but are not the future learner workflow.
+
+## Historical V1 baseline
+
+The following release/repository evidence describes the historical V1 baseline
+at [`c8d0dfd`](https://github.com/lucaschang2021/gallop/commit/c8d0dfdcdee1dd002688ebf43d20bd2b48766fc8),
+tagged `v1.0.0`. It remains compatibility evidence, not a current health check.
 
 ## Release and repository evidence
 
@@ -18,19 +59,10 @@ Documentation changes after that commit do not imply new runtime capabilities.
 
 The [CI workflow](../.github/workflows/tests.yml) runs on push and pull request
 with Windows/Ubuntu × Python 3.11/3.13. It installs development dependencies,
-runs pytest, validates examples, audits reachable Git history, runs the offline
-demo and builds a wheel. It does **not** upload release artifacts or implement
-a tag/version release gate. macOS and other Python versions are not covered by
-this matrix.
-
-## What is implemented
-
-Automation V1 provides explicit tutor intake, raw-byte preservation, append-only
-SQLite evidence, replayable learning state, four-subject queues, conservative
-mastery/confidence rules, human start/assessment gates, durable DeepTutor jobs,
-Obsidian projections and the existing filtered Reader exporter. Legacy CLI
-commands and their separate state remain available. See [architecture](architecture.md)
-for code ownership and [Automation](automation-v1.md) for the actual workflow.
+runs Ruff and the scoped Mypy gate, pytest, examples, architecture and privacy
+audits, the offline demo, and a wheel build. It does **not** upload release
+artifacts or implement a tag/version release gate. macOS and other Python
+versions are not covered by this matrix.
 
 ## Evidence strength
 
@@ -48,12 +80,13 @@ for code ownership and [Automation](automation-v1.md) for the actual workflow.
 
 ## Known limitations and remaining work
 
-1. **Onboarding is technical.** CLI/file intake only; no chat UI, daemon, account
+1. **RC2 operation is technical.** CLI/file intake only; no Tutor runtime bridge,
+   daemon, account
    scraper or automatic notifications. `learner` mode requires an existing
    Obsidian Vault; `cycle`/`publish` need an existing verified Reader binding.
    The isolated preview works without those external applications. A portable
    first-time real Reader setup is not delivered by the sample configuration.
-2. **Human work is essential.** DeepTutor choice diagnostics do not establish
+2. **Human evidence authority is essential.** Legacy DeepTutor choice diagnostics do not establish
    proof, oral, coding or simulation performance. Gallop accepts human-confirmed
    evidence; it does not independently verify the person or replace an examiner.
 3. **Two state models coexist.** Automation never silently migrates legacy
@@ -66,8 +99,10 @@ for code ownership and [Automation](automation-v1.md) for the actual workflow.
    Existing live/uncertain jobs must not be duplicated to escape a timeout.
 6. **Distribution can improve.** v1.0.0 artifact uploads, checksums and release
    version checks are missing from the current workflow. Use source installation.
-7. **Future capabilities stay future.** Built-in semantic retrieval, adaptive
-   difficulty and a general plugin ecosystem are not shipped features.
+7. **Future capabilities stay future.** Zero-Touch Tutor integration,
+   incremental chat checkpointing, bounded fresh-chat context restoration,
+   built-in semantic retrieval, and a general plugin ecosystem are not shipped
+   RC2 features.
 
 See [roadmap](roadmap.md) for proposed priorities. No existing learning data,
 cloud account or external provider was changed by this documentation review.

@@ -2,9 +2,19 @@
 
 [Home](../README.en.md) · [Current status](current-status.md) · [Quickstart](quickstart.md)
 
-Gallop is a Python CLI connecting structured tutor records, local learning
-evidence, human practice, and readable notes. This document maps responsibilities
-and storage ownership; command syntax lives in the [CLI reference](automation-cli.md).
+Gallop is a headless local learning control plane. The current RC2 candidate is
+operated through Python CLI/developer tooling and connects structured tutor
+records, local learning evidence, human practice, and readable notes. Gallop
+does not ship a learner UI. This document maps responsibilities and storage
+ownership; command syntax lives in the [CLI reference](automation-cli.md).
+
+The permanent product boundary is:
+
+> GPT = TEACH · GALLOP = GOVERN · OBSIDIAN = REMEMBER · EVIDENCE = PROVE
+
+For target v1.2, the four GPT tutor conversations (Mathematics, Statistics &
+Econometrics, Finance, and CS & AI) are the complete learner-facing surface.
+That Zero-Touch bridge is a post-governance target, not a current RC2 feature.
 
 Automation V1 adds a local event-driven path beside the compatible legacy
 adapters. It changes the authority model for new Automation inputs only.
@@ -16,7 +26,7 @@ flowchart TD
     E --> S[Deterministic learning state]
     S --> Q[Four-subject training queue]
     Q --> M[Stable manifest]
-    M --> D[Existing DeepTutor preparation]
+    M --> D[Legacy optional DeepTutor preparation]
     D --> H[Human start, actual work, human assessment]
     H --> R[Validated practice + assessment events]
     R --> E
@@ -25,6 +35,41 @@ flowchart TD
     P --> G[Gallop-Reader]
     E --> A[Replay, explain, provenance]
 ~~~
+
+## Current implementation
+
+The current implementation is the journal/replay/application/projection system
+shown above, including the pure Progressive Mentorship domain. It is headless,
+but normal daily use is not yet Zero-Touch: CLI/file operations remain the
+available operational path in RC2.
+
+## Target v1.2 architecture
+
+After the governed baseline passes, v1.2 may add a versioned Tutor Protocol,
+runtime bridge, incremental evidence checkpoints, bounded context builder, and
+fresh-chat restoration. All four tutors must share one Journal, application,
+progression engine, evidence model, and planning system. No Gallop frontend or
+second learner-facing application is authorized.
+
+Journal remains the source of truth. State is replay-derived, Obsidian is a
+durable human-readable projection, and tutor output is teaching/candidate
+evidence. Neither GPT output nor an Obsidian edit may directly promote mastery.
+
+## Legacy compatibility
+
+DeepTutor is legacy, optional, non-authoritative, and not part of the future
+primary workflow. Its existing adapter/job compatibility may remain isolated
+because removing it during closure would create unnecessary migration risk.
+Gallop v1.2 must require zero DeepTutor runtime dependencies.
+
+The legacy v0.1 CLI/state path also remains compatible and separate. It is not
+the target learner experience and is not silently migrated.
+
+## Historical V1 baseline
+
+Historical V1 release evidence remains useful compatibility evidence. It does
+not prove current provider health, Zero-Touch behavior, learning efficacy, or
+the target v1.2 architecture.
 
 ## Boundaries
 
@@ -39,7 +84,7 @@ flowchart TD
   are explicitly requested and never performed by cycle.
 - Markdown projections update only owned regions. Their receipt detects manual
   changes; I/O interruption can be retried without replacing user notes.
-- The existing DeepTutor and mobile-export adapters remain the integration
+- The legacy DeepTutor and mobile-export adapters remain isolated compatibility
   boundaries. Old commands and their historical state are not migrated implicitly.
 
 The state rules, policy data, application service, store, views and CLI live in
@@ -47,9 +92,9 @@ separate small modules under gallop/automation. There is no daemon, extra web
 framework, LLM grader, swarm, or retrieval platform in V1.
 
 See [Automation workflow](automation-v1.md), [safety](automation-safety.md),
-[CLI](automation-cli.md), and [DeepTutor bridge](deeptutor-integration.md).
+[CLI](automation-cli.md), and the legacy [DeepTutor bridge](deeptutor-integration.md).
 
-DeepTutor preparation now uses durable submit/poll/collect jobs. The caller does
+Legacy DeepTutor preparation uses durable submit/poll/collect jobs. The caller does
 not hold the journal lock while waiting on a provider. Final acceptance is
 **PASS**: a real generated task and user-confirmed response completed collection,
 practice/assessment events, isolated state transitions and Obsidian projection.
@@ -68,7 +113,7 @@ guarantee for another user's provider, vault, or cloud setup. See the dated
 | `automation/store.py` | SQLite raw inputs, append-only events, stable IDs, hash chain, transactions |
 | `automation/state.py` | Replay evidence, apply mastery rules, select training candidates |
 | `schemas/training-policies.json` | Four supported subject policies |
-| `automation/service.py` | Coordinate intake, preparation, human confirmation, projection and replay |
+| `automation/service.py`, `automation/ports.py` | Coordinate intake, preparation, human confirmation, projection and replay; expose the minimal Journal/Clock seams |
 | `automation/jobs.py`, `adapters/deeptutor/` | Explicit external generation, durable job lifecycle and collection |
 | `automation/views.py` | Derive Markdown; preserve user text outside managed regions |
 | `mobile.py`, `mobile_icloud.py` | Filtered one-way Reader export and optional existing cloud-binding checks |
@@ -135,7 +180,8 @@ preserves the V1 queue and keeps adaptive curriculum work outside v1.1.
 Tutor text and provider output are untrusted data, not commands or proof of
 mastery. Human assessment remains an explicit local attestation, not proctoring.
 SQLite triggers and hashes detect accidental corruption, not a hostile owner.
-No daemon, UI, autonomous grader, or built-in semantic retrieval is shipped.
+No daemon, Gallop UI, autonomous grader, Tutor runtime bridge, or built-in
+semantic retrieval is shipped in RC2.
 
 Extend subject policies, schemas and focused adapters with rejection cases and
 synthetic fixtures. Changes to replay rules or persistent formats need explicit

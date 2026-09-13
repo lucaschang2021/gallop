@@ -21,7 +21,7 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8,<9"]
+dev = ["pytest>=8,<9", "ruff>=0.16,<1", "mypy>=1.18,<2"]
 
 [project.scripts]
 gallop = "gallop.cli:main"
@@ -35,3 +35,18 @@ gallop = ["schemas/*.json", "demo/*.json"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+
+[tool.ruff]
+target-version = "py311"
+
+[tool.ruff.lint]
+# Zero-debt correctness gate. Broader style adoption is intentionally outside
+# RC2 closure and must not force an unrelated formatting migration.
+select = ["E9", "F63", "F7", "F82"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["gallop/progression", "gallop/automation/ports.py"]
+check_untyped_defs = true
+no_implicit_optional = true
+warn_unused_ignores = true

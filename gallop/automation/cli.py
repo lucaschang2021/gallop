@@ -62,7 +62,7 @@ def register(parser, commands):
 def execute(args):
     if args.automation_config is None:
         raise ValueError("Provide --automation-config before the command")
-    service = Automation(AutomationConfig.load(args.automation_config))
+    service = Automation.open(AutomationConfig.load(args.automation_config))
     try:
         elite = parse(check_path(args.elite_policy).read_bytes()) if getattr(args, "elite_policy", None) else None
         if args.command in {"evidence", "benchmark", "prerequisite", "target"}:
