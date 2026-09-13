@@ -28,6 +28,6 @@ jobs:
       - run: python scripts/verify_v1_replay.py
       - run: python scripts/validate_examples.py
       - run: python scripts/check_architecture.py
-      - run: python scripts/audit_repository.py
+      - run: python scripts/audit_repository.py --revision "${{ github.event.pull_request.head.sha || github.sha }}"
       - run: python -m gallop demo --output demo-output
       - run: python -m pip wheel . --no-deps --wheel-dir dist

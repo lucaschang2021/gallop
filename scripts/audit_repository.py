@@ -53,6 +53,11 @@ def metadata_findings(records: list[tuple[str, str, str]], accepted: set[str]) -
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--forbid", action="append", default=[])
+    parser.add_argument(
+        "--revision",
+        default="--all",
+        help="Git revision whose reachable history is audited (default: all refs)",
+    )
     args = parser.parse_args()
     patterns = {
         "machine-path": MACHINE_PATH,
@@ -63,7 +68,7 @@ def main() -> int:
     findings = []
     seen = set()
     public_url = "https://github.com/" + "lucaschang2021/gallop"
-    for line in git("rev-list", "--objects", "--all").splitlines():
+    for line in git("rev-list", "--objects", args.revision).splitlines():
         oid, _, path = line.partition(" ")
         if oid in seen or git("cat-file", "-t", oid).strip() != "blob":
             continue
@@ -82,7 +87,7 @@ def main() -> int:
         if path.startswith(("data/", "vault/", "learning-os/")):
             findings.append({"path": path, "rule": "private-data-directory"})
     records = []
-    for line in git("log", "--all", "--format=%H%x00%ae%x00%ce").splitlines():
+    for line in git("log", args.revision, "--format=%H%x00%ae%x00%ce").splitlines():
         oid, author, committer = line.split("\0")
         records.append((oid, author, committer))
     try:
@@ -93,7 +98,8 @@ def main() -> int:
     else:
         findings.extend(metadata_findings(records, accepted))
     print(json.dumps({"blobs_scanned": len(seen), "findings": findings,
-                      "scope": "all reachable refs; metadata email check"}, indent=2))
+                      "scope": f"history reachable from {args.revision}; metadata email check"},
+                     indent=2))
     return 1 if findings else 0
 
 

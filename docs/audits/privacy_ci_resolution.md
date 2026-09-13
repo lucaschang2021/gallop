@@ -31,8 +31,11 @@ delivery risk than the historical metadata item itself.
 
 ## Gate behavior
 
-The privacy audit now evaluates every reachable commit as an `(object ID,
-author email, committer email)` record.
+The privacy audit now evaluates every commit reachable from the selected audit
+revision as an `(object ID, author email, committer email)` record. CI supplies
+the exact push SHA or pull-request head SHA, so GitHub's synthetic PR merge
+commit is not mistaken for repository-owned history; the rest of the PR suite
+still exercises the normal merge checkout.
 
 - A non-public email on the one exact accepted historical object is classified
   as accepted existing debt.
