@@ -29,7 +29,7 @@
       "reviews_due": [],
       "retests_due": [],
       "unfinished_tasks": [],
-      "previous_relevant_summary": "Synthetic mathematics tutor session start.",
+      "previous_relevant_summary": null,
       "next_recommended_action": "CONTINUE_TEACHING_WITHOUT_UNSUPPORTED_STATE_CLAIMS",
       "source_event_ids": ["evt.math.session.001"],
       "truncation": {

@@ -74,6 +74,33 @@ class TutorBridge:
         }
         return validate_directive(document)
 
+    def _restore_context(self, subject: str, session_id: str) -> dict[str, Any]:
+        state = self.automation.state()
+        prior_sessions = sum(
+            session["subject"] == subject and session["session_id"] != session_id
+            for session in state.get("tutor", {}).get("sessions", {}).values()
+        )
+        try:
+            context = self.get_learning_context(subject, session_id)
+        except (KeyError, ValueError) as exc:
+            return {
+                "context": None,
+                "context_restore": {
+                    "status": "FAILED",
+                    "error_type": type(exc).__name__,
+                    "journal_durable": True,
+                    "prior_session_count": prior_sessions,
+                },
+            }
+        return {
+            "context": context,
+            "context_restore": {
+                "status": "PASS",
+                "source": "journal",
+                "prior_session_count": prior_sessions,
+            },
+        }
+
     def open_or_resume_session(self, subject: str, session_id: str) -> dict[str, Any]:
         if subject not in SUBJECT_TUTORS:
             raise ValueError("Unknown tutor subject")
@@ -81,7 +108,11 @@ class TutorBridge:
         if existing is not None:
             if existing["subject"] != subject:
                 raise JournalConflict("Session ID belongs to another subject")
-            return {"created": False, "session": deepcopy(existing)}
+            return {
+                "created": False,
+                "session": deepcopy(existing),
+                **self._restore_context(subject, session_id),
+            }
         tutor_id = SUBJECT_TUTORS[subject]
         document = {
             "schema_version": "1.2",
@@ -101,7 +132,12 @@ class TutorBridge:
             },
         }
         result = self.record_learning_event(document)
-        return {"created": True, **result, "session": self.get_session(session_id)}
+        return {
+            "created": True,
+            **result,
+            "session": self.get_session(session_id),
+            **self._restore_context(subject, session_id),
+        }
 
     def record_learning_event(self, document: dict[str, Any]) -> dict[str, Any]:
         validate_event(document)

@@ -25,6 +25,14 @@ class FixedClock(Clock):
         raise AssertionError("Runtime bridge does not need the current date")
 
 
+class LaterClock(Clock):
+    def now(self) -> str:
+        return "2026-09-13T12:00:00Z"
+
+    def today(self):
+        raise AssertionError("Runtime bridge does not need the current date")
+
+
 def config(tmp_path: Path) -> AutomationConfig:
     root = tmp_path / "runtime"
     return AutomationConfig.from_dict({
@@ -103,7 +111,11 @@ def test_one_runtime_opens_and_resumes_all_four_subjects(tmp_path, subject):
     first = bridge.open_or_resume_session(subject, session_id)
     second = bridge.open_or_resume_session(subject, session_id)
     assert first["created"] is True
-    assert second == {"created": False, "session": first["session"]}
+    assert second["created"] is False
+    assert second["session"] == first["session"]
+    assert first["context_restore"]["status"] == "PASS"
+    assert first["context"]["authority"] == "ADVISORY"
+    assert second["context"] == first["context"]
     assert first["session"]["tutor_id"] == SUBJECT_TUTORS[subject]
     bridge.close()
 
@@ -448,4 +460,96 @@ def test_learning_context_enforces_item_and_character_bounds(tmp_path):
         bridge.get_learning_context(
             "finance", "session.finance.001", max_items=0, max_chars=2000
         )
+    bridge.close()
+
+
+def test_fresh_chat_restores_interrupted_session_from_journal_only(tmp_path):
+    cfg = config(tmp_path)
+    bridge = open_bridge(cfg)
+    bridge.open_or_resume_session("mathematics", "session.math.before")
+    mistake = tutor_event(
+        "mistake_observed",
+        event_id="event.math.before.mistake",
+        session_id="session.math.before",
+    )
+    mistake["payload"].update({
+        "concept_id": "concept.compactness",
+        "attempt_id": "attempt.compactness.001",
+        "failure_tags": ["math:PROOF_INCOMPLETE"],
+        "summary": "The open-cover argument omitted the finite subcover step.",
+    })
+    bridge.record_learning_event(mistake)
+    candidate = tutor_event(
+        "candidate_assessment",
+        event_id="event.math.before.candidate",
+        session_id="session.math.before",
+    )
+    candidate["payload"]["concept_id"] = "concept.compactness"
+    bridge.record_learning_event(candidate)
+    checkpoint = tutor_event(
+        "checkpoint",
+        event_id="event.math.before.checkpoint",
+        session_id="session.math.before",
+    )
+    checkpoint["occurred_at"] = "2026-09-13T11:02:00Z"
+    checkpoint["payload"].update({
+        "summary": "Compactness proof repair remains unfinished.",
+        "unfinished_work": ["Reconstruct the finite-subcover step without hints."],
+        "next_action": "Resume with a closed-book compactness reconstruction.",
+    })
+    bridge.record_learning_event(checkpoint)
+    assert bridge.get_session("session.math.before")["status"] == "active"
+    bridge.close()
+
+    restored = open_bridge(cfg)
+    restored.automation.clock = LaterClock()
+    opened = restored.open_or_resume_session("mathematics", "session.math.after")
+    packet = opened["context"]["payload"]["context_packet"]
+    assert opened["created"] is True
+    assert opened["context_restore"] == {
+        "status": "PASS", "source": "journal", "prior_session_count": 1
+    }
+    assert opened["context"]["issued_at"] == "2026-09-13T12:00:00Z"
+    assert packet["active_concept_id"] == "concept.compactness"
+    assert packet["current_capability"]["state"] == "EXPOSED"
+    assert packet["recent_evidence"][0]["confirmed"] is False
+    assert packet["recent_failures"][0]["failure_tags"] == [
+        "math:PROOF_INCOMPLETE"
+    ]
+    assert packet["unfinished_tasks"] == [
+        "Reconstruct the finite-subcover step without hints."
+    ]
+    assert packet["previous_relevant_summary"] == (
+        "Compactness proof repair remains unfinished."
+    )
+    assert packet["next_recommended_action"] == (
+        "Resume with a closed-book compactness reconstruction."
+    )
+    assert "Session opened through Gallop runtime bridge." not in canonical(packet)
+    repeated = restored.open_or_resume_session("mathematics", "session.math.after")
+    assert repeated["created"] is False
+    assert repeated["context"] == opened["context"]
+    restored.close()
+
+
+def test_context_restore_failure_keeps_new_session_and_fabricates_no_context(
+    tmp_path, monkeypatch
+):
+    bridge = open_bridge(config(tmp_path))
+    import gallop.tutor.bridge as bridge_module
+
+    def fail_context(*_args, **_kwargs):
+        raise ValueError("simulated bounded restore failure")
+
+    monkeypatch.setattr(bridge_module, "build_context", fail_context)
+    opened = bridge.open_or_resume_session("cs-ai", "session.cs.restore-failure")
+    assert opened["created"] is True
+    assert opened["context"] is None
+    assert opened["context_restore"] == {
+        "status": "FAILED",
+        "error_type": "ValueError",
+        "journal_durable": True,
+        "prior_session_count": 0,
+    }
+    assert bridge.get_session("session.cs.restore-failure")["status"] == "active"
     bridge.close()

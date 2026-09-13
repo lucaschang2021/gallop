@@ -153,7 +153,8 @@ def build_context(
     unfinished = [clip(item) for event in events
                   for item in event["payload"].get("unfinished_work", [])]
     summaries = [clip(event["payload"]["summary"]) for event in events
-                 if event["payload"].get("summary")]
+                 if event["event_type"] != "session_start"
+                 and event["payload"].get("summary")]
     next_actions = [clip(event["payload"]["next_action"]) for event in events
                     if event["payload"].get("next_action")]
     if plan is not None:
