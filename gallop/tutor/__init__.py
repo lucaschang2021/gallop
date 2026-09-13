@@ -9,7 +9,7 @@ from .protocol import (
     validate_event,
 )
 from .bridge import TutorBridge
-from .evidence import candidate_record
+from .evidence import candidate_record, confirmation_record
 from .context import build_context
 
 __all__ = [
@@ -19,6 +19,7 @@ __all__ = [
     "SUBJECT_TUTORS",
     "TutorBridge",
     "candidate_record",
+    "confirmation_record",
     "build_context",
     "validate_directive",
     "validate_event",

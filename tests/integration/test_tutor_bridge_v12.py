@@ -33,6 +33,14 @@ class LaterClock(Clock):
         raise AssertionError("Runtime bridge does not need the current date")
 
 
+class FutureClock(Clock):
+    def now(self) -> str:
+        return "2026-09-21T12:00:00Z"
+
+    def today(self):
+        raise AssertionError("Runtime bridge does not need the current date")
+
+
 def config(tmp_path: Path) -> AutomationConfig:
     root = tmp_path / "runtime"
     return AutomationConfig.from_dict({
@@ -64,6 +72,11 @@ def tutor_event(
             "attempt_id": "attempt.math.proof.001",
             "correctness": "CORRECT",
             "reasoning_quality": "SOLID",
+            "proof_quality": {
+                "logical_completeness": "SOLID",
+                "definition_precision": "SOLID",
+                "condition_awareness": "SOLID",
+            },
             "evaluator_confidence": "MEDIUM",
             "authority_class": "CANDIDATE_EVIDENCE",
             "evidence_refs": ["response.math.proof.001"],
@@ -84,6 +97,36 @@ def tutor_event(
             "actor": "tutor",
             "recorded_by": SUBJECT_TUTORS[subject],
             "source": "synthetic-bridge-test",
+            "content_scope": "learning_relevant_only",
+            "synthetic": True,
+        },
+    }
+
+
+def confirmation_event(
+    candidate_event_id: str,
+    *,
+    event_id: str = "event.math.confirmation.001",
+    session_id: str = "session.math.001",
+    subject: str = "mathematics",
+) -> dict:
+    return {
+        "schema_version": "1.2",
+        "event_id": event_id,
+        "session_id": session_id,
+        "tutor_id": SUBJECT_TUTORS[subject],
+        "subject": subject,
+        "event_type": "evidence_confirmation",
+        "occurred_at": "2026-09-13T11:02:00Z",
+        "payload": {
+            "candidate_event_id": candidate_event_id,
+            "authority_class": "HUMAN_ATTESTATION",
+            "summary": "Learner explicitly confirmed the submitted work as their own.",
+        },
+        "provenance": {
+            "actor": "human",
+            "recorded_by": SUBJECT_TUTORS[subject],
+            "source": "synthetic-tutor-dialogue-confirmation",
             "content_scope": "learning_relevant_only",
             "synthetic": True,
         },
@@ -210,6 +253,50 @@ def test_submission_without_assessment_does_not_create_evidence(tmp_path):
     assert "candidate_evidence_id" not in result
     assert "elite" not in bridge.automation.state()
     bridge.close()
+
+
+def test_dialogue_confirmation_adds_distinct_human_attestation_and_due_retest(tmp_path):
+    cfg = config(tmp_path)
+    bridge = open_bridge(cfg)
+    bridge.open_or_resume_session("mathematics", "session.math.001")
+    candidate = tutor_event(
+        "independent_success", event_id="event.math.independent.confirmable.001"
+    )
+    first = bridge.record_learning_event(candidate)
+    before_queue = deepcopy(bridge.automation.state()["queue"])
+    confirmation = confirmation_event(candidate["event_id"])
+    confirmed = bridge.record_learning_event(confirmation)
+    repeated = bridge.record_learning_event(deepcopy(confirmation))
+    state = bridge.automation.state()
+    assert state["elite"]["evidence"][first["candidate_evidence_id"]]["confirmed"] is False
+    attestation = state["elite"]["evidence"][confirmed["confirmed_evidence_id"]]
+    assert attestation["confirmed"] is True
+    assert attestation["record"]["metadata"]["authority_class"] == "HUMAN_ATTESTATION"
+    assert confirmed["evidence_duplicate"] is False
+    assert repeated["evidence_duplicate"] is True
+    second_confirmation = confirmation_event(
+        candidate["event_id"], event_id="event.math.confirmation.002"
+    )
+    with pytest.raises(ValueError, match="already has a human confirmation"):
+        bridge.record_learning_event(second_confirmation)
+    assert second_confirmation["event_id"] not in bridge.automation.state()["tutor"]["events"]
+    assert bridge.get_learning_context(
+        "mathematics", "session.math.001"
+    )["payload"]["context_packet"]["current_capability"]["state"] == (
+        "PARTIALLY_INDEPENDENT"
+    )
+    assert state["queue"] == before_queue
+    assert next(iter(state["concepts"].values()))["mastery_level"] == 0
+    bridge.close()
+
+    restored = open_bridge(cfg)
+    restored.automation.clock = FutureClock()
+    opened = restored.open_or_resume_session("mathematics", "session.math.future")
+    retests = opened["context"]["payload"]["context_packet"]["retests_due"]
+    assert retests and retests[0]["delay_days"] == 7
+    assert retests[0]["authority"] == "ADVISORY"
+    assert restored.automation.state()["queue"] == before_queue
+    restored.close()
 
 
 def test_invalid_candidate_taxonomy_rolls_back_before_journal_append(tmp_path):

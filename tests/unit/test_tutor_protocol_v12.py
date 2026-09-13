@@ -14,7 +14,7 @@ from gallop.tutor.protocol import DIRECTIVE_PAYLOAD_FIELDS
 
 
 def event(event_type: str = "checkpoint", subject: str = "mathematics") -> dict:
-    return {
+    document = {
         "schema_version": "1.2",
         "event_id": f"event.{subject}.{event_type}.001",
         "session_id": f"session.{subject}.001",
@@ -27,6 +27,7 @@ def event(event_type: str = "checkpoint", subject: str = "mathematics") -> dict:
             "target_concept_id": "concept.target",
             "prerequisite_concept_id": "concept.prerequisite",
             "capability_id": "capability.synthetic",
+            "candidate_event_id": "event.mathematics.candidate.001",
             "task_id": "task.synthetic.001",
             "attempt_id": "attempt.synthetic.001",
             "task_type": "PROOF",
@@ -37,6 +38,11 @@ def event(event_type: str = "checkpoint", subject: str = "mathematics") -> dict:
             "agent_usage": "NONE",
             "correctness": "CORRECT",
             "reasoning_quality": "SOLID",
+            "proof_quality": {
+                "logical_completeness": "SOLID",
+                "definition_precision": "SOLID",
+                "condition_awareness": "SOLID",
+            },
             "failure_tags": ["math:PROOF_INCOMPLETE"],
             "evaluator_confidence": "MEDIUM",
             "authority_class": "CANDIDATE_EVIDENCE",
@@ -52,6 +58,10 @@ def event(event_type: str = "checkpoint", subject: str = "mathematics") -> dict:
             "synthetic": True,
         },
     }
+    if event_type == "evidence_confirmation":
+        document["payload"]["authority_class"] = "HUMAN_ATTESTATION"
+        document["provenance"]["actor"] = "human"
+    return document
 
 
 def directive(directive_type: str = "learning_context") -> dict:
@@ -139,6 +149,16 @@ def test_tutor_claim_cannot_be_mastery_or_human_authority():
     document = event("checkpoint")
     document["payload"]["authority_class"] = "HUMAN_ATTESTATION"
     with pytest.raises(ValueError, match="human authority"):
+        validate_event(document)
+
+
+def test_human_confirmation_is_explicit_and_cannot_be_tutor_authored():
+    document = event("evidence_confirmation")
+    document["payload"]["authority_class"] = "HUMAN_ATTESTATION"
+    document["provenance"]["actor"] = "human"
+    assert validate_event(document) is document
+    document["provenance"]["actor"] = "tutor"
+    with pytest.raises(ProtocolValidationError):
         validate_event(document)
 
 

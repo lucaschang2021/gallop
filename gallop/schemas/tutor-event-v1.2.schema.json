@@ -14,6 +14,7 @@
       "enum": [
         "session_start", "context_request", "concept_exposed", "task_issued",
         "learner_attempt", "hint_given", "feedback_given", "candidate_assessment",
+        "evidence_confirmation",
         "mistake_observed", "prerequisite_issue", "repair_attempt",
         "reconstruction_attempt", "independent_success", "oral_response",
         "proof_submission", "coding_submission", "simulation_result",
@@ -28,6 +29,7 @@
         "target_concept_id": {"$ref": "#/$defs/stable_id"},
         "prerequisite_concept_id": {"$ref": "#/$defs/stable_id"},
         "capability_id": {"$ref": "#/$defs/stable_id"},
+        "candidate_event_id": {"$ref": "#/$defs/stable_id"},
         "task_id": {"$ref": "#/$defs/stable_id"},
         "attempt_id": {"$ref": "#/$defs/stable_id"},
         "task_type": {
@@ -40,6 +42,8 @@
         "agent_usage": {"enum": ["NONE", "REFERENCE_ONLY", "HINT_ONLY", "AI_ASSISTED", "AI_GENERATED", "UNKNOWN"]},
         "correctness": {"enum": ["CORRECT", "PARTIAL", "INCORRECT", "UNASSESSED"]},
         "reasoning_quality": {"enum": ["POOR", "DEVELOPING", "SOLID", "STRONG", "EXCEPTIONAL", "UNKNOWN"]},
+        "proof_quality": {"$ref": "#/$defs/proof_quality"},
+        "derivation_quality": {"$ref": "#/$defs/derivation_quality"},
         "failure_tags": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]*:[A-Z][A-Z0-9_]*$"}, "uniqueItems": true},
         "evaluator_confidence": {"enum": ["LOW", "MEDIUM", "HIGH", "UNKNOWN"]},
         "authority_class": {"enum": ["OBSERVATION", "CANDIDATE_EVIDENCE", "HUMAN_ATTESTATION"]},
@@ -73,6 +77,7 @@
     {"if": {"properties": {"event_type": {"enum": ["learner_attempt", "repair_attempt", "reconstruction_attempt", "oral_response", "proof_submission", "coding_submission", "simulation_result"]}}}, "then": {"properties": {"payload": {"required": ["task_id", "attempt_id", "learner_response_reference"]}}}},
     {"if": {"properties": {"event_type": {"const": "hint_given"}}}, "then": {"properties": {"payload": {"required": ["task_id", "attempt_id", "assistance_level"]}}}},
     {"if": {"properties": {"event_type": {"enum": ["candidate_assessment", "independent_success"]}}}, "then": {"properties": {"payload": {"properties": {"authority_class": {"const": "CANDIDATE_EVIDENCE"}, "evidence_refs": {"minItems": 1}}, "required": ["concept_id", "capability_id", "task_id", "task_type", "attempt_id", "correctness", "evaluator_confidence", "authority_class", "evidence_refs"]}}}},
+    {"if": {"properties": {"event_type": {"const": "evidence_confirmation"}}}, "then": {"properties": {"payload": {"properties": {"authority_class": {"const": "HUMAN_ATTESTATION"}}, "required": ["candidate_event_id", "authority_class"]}, "provenance": {"properties": {"actor": {"const": "human"}}}}}},
     {"if": {"properties": {"event_type": {"const": "mistake_observed"}}}, "then": {"properties": {"payload": {"required": ["attempt_id", "failure_tags"]}}}},
     {"if": {"properties": {"event_type": {"const": "prerequisite_issue"}}}, "then": {"properties": {"payload": {"required": ["target_concept_id", "prerequisite_concept_id"]}}}},
     {"if": {"properties": {"event_type": {"const": "checkpoint"}}}, "then": {"properties": {"payload": {"required": ["checkpoint_reason"]}}}},
@@ -80,6 +85,31 @@
   ],
   "$defs": {
     "stable_id": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"},
-    "nonempty": {"type": "string", "minLength": 1, "pattern": "\\S"}
+    "nonempty": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "quality": {"enum": ["POOR", "DEVELOPING", "SOLID", "STRONG", "EXCEPTIONAL", "UNKNOWN"]},
+    "proof_quality": {
+      "type": "object",
+      "required": ["logical_completeness", "definition_precision", "condition_awareness"],
+      "properties": {
+        "logical_completeness": {"$ref": "#/$defs/quality"},
+        "definition_precision": {"$ref": "#/$defs/quality"},
+        "condition_awareness": {"$ref": "#/$defs/quality"},
+        "notation": {"$ref": "#/$defs/quality"},
+        "clarity": {"$ref": "#/$defs/quality"}
+      },
+      "additionalProperties": false
+    },
+    "derivation_quality": {
+      "type": "object",
+      "required": ["steps_valid", "assumption_awareness", "interpretation"],
+      "properties": {
+        "steps_valid": {"$ref": "#/$defs/quality"},
+        "assumption_awareness": {"$ref": "#/$defs/quality"},
+        "interpretation": {"$ref": "#/$defs/quality"},
+        "notation": {"$ref": "#/$defs/quality"},
+        "clarity": {"$ref": "#/$defs/quality"}
+      },
+      "additionalProperties": false
+    }
   }
 }

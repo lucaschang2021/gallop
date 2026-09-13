@@ -13,6 +13,11 @@
     "task_type": "DERIVATION",
     "attempt_id": "attempt.finance.derivation.001",
     "correctness": "CORRECT",
+    "derivation_quality": {
+      "steps_valid": "SOLID",
+      "assumption_awareness": "SOLID",
+      "interpretation": "SOLID"
+    },
     "evaluator_confidence": "MEDIUM",
     "authority_class": "CANDIDATE_EVIDENCE",
     "evidence_refs": ["attempt.finance.derivation.001"]

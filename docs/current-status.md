@@ -25,7 +25,7 @@ Its exact counts and drift results are in the
 
 ## Target v1.2 architecture
 
-The first six sequential v1.2 stages, a versioned bidirectional
+The first seven sequential v1.2 stages, a versioned bidirectional
 [Tutor Protocol](v1.2-tutor-protocol.md) and its transport-neutral Runtime
 Bridge plus incremental unconfirmed candidate-evidence admission, are
 implemented on the v1.2 branch together with automatic privacy-filtered
@@ -34,8 +34,10 @@ bounded, journal-derived learning context packets.
 It targets four GPT tutor conversations as the complete learner-facing surface,
 backed by one Gallop Journal/application. Opening or resuming a Tutor session
 automatically returns that context, including across a process restart and an
-unfinished prior chat. Four-subject Golden E2E, dogfood, stability, and release
-remain later stages.
+unfinished prior chat. Four-subject continuity is now covered by an isolated
+synthetic Golden E2E over one runtime.
+Dogfood, stability, and release remain later stages; synthetic E2E is not real
+learner evidence and does not satisfy the dogfood gate.
 
 ## Legacy compatibility
 

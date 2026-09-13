@@ -59,6 +59,8 @@ def render_session(session: dict[str, Any], events: list[dict[str, Any]], synthe
     mistakes = [event for event in events if event["event_type"] == "mistake_observed"]
     evidence = [event for event in events if event["event_type"] in {
         "candidate_assessment", "independent_success"}]
+    confirmations = [event for event in events
+                     if event["event_type"] == "evidence_confirmation"]
     summaries = [event["payload"]["summary"] for event in events if event["payload"].get("summary")]
     unfinished = sorted({item for event in events
                          for item in event["payload"].get("unfinished_work", [])})
@@ -85,6 +87,7 @@ def render_session(session: dict[str, Any], events: list[dict[str, Any]], synthe
         f"## Assistance\n\n{lines(assistance)}\n\n"
         f"## Mistakes\n\n{lines([event['event_id'] for event in mistakes])}\n\n"
         f"## Candidate Evidence\n\n{lines([event['event_id'] for event in evidence])}\n\n"
+        f"## Human Confirmations\n\n{lines([event['event_id'] for event in confirmations])}\n\n"
         f"## Unfinished Work\n\n{lines(unfinished)}\n\n"
         f"## Next Actions\n\n{lines(next_actions)}\n"
     )

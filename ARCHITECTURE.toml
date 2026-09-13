@@ -67,28 +67,28 @@ path = "gallop/tutor/bridge.py"
 role = "transport-neutral tutor runtime orchestration"
 soft_bytes = 12000
 hard_review_bytes = 20000
-baseline_lines = 235
+baseline_lines = 253
 
 [[growth]]
 path = "gallop/tutor/context.py"
 role = "deterministic bounded journal-derived Tutor context"
 soft_bytes = 14000
 hard_review_bytes = 22000
-baseline_lines = 218
+baseline_lines = 239
 
 [[growth]]
 path = "gallop/tutor/evidence.py"
 role = "tutor candidate mapping into existing evidence semantics"
 soft_bytes = 8000
 hard_review_bytes = 14000
-baseline_lines = 62
+baseline_lines = 108
 
 [[growth]]
 path = "gallop/projections/tutor.py"
 role = "privacy-filtered Obsidian Tutor projection"
 soft_bytes = 12000
 hard_review_bytes = 20000
-baseline_lines = 128
+baseline_lines = 131
 
 [[policy]]
 path = "gallop/schemas/training-policies.json"

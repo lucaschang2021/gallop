@@ -12,7 +12,7 @@ from gallop.automation.service import Automation
 from gallop.automation.store import JournalConflict
 
 from .context import build_context
-from .evidence import candidate_record
+from .evidence import candidate_record, confirmation_record
 from .protocol import SUBJECT_TUTORS, validate_directive, validate_event
 
 
@@ -163,6 +163,9 @@ class TutorBridge:
 
         raw = canonical(document).encode("utf-8")
         candidate = candidate_record(document, namespace=self.automation.config.namespace)
+        confirmation = confirmation_record(
+            document, state, namespace=self.automation.config.namespace
+        )
 
         def append() -> dict[str, Any]:
             raw_sha = self.automation.store.raw(raw)
@@ -194,6 +197,21 @@ class TutorBridge:
                     evidence_journal_event_id=evidence_journal_id,
                     evidence_duplicate=not evidence_added,
                     evidence_confirmed=False,
+                )
+            if confirmation is not None:
+                evidence_journal_id, evidence_added = self.automation.store.append(
+                    "elite_evidence",
+                    confirmation["evidence_id"],
+                    {"ruleset": RULESET, "confirmed": True, "record": confirmation},
+                    at=confirmation["occurred_at"],
+                    source=confirmation["source"],
+                    raw_sha=raw_sha,
+                )
+                result.update(
+                    confirmed_evidence_id=confirmation["evidence_id"],
+                    evidence_journal_event_id=evidence_journal_id,
+                    evidence_duplicate=not evidence_added,
+                    evidence_confirmed=True,
                 )
             return result
 

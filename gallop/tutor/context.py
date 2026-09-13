@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from datetime import timedelta
 import re
 from typing import Any
 
-from gallop.automation.protocol import canonical, timestamp
+from gallop.automation.protocol import canonical, digest, timestamp
 from gallop.core.validation import validate_protocol
-from gallop.progression.evidence import capability_state
+from gallop.progression.evidence import capability_state, eligible
 from gallop.tutor.protocol import SUBJECT_TUTORS
 
 
@@ -71,7 +72,10 @@ def build_context(
     if not 1 <= max_items <= 50 or not 2000 <= max_chars <= 20000:
         raise ValueError("Context bounds are outside the governed range")
     sessions = _subject_sessions(state, subject)
-    if not any(session["session_id"] == session_id for session in sessions):
+    session = next(
+        (session for session in sessions if session["session_id"] == session_id), None
+    )
+    if session is None:
         raise ValueError("Context session does not exist for this subject")
     events = _subject_events(state, subject)
     active_concept = next(
@@ -150,6 +154,23 @@ def build_context(
          "priority": item["priority"]}
         for item in queues if item.get("training_type") == "retest"
     ]
+    as_of = timestamp(session["last_event_at"]).date()
+    for entry in evidence_entries:
+        if not eligible(entry):
+            continue
+        for delay in (7, 30):
+            due = timestamp(entry["record"]["occurred_at"]).date() + timedelta(days=delay)
+            if due <= as_of:
+                retests.append({
+                    "retest_id": "retest:" + digest([
+                        entry["record"]["evidence_id"], delay
+                    ])[:24],
+                    "concept_id": entry["record"]["concept"],
+                    "due_at": due.isoformat() + "T00:00:00Z",
+                    "delay_days": delay,
+                    "source_evidence_id": entry["record"]["evidence_id"],
+                    "authority": "ADVISORY",
+                })
     unfinished = [clip(item) for event in events
                   for item in event["payload"].get("unfinished_work", [])]
     summaries = [clip(event["payload"]["summary"]) for event in events

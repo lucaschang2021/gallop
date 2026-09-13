@@ -24,6 +24,7 @@ EVENT_TYPES = (
     "hint_given",
     "feedback_given",
     "candidate_assessment",
+    "evidence_confirmation",
     "mistake_observed",
     "prerequisite_issue",
     "repair_attempt",
@@ -90,6 +91,9 @@ def validate_event(document: dict[str, Any]) -> dict[str, Any]:
     if document["event_type"] in {"candidate_assessment", "independent_success"}:
         if payload.get("authority_class") != "CANDIDATE_EVIDENCE":
             raise ValueError("Tutor assessment must remain candidate evidence")
+    if document["event_type"] == "evidence_confirmation":
+        if provenance["actor"] != "human" or payload.get("authority_class") != "HUMAN_ATTESTATION":
+            raise ValueError("Evidence confirmation requires explicit human authority")
     if payload.get("independence_class") == "INDEPENDENT":
         if payload.get("assistance_level", 0) != 0:
             raise ValueError("Assisted work cannot be independent")
