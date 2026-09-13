@@ -87,6 +87,9 @@ def render(state, namespace):
         for subject, extra in homes.items():
             for name in (POLICIES[subject]["folder"] + "/Home.md", f"Gallop/Automation/Subjects/{subject}/Home.md"):
                 result[name] += extra
+    if "tutor" in state:
+        from gallop.projections.tutor import render_tutor
+        result.update(render_tutor(state, namespace))
     return result
 
 

@@ -531,7 +531,7 @@ class Automation:
         from .views import project
         with self.lock():
             state = self.state()
-            if not state["sessions"] and not state["results"] and not state.get("elite"):
+            if not state["sessions"] and not state["results"] and not state.get("elite") and not state.get("tutor"):
                 return {"views": 0, "written": 0}
             return project(self.config, state)
 

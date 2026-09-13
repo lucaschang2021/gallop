@@ -132,7 +132,18 @@ class TutorBridge:
                 )
             return result
 
-        return self.automation.mutate(append)
+        result = self.automation.mutate(append)
+        try:
+            projection = self.automation.project()
+        except (OSError, ValueError) as exc:
+            result["projection"] = {
+                "status": "FAILED",
+                "error_type": type(exc).__name__,
+                "journal_durable": True,
+            }
+        else:
+            result["projection"] = {"status": "PASS", **projection}
+        return result
 
     def checkpoint_session(self, document: dict[str, Any]) -> dict[str, Any]:
         if document.get("event_type") != "checkpoint":

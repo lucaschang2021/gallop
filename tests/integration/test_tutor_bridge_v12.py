@@ -10,6 +10,7 @@ from gallop.automation.config import AutomationConfig
 from gallop.automation.ports import Clock
 from gallop.automation.store import JournalConflict
 from gallop.tutor import SUBJECT_TUTORS, TutorBridge
+from gallop.projections.tutor import concept_path, mistake_path, session_path
 
 
 ROOT = Path(__file__).parents[2]
@@ -253,3 +254,78 @@ def test_bridge_import_has_no_deeptutor_dependency_or_filesystem_effect(tmp_path
     )
     assert json.loads(result.stdout) == {"deeptutor": False}
     assert list(tmp_path.iterdir()) == []
+
+
+def test_incremental_events_automatically_project_bounded_human_records(tmp_path):
+    bridge = open_bridge(config(tmp_path))
+    bridge.open_or_resume_session("mathematics", "session.math.001")
+    task = tutor_event("task_issued", event_id="event.math.task.001")
+    task["payload"].update({
+        "concept_id": "concept.synthetic-proof",
+        "task_id": "task.math.proof.001",
+        "task_type": "PROOF",
+        "prompt_reference": "prompt://private/not-projected",
+    })
+    attempt = tutor_event("proof_submission", event_id="event.math.attempt.001")
+    attempt["payload"].update({
+        "concept_id": "concept.synthetic-proof",
+        "task_id": "task.math.proof.001",
+        "attempt_id": "attempt.math.proof.001",
+        "learner_response_reference": "response://private/not-projected",
+    })
+    hint = tutor_event("hint_given", event_id="event.math.hint.001")
+    hint["payload"].update({
+        "task_id": "task.math.proof.001",
+        "attempt_id": "attempt.math.proof.001",
+        "assistance_level": 1,
+        "independence_class": "HINT_1",
+    })
+    mistake = tutor_event("mistake_observed", event_id="event.math.mistake.001")
+    mistake["payload"].update({
+        "concept_id": "concept.synthetic-proof",
+        "attempt_id": "attempt.math.proof.001",
+        "failure_tags": ["math:PROOF_INCOMPLETE"],
+    })
+    candidate = tutor_event("candidate_assessment", event_id="event.math.assessment.001")
+    for document in (task, attempt, hint, mistake, candidate):
+        assert bridge.record_learning_event(document)["projection"]["status"] == "PASS"
+
+    state = bridge.automation.state()
+    session = bridge.get_session("session.math.001")
+    session_note = bridge.automation.config.vault / session_path(session)
+    concept_note = bridge.automation.config.vault / concept_path(
+        "mathematics", "concept.synthetic-proof"
+    )
+    mistake_note = bridge.automation.config.vault / mistake_path(mistake)
+    assert session_note.is_file() and concept_note.is_file() and mistake_note.is_file()
+    body = session_note.read_text(encoding="utf-8")
+    assert "attempt.math.proof.001" in body
+    assert "Candidate Evidence" in body and "event.math.assessment.001" in body
+    assert "response://private/not-projected" not in body
+    assert "prompt://private/not-projected" not in body
+    assert state["concepts"][next(iter(state["concepts"]))]["mastery_level"] == 0
+    bridge.close()
+
+
+def test_projection_failure_reports_failed_but_keeps_journal_and_retries(tmp_path, monkeypatch):
+    bridge = open_bridge(config(tmp_path))
+    bridge.open_or_resume_session("mathematics", "session.math.001")
+    before = len(bridge.automation.store.events())
+    import gallop.automation.views as views
+
+    original = views.atomic_text
+
+    def fail_projection(*_args, **_kwargs):
+        raise OSError("simulated projection failure")
+
+    monkeypatch.setattr(views, "atomic_text", fail_projection)
+    document = tutor_event("checkpoint", event_id="event.math.checkpoint.projection-failure")
+    result = bridge.record_learning_event(document)
+    assert result["projection"] == {
+        "status": "FAILED", "error_type": "OSError", "journal_durable": True
+    }
+    assert len(bridge.automation.store.events()) == before + 1
+    assert document["event_id"] in bridge.get_session("session.math.001")["event_ids"]
+    monkeypatch.setattr(views, "atomic_text", original)
+    assert bridge.automation.project()["written"] >= 1
+    bridge.close()
