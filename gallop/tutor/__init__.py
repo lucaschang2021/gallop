@@ -9,6 +9,7 @@ from .protocol import (
     validate_event,
 )
 from .bridge import TutorBridge
+from .evidence import candidate_record
 
 __all__ = [
     "DIRECTIVE_TYPES",
@@ -16,6 +17,7 @@ __all__ = [
     "PROTOCOL_VERSION",
     "SUBJECT_TUTORS",
     "TutorBridge",
+    "candidate_record",
     "validate_directive",
     "validate_event",
 ]

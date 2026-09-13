@@ -45,6 +45,22 @@ def tutor_event(
         "summary": "Synthetic incremental checkpoint.",
         "checkpoint_reason": "Learner submitted a meaningful attempt.",
     }
+    if event_type in {"candidate_assessment", "independent_success"}:
+        payload.update({
+            "concept_id": "concept.synthetic-proof",
+            "capability_id": "capability.proof",
+            "task_id": "task.math.proof.001",
+            "task_type": "PROOF",
+            "attempt_id": "attempt.math.proof.001",
+            "correctness": "CORRECT",
+            "reasoning_quality": "SOLID",
+            "evaluator_confidence": "MEDIUM",
+            "authority_class": "CANDIDATE_EVIDENCE",
+            "evidence_refs": ["response.math.proof.001"],
+            "agent_usage": "NONE",
+            "independence_class": "INDEPENDENT",
+            "assistance_level": 0,
+        })
     return {
         "schema_version": "1.2",
         "event_id": event_id,
@@ -144,6 +160,53 @@ def test_tutor_events_cannot_change_mastery_or_v1_queue(tmp_path):
     assert after["concepts"] == before["concepts"]
     assert after["queue"] == before["queue"]
     assert "tutor" not in before and len(after["tutor"]["events"]) == 2
+    bridge.close()
+
+
+@pytest.mark.parametrize("event_type", ["candidate_assessment", "independent_success"])
+def test_tutor_assessment_is_incremental_unconfirmed_elite_evidence(tmp_path, event_type):
+    bridge = open_bridge(config(tmp_path))
+    bridge.open_or_resume_session("mathematics", "session.math.001")
+    document = tutor_event(event_type, event_id=f"event.math.{event_type}.001")
+    first = bridge.record_learning_event(document)
+    second = bridge.record_learning_event(deepcopy(document))
+    state = bridge.automation.state()
+    evidence = state["elite"]["evidence"][first["candidate_evidence_id"]]
+    concept = next(item for item in state["concepts"].values()
+                   if item["concept"] == "concept.synthetic-proof")
+    assert first["evidence_confirmed"] is False
+    assert first["evidence_duplicate"] is False and second["evidence_duplicate"] is True
+    assert evidence["confirmed"] is False
+    assert evidence["record"]["metadata"]["tutor_event_id"] == document["event_id"]
+    assert concept["mastery_level"] == 0
+    assert state["queue"] == {}
+    bridge.close()
+
+
+def test_submission_without_assessment_does_not_create_evidence(tmp_path):
+    bridge = open_bridge(config(tmp_path))
+    bridge.open_or_resume_session("mathematics", "session.math.001")
+    document = tutor_event("proof_submission", event_id="event.math.proof.001")
+    document["payload"].update({
+        "task_id": "task.math.proof.001",
+        "attempt_id": "attempt.math.proof.001",
+        "learner_response_reference": "response://synthetic/proof-001",
+    })
+    result = bridge.record_learning_event(document)
+    assert "candidate_evidence_id" not in result
+    assert "elite" not in bridge.automation.state()
+    bridge.close()
+
+
+def test_invalid_candidate_taxonomy_rolls_back_before_journal_append(tmp_path):
+    bridge = open_bridge(config(tmp_path))
+    bridge.open_or_resume_session("mathematics", "session.math.001")
+    before = bridge.automation.store.events()
+    document = tutor_event("candidate_assessment", event_id="event.math.bad-taxonomy.001")
+    document["payload"]["failure_tags"] = ["math:NOT_REGISTERED"]
+    with pytest.raises(ValueError, match="Unregistered failure mode"):
+        bridge.record_learning_event(document)
+    assert bridge.automation.store.events() == before
     bridge.close()
 
 

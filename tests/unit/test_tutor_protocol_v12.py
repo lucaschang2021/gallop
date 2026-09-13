@@ -37,7 +37,7 @@ def event(event_type: str = "checkpoint", subject: str = "mathematics") -> dict:
             "agent_usage": "NONE",
             "correctness": "CORRECT",
             "reasoning_quality": "SOLID",
-            "failure_tags": ["synthetic_failure"],
+            "failure_tags": ["math:PROOF_INCOMPLETE"],
             "evaluator_confidence": "MEDIUM",
             "authority_class": "CANDIDATE_EVIDENCE",
             "evidence_refs": ["attempt.synthetic.001"],

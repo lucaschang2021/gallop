@@ -10,6 +10,7 @@
     "concept_id": "concept.sdf",
     "capability_id": "capability.derivation",
     "task_id": "task.finance.derivation.001",
+    "task_type": "DERIVATION",
     "attempt_id": "attempt.finance.derivation.001",
     "correctness": "CORRECT",
     "evaluator_confidence": "MEDIUM",
