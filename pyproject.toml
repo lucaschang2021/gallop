@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = {file = "LICENSE"}
 authors = [{name = "Gallop contributors"}]
-dependencies = ["jsonschema>=4.20,<5"]
+dependencies = ["jsonschema>=4.20,<5", "mcp>=1.30,<2"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "License :: OSI Approved :: Apache Software License",

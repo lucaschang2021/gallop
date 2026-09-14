@@ -8,7 +8,7 @@ import subprocess
 import sys
 
 from gallop.automation.config import AutomationConfig
-from gallop.tutor.mcp import handle, tool_catalog
+from gallop.tutor.mcp import call_tool, runtime_status, tool_catalog
 from gallop.tutor.protocol import SUBJECT_TUTORS
 
 
@@ -30,24 +30,49 @@ def request(method: str, params: dict | None = None, request_id: int = 1) -> dic
     return value
 
 
+def initialized_input(*calls: dict) -> str:
+    messages = [
+        request("initialize", {
+            "protocolVersion": "2025-06-18", "capabilities": {},
+            "clientInfo": {"name": "gallop-test", "version": "1"},
+        }, request_id=0),
+        {"jsonrpc": "2.0", "method": "notifications/initialized"},
+        *calls,
+    ]
+    return "\n".join(json.dumps(message) for message in messages) + "\n"
+
+
 def test_catalog_is_subject_bound_and_safety_annotated():
     tools = tool_catalog("mathematics")
     assert [tool["name"] for tool in tools] == [
-        "open_or_resume_session", "get_learning_context", "record_learning_event",
-        "checkpoint_session", "finalize_session", "get_session",
+        "get_runtime_status", "open_or_resume_session", "get_learning_context",
+        "record_learning_event", "checkpoint_session", "finalize_session", "get_session",
     ]
-    assert tools[1]["annotations"]["readOnlyHint"] is True
-    assert tools[2]["inputSchema"]["properties"]["document"]["properties"]["subject"] == {
+    assert tools[0]["annotations"]["readOnlyHint"] is True
+    assert tools[2]["annotations"]["readOnlyHint"] is True
+    assert tools[3]["inputSchema"]["properties"]["document"]["properties"]["subject"] == {
         "const": "mathematics"
     }
 
 
+def test_runtime_status_does_not_initialize_journal(tmp_path):
+    cfg = configuration(tmp_path)
+    status = runtime_status(cfg, "cs-ai")
+    assert status == {
+        "status": "PASS", "server": "gallop-zero-touch", "version": "1.2",
+        "subject": "cs-ai", "tutor_id": "cs-ai-tutor",
+        "namespace": "integration_tests", "runtime_initialized": False,
+        "vault_ready": False, "reader_identity": "NOT_BOUND", "journal_opened": False,
+    }
+    assert not cfg.root.exists()
+
+
 def test_bound_server_rejects_cross_subject_event(tmp_path):
     cfg = configuration(tmp_path)
-    opened = handle(request("tools/call", {
-        "name": "open_or_resume_session", "arguments": {"session_id": "session.math.mcp"}
-    }), cfg, "mathematics")
-    assert opened["result"]["structuredContent"]["created"] is True
+    opened = call_tool(cfg, "mathematics", "open_or_resume_session", {
+        "session_id": "session.math.mcp"
+    })
+    assert opened["structuredContent"]["created"] is True
     event = {
         "schema_version": "1.2",
         "event_id": "event.finance.cross-subject",
@@ -63,11 +88,12 @@ def test_bound_server_rejects_cross_subject_event(tmp_path):
             "synthetic": True,
         },
     }
-    result = handle(request("tools/call", {
-        "name": "checkpoint_session", "arguments": {"document": event}
-    }), cfg, "mathematics")
-    assert result["result"]["isError"] is True
-    assert result["result"]["structuredContent"]["error_type"] == "ValueError"
+    try:
+        call_tool(cfg, "mathematics", "checkpoint_session", {"document": event})
+    except ValueError as exc:
+        assert "bound subject" in str(exc)
+    else:
+        raise AssertionError("Cross-subject event was accepted")
 
 
 def test_stdio_restart_restores_session_without_chat_transcript(tmp_path):
@@ -86,24 +112,24 @@ def test_stdio_restart_restores_session_without_chat_transcript(tmp_path):
     ]
     first = subprocess.run(
         command,
-        input=json.dumps(request("tools/call", {
+        input=initialized_input(request("tools/call", {
             "name": "open_or_resume_session",
             "arguments": {"session_id": "session.statistics.restart"},
-        })) + "\n",
+        })),
         text=True, capture_output=True, check=True,
     )
-    first_result = json.loads(first.stdout)["result"]["structuredContent"]
+    first_result = json.loads(first.stdout.splitlines()[-1])["result"]["structuredContent"]
     assert first_result["created"] is True
 
     second = subprocess.run(
         command,
-        input=json.dumps(request("tools/call", {
+        input=initialized_input(request("tools/call", {
             "name": "open_or_resume_session",
             "arguments": {"session_id": "session.statistics.restart"},
-        })) + "\n",
+        })),
         text=True, capture_output=True, check=True,
     )
-    second_result = json.loads(second.stdout)["result"]["structuredContent"]
+    second_result = json.loads(second.stdout.splitlines()[-1])["result"]["structuredContent"]
     assert second_result["created"] is False
     assert second_result["context_restore"]["status"] == "PASS"
 
@@ -127,11 +153,12 @@ def test_stdio_abrupt_exit_and_duplicate_checkpoint_recover(tmp_path):
         stderr=subprocess.PIPE,
     )
     assert process.stdin is not None and process.stdout is not None
-    process.stdin.write(json.dumps(request("tools/call", {
+    process.stdin.write(initialized_input(request("tools/call", {
         "name": "open_or_resume_session",
         "arguments": {"session_id": "session.finance.abrupt"},
-    })) + "\n")
+    })))
     process.stdin.flush()
+    json.loads(process.stdout.readline())
     opened = json.loads(process.stdout.readline())["result"]["structuredContent"]
     process.kill()
     process.wait(timeout=10)
@@ -151,12 +178,18 @@ def test_stdio_abrupt_exit_and_duplicate_checkpoint_recover(tmp_path):
             "synthetic": True,
         },
     }
-    calls = "\n".join(json.dumps(request("tools/call", {
+    checkpoint_call = request("tools/call", {
         "name": "checkpoint_session", "arguments": {"document": checkpoint},
-    }, request_id=index)) for index in (2, 3)) + "\n"
-    retried = subprocess.run(command, input=calls, text=True, capture_output=True, check=True)
-    results = [json.loads(line)["result"]["structuredContent"]
-               for line in retried.stdout.splitlines()]
+    }, request_id=2)
+    results = []
+    for _ in range(2):
+        retried = subprocess.run(
+            command, input=initialized_input(checkpoint_call), text=True,
+            capture_output=True, check=True,
+        )
+        response = json.loads(retried.stdout.splitlines()[-1])
+        assert "structuredContent" in response["result"], response
+        results.append(response["result"]["structuredContent"])
     assert results[0]["duplicate"] is False
     assert results[1]["duplicate"] is True
     assert results[1]["journal_event_id"] == results[0]["journal_event_id"]
@@ -164,8 +197,22 @@ def test_stdio_abrupt_exit_and_duplicate_checkpoint_recover(tmp_path):
 
 def test_initialize_and_notification_framing_do_not_write(tmp_path):
     cfg = configuration(tmp_path)
-    initialized = handle(request("initialize", {"protocolVersion": "2025-06-18"}), cfg, "cs-ai")
-    assert initialized["result"]["protocolVersion"] == "2025-06-18"
-    assert initialized["result"]["serverInfo"]["version"] == "1.2"
-    assert handle({"jsonrpc": "2.0", "method": "notifications/initialized"}, cfg, "cs-ai") is None
+    config_path = tmp_path / "config.json"
+    config_path.write_text(json.dumps({
+        "namespace": cfg.namespace,
+        "root": str(cfg.root),
+        "vault": str(cfg.vault),
+        "reader": str(cfg.reader),
+        "export_state": str(cfg.export_state),
+    }), encoding="utf-8")
+    command = [
+        sys.executable, "-m", "gallop.tutor.mcp", "--config", str(config_path),
+        "--subject", "cs-ai",
+    ]
+    requests = initialized_input(request("tools/list", request_id=2))
+    result = subprocess.run(command, input=requests, text=True, capture_output=True, check=True)
+    responses = [json.loads(line) for line in result.stdout.splitlines()]
+    assert responses[0]["result"]["protocolVersion"] == "2025-06-18"
+    assert responses[0]["result"]["serverInfo"]["version"] == "1.2"
+    assert len(responses[1]["result"]["tools"]) == 7
     assert not cfg.root.exists()

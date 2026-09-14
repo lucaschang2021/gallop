@@ -3,14 +3,19 @@
 from __future__ import annotations
 
 import argparse
+import anyio
 from copy import deepcopy
 import json
 from pathlib import Path
 import re
-import sys
 from typing import Any
 
+import mcp.types as mcp_types
+from mcp.server import Server
+from mcp.server.stdio import stdio_server
+
 from gallop.automation.config import AutomationConfig
+from gallop.mobile_icloud import validate_target
 from gallop.tutor.bridge import TutorBridge
 from gallop.tutor.protocol import SUBJECT_TUTORS
 
@@ -41,6 +46,18 @@ def _event_schema(subject: str) -> dict[str, Any]:
     return schema
 
 
+def _document_input_schema(document: dict[str, Any]) -> dict[str, Any]:
+    nested = deepcopy(document)
+    definitions = nested.pop("$defs")
+    return {
+        "type": "object",
+        "properties": {"document": nested},
+        "required": ["document"],
+        "additionalProperties": False,
+        "$defs": definitions,
+    }
+
+
 def tool_catalog(subject: str) -> list[dict[str, Any]]:
     stable_id = {
         "type": "string",
@@ -51,6 +68,13 @@ def tool_catalog(subject: str) -> list[dict[str, Any]]:
     document = _event_schema(subject)
     common = {"readOnlyHint": False, "destructiveHint": False, "openWorldHint": False}
     return [
+        {
+            "name": "get_runtime_status",
+            "title": f"Check {subject} Gallop runtime",
+            "description": "Read configuration and bound Reader identity without opening the Journal.",
+            "inputSchema": {"type": "object", "additionalProperties": False},
+            "annotations": {"readOnlyHint": True, "destructiveHint": False, "openWorldHint": False},
+        },
         {
             "name": "open_or_resume_session",
             "title": f"Open or resume {subject} Tutor session",
@@ -83,36 +107,21 @@ def tool_catalog(subject: str) -> list[dict[str, Any]]:
             "name": "record_learning_event",
             "title": f"Record {subject} learning event",
             "description": "Validate and append one real learning event, then refresh owned projections.",
-            "inputSchema": {
-                "type": "object",
-                "properties": {"document": document},
-                "required": ["document"],
-                "additionalProperties": False,
-            },
+            "inputSchema": _document_input_schema(document),
             "annotations": common,
         },
         {
             "name": "checkpoint_session",
             "title": f"Checkpoint {subject} Tutor session",
             "description": "Commit one meaningful checkpoint before more tutoring continues.",
-            "inputSchema": {
-                "type": "object",
-                "properties": {"document": deepcopy(document)},
-                "required": ["document"],
-                "additionalProperties": False,
-            },
+            "inputSchema": _document_input_schema(document),
             "annotations": common,
         },
         {
             "name": "finalize_session",
             "title": f"Finalize {subject} Tutor session",
             "description": "Record session finalization after all meaningful checkpoints are durable.",
-            "inputSchema": {
-                "type": "object",
-                "properties": {"document": deepcopy(document)},
-                "required": ["document"],
-                "additionalProperties": False,
-            },
+            "inputSchema": _document_input_schema(document),
             "annotations": common,
         },
         {
@@ -143,10 +152,38 @@ def _bound_event(arguments: dict[str, Any], subject: str) -> dict[str, Any]:
     return document
 
 
+def runtime_status(config: AutomationConfig, subject: str) -> dict[str, Any]:
+    config.validate()
+    reader_identity = "NOT_BOUND"
+    if config.binding is not None:
+        validate_target(config.reader, config.binding)
+        reader_identity = "PASS"
+    return {
+        "status": "PASS",
+        "server": SERVER_NAME,
+        "version": SERVER_VERSION,
+        "subject": subject,
+        "tutor_id": SUBJECT_TUTORS[subject],
+        "namespace": config.namespace,
+        "runtime_initialized": (config.root / "namespace.json").is_file(),
+        "vault_ready": (config.vault / ".obsidian").is_dir(),
+        "reader_identity": reader_identity,
+        "journal_opened": False,
+    }
+
+
 def call_tool(config: AutomationConfig, subject: str, name: str,
               arguments: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(arguments, dict):
         raise ValueError("Tool arguments must be an object")
+    if name == "get_runtime_status":
+        if arguments:
+            raise ValueError("Runtime status takes no arguments")
+        result = runtime_status(config, subject)
+        return {
+            "structuredContent": result,
+            "content": [{"type": "text", "text": json.dumps(result, ensure_ascii=False, sort_keys=True)}],
+        }
     with TutorBridge.open(config) as bridge:
         if name == "open_or_resume_session":
             result = bridge.open_or_resume_session(subject, arguments["session_id"])
@@ -176,56 +213,44 @@ def _error(exc: Exception) -> dict[str, Any]:
     }
 
 
-def handle(request: dict[str, Any], config: AutomationConfig,
-           subject: str) -> dict[str, Any] | None:
-    method = request.get("method")
-    request_id = request.get("id")
-    if request_id is None:
-        return None
-    response: dict[str, Any] = {"jsonrpc": "2.0", "id": request_id}
-    try:
-        if method == "initialize":
-            protocol = request.get("params", {}).get("protocolVersion", "2025-06-18")
-            response["result"] = {
-                "protocolVersion": protocol,
-                "capabilities": {"tools": {"listChanged": False}},
-                "serverInfo": {"name": SERVER_NAME, "version": SERVER_VERSION},
-                "instructions": INSTRUCTIONS,
-            }
-        elif method == "ping":
-            response["result"] = {}
-        elif method == "tools/list":
-            response["result"] = {"tools": tool_catalog(subject)}
-        elif method == "tools/call":
-            params = request.get("params", {})
-            response["result"] = call_tool(
-                config, subject, params.get("name", ""), params.get("arguments", {})
+def build_server(config: AutomationConfig, subject: str) -> Server:
+    server = Server(SERVER_NAME, version=SERVER_VERSION, instructions=INSTRUCTIONS)
+
+    @server.list_tools()
+    async def list_tools() -> list[mcp_types.Tool]:
+        return [mcp_types.Tool(**item) for item in tool_catalog(subject)]
+
+    @server.call_tool()
+    async def dispatch(name: str, arguments: dict[str, Any]) -> mcp_types.CallToolResult:
+        try:
+            result = call_tool(config, subject, name, arguments)
+        except Exception as exc:
+            error = _error(exc)
+            return mcp_types.CallToolResult(
+                isError=True,
+                structuredContent=error["structuredContent"],
+                content=[mcp_types.TextContent(**error["content"][0])],
             )
-        else:
-            response["error"] = {"code": -32601, "message": "Method not found"}
-    except Exception as exc:
-        if method == "tools/call":
-            response["result"] = _error(exc)
-        else:
-            response["error"] = {"code": -32602, "message": _error(exc)["content"][0]["text"]}
-    return response
+        return mcp_types.CallToolResult(
+            structuredContent=result["structuredContent"],
+            content=[mcp_types.TextContent(**result["content"][0])],
+        )
+
+    return server
 
 
 def serve(config: AutomationConfig, subject: str) -> int:
-    for raw in sys.stdin:
-        try:
-            request = json.loads(raw)
-            if not isinstance(request, dict):
-                raise ValueError("JSON-RPC request must be an object")
-            response = handle(request, config, subject)
-        except (json.JSONDecodeError, ValueError) as exc:
-            response = {
-                "jsonrpc": "2.0",
-                "id": None,
-                "error": {"code": -32700, "message": str(exc)},
-            }
-        if response is not None:
-            print(json.dumps(response, ensure_ascii=False, separators=(",", ":")), flush=True)
+    server = build_server(config, subject)
+
+    async def run() -> None:
+        async with stdio_server() as (read_stream, write_stream):
+            await server.run(
+                read_stream,
+                write_stream,
+                server.create_initialization_options(),
+            )
+
+    anyio.run(run)
     return 0
 
 
