@@ -1,8 +1,10 @@
 # Current status
 
-**Snapshot: 2026-09-13.** The RC2 governance baseline is frozen at record commit
-`22a3fe2c27b4128fc1124eefe003fbad6194b127`. The v1.2 product build now proceeds
-sequentially from that exact base. This page does not claim Zero-Touch release.
+**Snapshot: 2026-09-14.** The RC2 governance baseline is frozen at record commit
+`22a3fe2c27b4128fc1124eefe003fbad6194b127`. The v1.2 implementation and
+controlled real four-Tutor dogfood are complete on the Zero-Touch candidate
+branch. The [v1.2 baseline](baselines/v1.2-zero-touch-baseline.md) becomes frozen
+only when the exact record commit completes the required CI matrix successfully.
 
 Gallop is headless. The frozen target product definition is:
 
@@ -36,8 +38,13 @@ backed by one Gallop Journal/application. Opening or resuming a Tutor session
 automatically returns that context, including across a process restart and an
 unfinished prior chat. Four-subject continuity is now covered by an isolated
 synthetic Golden E2E over one runtime.
-Dogfood, stability, and release remain later stages; synthetic E2E is not real
-learner evidence and does not satisfy the dogfood gate.
+Controlled real dogfood now covers all four Tutors, incremental checkpoints,
+exact duplicate recovery, abrupt-close restoration, a no-transcript fresh chat,
+owned Obsidian projection, and learner-confirmed mobile Reader visibility. The
+[dated acceptance record](audits/v1.2-real-dogfood-acceptance.md) keeps actual
+learner outcomes separate from runtime acceptance: in particular, a partial
+Mathematics independent retest remained `GUIDED` at mastery level `0`. Synthetic
+E2E remains isolated and is not learner evidence.
 
 ## Legacy compatibility
 
@@ -87,9 +94,9 @@ versions are not covered by this matrix.
 
 ## Known limitations and remaining work
 
-1. **RC2 operation is technical.** CLI/file intake only; no Tutor runtime bridge,
-   daemon, account
-   scraper or automatic notifications. `learner` mode requires an existing
+1. **Real setup remains technical.** v1.2 provides subject-bound local Tutor MCP
+   tools, but no daemon, account scraper, automatic notifications, or Gallop UI.
+   `learner` mode requires an existing
    Obsidian Vault; `cycle`/`publish` need an existing verified Reader binding.
    The isolated preview works without those external applications. A portable
    first-time real Reader setup is not delivered by the sample configuration.
@@ -106,10 +113,9 @@ versions are not covered by this matrix.
    Existing live/uncertain jobs must not be duplicated to escape a timeout.
 6. **Distribution can improve.** v1.0.0 artifact uploads, checksums and release
    version checks are missing from the current workflow. Use source installation.
-7. **Future capabilities stay future.** Zero-Touch Tutor integration,
-   incremental chat checkpointing, bounded fresh-chat context restoration,
-   built-in semantic retrieval, and a general plugin ecosystem are not shipped
-   RC2 features.
+7. **Future capabilities stay future.** Built-in semantic retrieval, a general
+   plugin ecosystem, Competition Mathematics, Yau specialization, and a Gallop
+   UI are not part of the v1.2 baseline.
 
 See [roadmap](roadmap.md) for proposed priorities. No existing learning data,
 cloud account or external provider was changed by this documentation review.

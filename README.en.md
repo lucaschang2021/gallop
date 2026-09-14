@@ -4,7 +4,7 @@
 
 [简体中文](README.md) · [Quickstart](docs/quickstart.md) · [Architecture](docs/architecture.md) · [Current status](docs/current-status.md) · [Roadmap](docs/roadmap.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Apache-2.0](LICENSE)
 
-> **Stable release: v1.0.0 / Automation V1; current candidate: v1.1.0rc2.** The candidate adds the Elite Training Protocol and Progressive Mentorship Engine. This remains an early-stage project with no guarantee of learning outcomes. Try the isolated example before connecting real notes.
+> **Stable release: v1.0.0 / Automation V1; current candidate baseline: v1.2 Zero-Touch Learning Continuity.** v1.2 adds four subject-bound GPT Tutor MCP servers, Journal-derived fresh-chat restoration, incremental checkpoints, and automatic Obsidian projection. This remains an early-stage project with no guarantee of learning outcomes. Read the [current status](docs/current-status.md) and [controlled dogfood record](docs/audits/v1.2-real-dogfood-acceptance.md) before connecting real notes.
 
 ## Why Gallop?
 

@@ -20,10 +20,13 @@ Legacy commands remain supported; historical state is not migrated implicitly.
 
 ## Release candidate
 
-**v1.1.0rc2** implements Elite Training Protocol evidence and Progressive
-Mentorship support. It remains unreleased until its final gate is reviewed and
-release is explicitly authorized. Stable v1.0.0 remains immutable. The candidate
-does not add a new scheduler or silently reinterpret historical v1 evidence.
+**v1.2 Zero-Touch Learning Continuity** builds on the frozen v1.1 RC2 governance
+boundary with four subject-bound GPT Tutor MCP servers, incremental Journal
+checkpoints, fresh-chat restoration, and owned Obsidian projection. Controlled
+real four-subject dogfood is recorded, while the exact baseline commit still
+requires its final CI freeze. Stable v1.0.0 remains immutable. The candidate
+does not add a new scheduler, Gallop UI, mandatory secondary AI, or silently
+reinterpret historical v1 evidence.
 
 ## Near-term priorities
 

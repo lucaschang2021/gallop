@@ -4,7 +4,7 @@
 
 [English](README.en.md) · [快速开始](docs/quickstart.md) · [架构](docs/architecture.md) · [当前状态](docs/current-status.md) · [路线图](docs/roadmap.md) · [贡献](CONTRIBUTING.md) · [安全](SECURITY.md) · [Apache-2.0](LICENSE)
 
-> **稳定版本：v1.0.0 / Automation V1；当前候选版本：v1.1.0rc2。** 候选版本增加 Elite Training Protocol 与 Progressive Mentorship Engine，仍属早期项目，不保证学习效果。先运行隔离示例，再考虑连接真实笔记库。
+> **稳定版本：v1.0.0 / Automation V1；当前候选基线：v1.2 Zero-Touch Learning Continuity。** v1.2 增加四个 subject-bound GPT Tutor MCP、Journal 驱动的 fresh-chat 恢复、增量 checkpoint 和自动 Obsidian 投影；它仍属早期项目，不保证学习效果。真实使用前请阅读[当前状态](docs/current-status.md)与[受控 Dogfood 记录](docs/audits/v1.2-real-dogfood-acceptance.md)。
 
 ## 为什么需要 Gallop？
 
