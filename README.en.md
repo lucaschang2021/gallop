@@ -1,148 +1,123 @@
 # Gallop
 
-**Turn AI tutoring notes, weaknesses, and real practice records into a learning plan you can keep tracking—a local-first Python learning orchestration tool.**
+**A local-first, evidence-driven Progressive Mentorship Engine for mathematics, statistics/econometrics, finance, and CS/AI.**
 
-[简体中文](README.md) · [Quickstart](docs/quickstart.md) · [Architecture](docs/architecture.md) · [Current status](docs/current-status.md) · [Roadmap](docs/roadmap.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Apache-2.0](LICENSE)
+[简体中文](README.md) · [Quickstart](docs/quickstart.md) · [Architecture](docs/architecture.md) · [Current status](docs/current-status.md) · [Roadmap](docs/roadmap.md) · [Security](SECURITY.md) · [Apache-2.0](LICENSE)
 
-> **Stable release: v1.0.0 / Automation V1; current candidate baseline: v1.2 Zero-Touch Learning Continuity.** v1.2 adds four subject-bound GPT Tutor MCP servers, Journal-derived fresh-chat restoration, incremental checkpoints, and automatic Obsidian projection. This remains an early-stage project with no guarantee of learning outcomes. Read the [current status](docs/current-status.md) and [controlled dogfood record](docs/audits/v1.2-real-dogfood-acceptance.md) before connecting real notes.
+> **Current source baseline: Gallop v1.2.0 — Zero-Touch Learning Continuity.** Four subject-bound GPT Tutor conversations are the learner-facing surface; Gallop runs underneath them to govern the Journal, evidence authority, continuity, mastery, and Obsidian/Reader projections. Controlled four-Tutor real dogfood passed on 2026-09-14. GitHub Release metadata is intentionally left unchanged; repository source status and Release records are managed separately.
 
-## Why Gallop?
+## Core principle
 
-Finishing an AI lesson is not the same as mastering its subject. Conversations scatter, weaknesses get forgotten, and one correct answer does not establish independent performance.
+> **GPT = TEACH · GALLOP = GOVERN · OBSIDIAN = REMEMBER · EVIDENCE = PROVE**
 
-Gallop connects **what the tutor observed → what to practice next → evidence of actual performance**. Learners keep local records, inspect reasons for state changes, and read today's training, reviews, and open questions in Obsidian.
+Gallop does not treat “the GPT says you mastered it” as mastery. Real learning activity is recorded as replayable, auditable evidence: concepts, mistakes, hints, independent work, repairs, retests, checkpoints, and final state live in a local Journal. Obsidian and Gallop-Reader are derived views, never the authority.
 
-For example, a tutor records repeated confusion about quantifier order in continuity. Gallop retains that weakness, creates a training candidate, and prepares an independent task. Only after actual work and human-confirmed assessment does it evaluate a conservative state update. Importing a lesson summary alone never promotes mastery.
+## What v1.2 implements
 
-**AI organizes deliberate practice; the learner still does the thinking.** Read the [philosophy](docs/philosophy.md).
-
-## Who is it for?
-
-- Self-directed learners, students, and researchers connecting long-term AI tutoring to practice.
-- Obsidian users comfortable managing learning records through a CLI.
-- Developers integrating structured tutor output or practice engines.
-
-Automation currently ships policies for mathematics, statistics/econometrics, finance, and CS/AI. The underlying protocols can be extended, but new subjects need policies and validation. This is not a hosted course platform or automatic grader.
-
-## Capabilities and boundaries
-
-| Capability | Implemented today | Boundary |
+| Capability | Current state | Boundary |
 |---|---|---|
-| Tutor intake | Import JSON or protocol Markdown containing lessons, concepts, mistakes, and questions; retain raw input | No ChatGPT account scraping; requires a [compatible file](docs/tutor-protocol.md) |
-| Persistent state | Append-only SQLite events, deterministic replay, explanations, and evidence references | The journal governs new Automation records; no implicit legacy migration |
-| Training and review | Four subject policies, P0–P4 priorities, T+1/T+7/T+30 review candidates | Explicit CLI runs, no daemon or automatic reminders |
-| Practice preparation | Local task specifications; optional DeepTutor diagnostics with durable submit/poll/collect jobs | DeepTutor is separate; choice questions cannot replace proof, oral, coding, or simulation work |
-| Mastery evaluation | Levels 0–5 and low/medium/high confidence from human-confirmed actual results | Generated material is not completed training; one correct answer does not promote mastery |
-| Elite training and progressive mentorship (v1.1 RC) | Distinguish independent, hinted, solution-seen, and AI-generated evidence; derive training zones, scaffolding, and prerequisite repair from an explicit target and current evidence | A target never raises current capability; guidance does not schedule work, and the Human Production E2E remains pending |
-| Notes and mobile reading | Managed Obsidian Markdown regions and filtered one-way Gallop-Reader export | Reader is not bidirectional sync; real publication requires an existing verified Reader binding |
-| Legacy compatibility | v0.1 session/manifest/generate/import-result commands and offline demo remain | Legacy configuration, state, and mastery rules are separate from Automation |
+| Four-Tutor Zero-Touch | Mathematics / Statistics / Finance / CS-AI subject-bound GPT Tutor MCP servers | A Tutor can only access and write its own subject context |
+| Fresh-chat continuity | A new chat can restore bounded context from the Journal using a stable session identity | No dependency on the old transcript or model memory as authority |
+| Incremental checkpointing | Meaningful learning work is committed incrementally and can survive abrupt exit | Journal commits precede projection refresh |
+| Evidence authority | Distinguishes independent, hinted, solution-seen, AI-generated, and other evidence classes | Tutor assessment is candidate evidence until accepted by the authority flow |
+| Progressive Mentorship | Uses current capability, target, prerequisites, productive struggle, and scaffolding to shape guidance | Targets never raise current capability; scaffolding fades conservatively |
+| Obsidian projection | Automatically projects Gallop-owned Session / Concept / Mistake / Home views | Journal is authoritative; unsafe managed-region loss fails closed |
+| Gallop-Reader | Validated one-way PC → Vault → Reader publication with recovery | Reader is a reading mirror, not bidirectional state |
+| Recovery / idempotency | Abrupt-close restore, exact duplicate recovery, deterministic replay | Duplicate events do not become duplicate learning evidence |
+| Legacy compatibility | Automation V1 and v0.1 workflows remain available | Historical mastery is not silently migrated or reinterpreted |
 
-## Run an offline example
+## Real acceptance
 
-Requires **Python 3.11+** and Git. CI covers Windows/Ubuntu with Python 3.11/3.13. No Obsidian, DeepTutor, model account, or API key is needed for this example.
+The [v1.2 Real Four-Tutor Dogfood Acceptance](docs/audits/v1.2-real-dogfood-acceptance.md) covers:
+
+- four real subject-bound Tutor sessions;
+- Mathematics proof → mistake → assisted repair → fresh-chat independent retest;
+- Statistics simulation reasoning;
+- Finance closed-book derivation;
+- CS/AI No-Agent Coding;
+- abrupt-close restore and exact duplicate checkpoint recovery;
+- automatic Obsidian projection and fail-closed projection recovery;
+- one-way Gallop-Reader publication with learner-confirmed mobile visibility;
+- four-subject isolation and conservative evidence authority.
+
+Acceptance deliberately preserved weak outcomes instead of hiding them: when the Mathematics independent retest was `PARTIAL`, Gallop kept the state at `GUIDED`, mastery `0`, rather than lowering the evidence standard to improve a release claim.
+
+## Daily-use shape
+
+Normal learning does not require a separate Gallop UI:
+
+```mermaid
+flowchart LR
+    U[Learner] --> T[Four GPT Tutors]
+    T <--> G[Gallop Tutor Bridge / Journal]
+    G --> E[Evidence + Mastery + Continuity]
+    G --> O[Obsidian Views]
+    O --> R[Gallop-Reader]
+```
+
+The learner studies directly in the relevant Tutor conversation. The subject-bound bridge opens or restores a session, returns bounded context, records learning events, checkpoints, and finalization. Gallop maintains the append-only Journal, deterministic replay, and evidence authority; Obsidian and Reader present the derived state.
+
+DeepTutor is now an **optional legacy adapter**. It is not on the v1.2 critical path and is not a required runtime dependency for Zero-Touch continuity.
+
+## Isolated offline example
+
+Requires Python 3.11+:
 
 ```bash
 git clone https://github.com/lucaschang2021/gallop.git
 cd gallop
 python -m venv .venv
-```
-
-Activate with `.venv\Scripts\Activate.ps1` in PowerShell or `source .venv/bin/activate` on Linux/macOS, then install:
-
-```bash
-python -m pip install -e .
-python -m gallop --help
-python -m gallop --automation-config examples/automation/config.json intake examples/automation/session.json
-python -m gallop --automation-config examples/automation/config.json queue
-python -m gallop --automation-config examples/automation/config.json cycle
-python -m gallop --automation-config examples/automation/config.json status
-python -m gallop --automation-config examples/automation/config.json explain Continuity --subject mathematics
-```
-
-This fictional continuity lesson creates one concept and a training candidate. **Mastery stays 0, confidence stays low, and training never starts or completes automatically.** Re-importing the same file does not duplicate learning evidence.
-
-All output stays in the ignored `automation-runtime/integration_tests/` directory:
-
-```text
-automation-runtime/integration_tests/
-├── events.sqlite3          # raw input and authoritative append-only events
-├── derived-state.json      # rebuildable learning state
-├── vault/Today.md          # training, weaknesses, and open questions
-├── vault/Gallop/Automation/
-└── reader/Gallop-Reader/    # local preview, no real cloud connection
-```
-
-The configured runtime root must initially be empty. Do not point it at a real Vault. Configuration paths resolve relative to the JSON file; Automation does not load the legacy `.env`.
-
-To see the complete legacy synthetic practice loop:
-
-```bash
+python -m pip install -e ".[dev]"
 python -m gallop demo --output demo-output
 ```
 
-This **legacy synthetic demo** generates seven questions, a fictional 5/7 result, and a 1 → 2 transition within `integration_tests`. It is not a real score or a demonstration of Automation's promotion rules. Continue with the [quickstart](docs/quickstart.md).
+Development and regression checks:
 
-## How real learning works
-
-```mermaid
-flowchart TD
-    T[Structured tutor record] --> I[Validated intake]
-    I --> E[(Local append-only journal)]
-    E --> S[Learning state and training queue]
-    S --> P[Local task / optional DeepTutor diagnostics]
-    P --> H[Learner confirms start and does actual work]
-    H --> A[Human assessment and confirmation]
-    A --> E
-    E --> V[cycle projects Obsidian views]
-    V --> R[Filtered one-way Gallop-Reader export]
+```bash
+ruff check gallop tests scripts
+mypy
+pytest
+python scripts/verify_v1_replay.py
+python scripts/validate_examples.py
+python scripts/check_architecture.py
+python scripts/audit_repository.py
 ```
 
-1. Import a tutor record; inspect `queue` and `explain` for next steps and reasons.
-2. Use `prepare QUEUE_ID` for a local task. Explicitly request external diagnostics with `prepare QUEUE_ID --send`, then `poll` / `collect` the returned job ID.
-3. Run `start QUEUE_ID --confirm` only when the learner actually starts. Fill the result template from actual performance.
-4. After human assessment, run `ingest-result FILE --confirm-human`, then `cycle` to refresh views and Reader.
+CI covers Windows / Ubuntu × Python 3.11 / 3.13 and runs tests, Ruff, Mypy, V1 replay, example validation, architecture and privacy gates, the offline demo, and a wheel build.
 
-All Automation commands above require `--automation-config FILE` before the subcommand. Real learner mode requires an existing Obsidian Vault; `publish` / `cycle` also require an existing verified Reader binding. Start in isolation; do not create replacement Readers or reset export receipts. See [Automation V1](docs/automation-v1.md) and the [CLI reference](docs/automation-cli.md).
-
-## Data, safety, and learning evidence
-
-- Raw records, the journal, jobs, and answer files remain in private local runtime storage; Obsidian is a readable view. Never commit real notes, responses, configuration, credentials, or logs.
-- External model calls are explicit and send selected practice context to the service configured in DeepTutor. `cycle` neither invokes a model nor does the learner's work.
-- Highest mastery requires independent success across days and task types, delayed recall, transfer, and oral evidence. These are conservative software heuristics, not validated educational measurements.
-- Human confirmation is not proctoring or identity verification; the hash chain is not tamper-proof against the machine owner. Export filtering cannot identify every kind of sensitive prose.
-
-Read [Security](SECURITY.md), [Automation mastery rules](docs/automation-safety.md), the [Elite Training Protocol](docs/elite-training-protocol.md), [Progressive Mentorship](docs/progressive-mentorship.md), and [Reader boundaries](docs/mobile-export.md).
-
-## Code map and engineering status
+## Code map
 
 ```text
 gallop/
 ├── ARCHITECTURE.toml       # executable architecture contract and drift baseline
-├── gallop/automation/       # intake, journal, state, queue, jobs, views, CLI
-├── gallop/progression/      # pure capability, zone, scaffolding, and mentorship decisions
-├── gallop/adapters/         # DeepTutor, Obsidian, offline mock
-├── gallop/core/             # legacy validation, sync, mastery, and review
-├── gallop/schemas/          # JSON protocols and four subject policies
-├── gallop/mobile.py         # filtered one-way reading export
-├── examples/               # synthetic lessons and practice inputs
-├── tests/                  # unit, mastery, safety, and integration tests
-├── scripts/                # example validation and Git-history privacy audit
-└── .github/workflows/       # Windows/Ubuntu CI and wheel build check
+├── gallop/tutor/            # v1.2 Tutor Protocol, Bridge, Context, Evidence, MCP
+├── gallop/projections/      # Tutor/Obsidian derived views
+├── gallop/automation/       # Journal, state, jobs, CLI, and legacy Automation
+├── gallop/progression/      # pure capability / zone / scaffolding / evidence logic
+├── gallop/mentorship/       # Progressive Mentorship policy facade
+├── gallop/adapters/         # Obsidian, DeepTutor, and other adapter boundaries
+├── gallop/schemas/          # Tutor / evidence / capability protocol schemas
+├── tests/                   # unit, Golden E2E, MCP, recovery, architecture, privacy
+├── scripts/                 # replay, examples, architecture, repository audit
+└── docs/                    # governance, baselines, acceptance, operations
 ```
 
-CI runs tests, example validation, repository audit, the offline demo, and a wheel build on pushes and PRs. The v1.0.0 release record reports 177 local tests and an isolated real DeepTutor acceptance run. This does not validate every environment, model, or long-term learning outcome.
+## Data, safety, and evidence
 
-Dependency direction, evidence authority, explicit time, and hotspot growth are
-governed by [Architecture Governance](docs/architecture-governance.md) and its executable CI gate.
+- Real learning data, answers, Journal state, configuration, and local paths should never be committed to the repository.
+- Synthetic fixtures and offline demos never enter learner authority state.
+- Human confirmation is not identity verification or proctoring; Gallop is not a validated educational measurement instrument.
+- Mastery advances only from evidence admitted by the rules; assisted work, solution-seen work, AI-generated work, and independent work remain distinct.
+- Data sent to external services depends on explicit adapter configuration; v1.2 continuity itself does not require DeepTutor.
 
-As of 2026-08-31, the v1.0.0 GitHub Release has no attached wheel/checksum assets, and CI does not automatically upload release assets. Use source installation above; the v0.1.0 wheel is not v1.0.0. [Current status and evidence](docs/current-status.md) separates implementation, historical validation, and remaining work.
+Read [Security](SECURITY.md), [Architecture Governance](docs/architecture-governance.md), the [v1.2 Tutor Protocol](docs/v1.2-tutor-protocol.md), [Progressive Mentorship](docs/progressive-mentorship.md), and [Current Status](docs/current-status.md).
 
-## Next steps and contributing
+## Engineering status
 
-Priorities are reproducible releases, real-environment onboarding, evidence calibration, and contributor experience. Semantic retrieval, dynamic difficulty, and additional adapters are future exploration, not shipped promises. See the [roadmap](docs/roadmap.md).
+The real four-Tutor integration and controlled daily-use path have passed dogfood. Remaining work is primarily continued daily use, regression stability, first-time onboarding, evidence calibration, and broader environment coverage—not another redesign of the core product.
 
-Reproducible bug reports, documentation, synthetic learning examples, and focused adapter PRs are welcome. Install `python -m pip install -e ".[dev]"` and follow [CONTRIBUTING.md](CONTRIBUTING.md) for CI-equivalent checks. Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md); never post real learning data in public issues.
+GitHub Release metadata remains unchanged for now; this README describes repository source and controlled acceptance status. See [Current Status](docs/current-status.md) and the [Roadmap](docs/roadmap.md).
 
 ## License
 
-Gallop uses the [Apache License 2.0](LICENSE). DeepTutor is an external project and is not distributed with Gallop; third-party code and services retain their own terms. See [dependency boundaries](docs/dependencies.md).
+Gallop uses the [Apache License 2.0](LICENSE). Third-party models, applications, and services retain their own terms.
