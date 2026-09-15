@@ -1,57 +1,65 @@
 # Roadmap
 
-This roadmap distinguishes shipped capabilities from proposed priorities.
-It supersedes the old v0.2/v0.3/v0.4 sequence now that Automation V1 is released.
-There are no promised dates or assigned future version numbers. See
-[current status](current-status.md) for dated evidence and limitations.
+This roadmap separates shipped capabilities from post-v1.2 priorities. There are no promised dates or assigned future version numbers. See [current status](current-status.md) for dated evidence and limitations.
 
-## Shipped baseline
+## Shipped baselines
 
-- **v0.1.0:** structured session/practice protocols, Obsidian/Markdown adapter,
-  external DeepTutor boundary, conservative legacy mastery, replay-safe result
-  import, review entries and an isolated synthetic demo.
-- **v1.0.0 / Automation V1:** raw intake and append-only events, deterministic
-  replay, four-subject training queues, human-confirmed practice/assessment,
-  mastery safety rules, durable DeepTutor jobs, owned Obsidian projections and
-  filtered Gallop-Reader publication.
+- **v0.1.0:** structured session/practice protocols, Obsidian/Markdown adapter, external DeepTutor boundary, conservative legacy mastery, replay-safe result import, review entries, and an isolated synthetic demo.
+- **v1.0.0 / Automation V1:** raw intake and append-only events, deterministic replay, four-subject training queues, human-confirmed practice/assessment, mastery safety rules, durable DeepTutor jobs, owned Obsidian projections, and filtered Gallop-Reader publication.
+- **v1.1 governance / Progressive Mentorship:** explicit target capability, evidence-aware readiness, prerequisite diagnosis, productive struggle, training zones, scaffolding fade, and executable architecture governance while preserving exact V1 replay.
+- **v1.2.0 / Zero-Touch Learning Continuity:** four subject-bound GPT Tutor MCP servers, Journal-derived bounded context, fresh-chat restoration, incremental checkpoints, candidate-evidence admission, automatic owned Obsidian projection, abrupt-exit recovery, exact duplicate recovery, and validated one-way Reader continuity.
 
-These releases establish executable workflows, not validated learning outcomes.
-Legacy commands remain supported; historical state is not migrated implicitly.
+These baselines establish executable workflows and governed evidence behavior, not validated learning efficacy.
 
-## Release candidate
+## v1.2 acceptance state
 
-**v1.2 Zero-Touch Learning Continuity** builds on the frozen v1.1 RC2 governance
-boundary with four subject-bound GPT Tutor MCP servers, incremental Journal
-checkpoints, fresh-chat restoration, and owned Obsidian projection. Controlled
-real four-subject dogfood is recorded, while the exact baseline commit still
-requires its final CI freeze. Stable v1.0.0 remains immutable. The candidate
-does not add a new scheduler, Gallop UI, mandatory secondary AI, or silently
-reinterpret historical v1 evidence.
+Controlled real four-Tutor dogfood is **PASS**. It covers Mathematics, Statistics, Finance, and CS/AI; fresh-chat continuity; incremental checkpoints; abrupt-close restore; exact duplicate recovery; automatic Obsidian projection; fail-closed projection recovery; Reader publication recovery; subject isolation; and learner-confirmed mobile visibility.
 
-## Near-term priorities
+The accepted architecture is intentionally headless:
+
+> **GPT = TEACH · GALLOP = GOVERN · OBSIDIAN = REMEMBER · EVIDENCE = PROVE**
+
+No Gallop learner UI, mandatory secondary AI, new scheduler, or silent reinterpretation of historical evidence is part of v1.2. DeepTutor remains optional legacy compatibility.
+
+GitHub Release publication is intentionally separate from this roadmap and is not updated by the current source refresh.
+
+## Immediate operating priority: use the system
+
+The highest-leverage next step is sustained real daily use rather than another architecture cycle. New work should come from observed evidence:
 
 | Priority | Work to pursue | Evidence needed before calling it complete |
 |---|---|---|
-| Reproducible distribution | Version/tag checks, repeatable wheel/source builds, release assets and checksums | Install from a tagged artifact in a clean environment and run the offline examples |
-| First-time onboarding | Public synthetic real-mode configuration guidance; clarify existing Reader binding prerequisites and recovery | A new user can identify required setup without copying maintainer paths or resetting receipts |
-| Evidence quality | More subject-specific human-assessment examples and mastery calibration fixtures | Known weak evidence is rejected; rule changes include replay/version compatibility |
-| Integration reliability | Expand provider-unavailable, late-result and device/cloud acceptance coverage | Separate mocked regressions from dated, opt-in real acceptance; no private evidence published |
-| Contributor experience | Keep bilingual entry docs and executable examples aligned with implementation | Fresh-clone reproduction, useful issue reports and focused external PRs |
+| Daily-use reliability | Run the four Tutor workflow across normal study weeks and record reproducible failures | No silent evidence loss, cross-subject leakage, duplicate authority events, or projection corruption |
+| First-time onboarding | Make real-mode setup understandable without maintainer-specific paths or hidden assumptions | A fresh user can identify required Tutor, Vault, Reader, and privacy boundaries from public docs |
+| Evidence calibration | Add subject-specific examples for proof, simulation, derivation, coding, oral checks, and delayed retests | Weak/assisted evidence remains conservative; stronger evidence advances only under explicit rules |
+| Regression hardening | Expand race/order, crash, restore, idempotency, and platform coverage as real bugs appear | Reproducible regression tests fail before the fix and pass after it across the supported CI matrix |
+| Contributor experience | Keep Chinese/English public docs, schemas, examples, and architecture contracts aligned | Fresh-clone reproduction and focused external PRs do not require private maintainer context |
 
-## Later exploration, not implemented promises
+## Research / training extensions
 
-- Adaptive difficulty and review scheduling beyond the current deterministic policies.
-- Optional semantic retrieval/embeddings for larger material collections.
-- Richer tutor pre-class context and research-oriented learning workflows.
-- Additional focused practice/knowledge adapters and a clearer public Python API.
+These are legitimate future directions, but they should not interrupt normal v1.2 use unless there is a concrete training requirement:
 
-Any new model integration should specify what data leaves the machine, its
-failure behavior, and how human learning evidence stays separate from generated
-material. Discuss broad API, migration or adapter changes in an issue first.
+- Competition Mathematics / Yau specialization policies and evidence design.
+- Research-oriented workflows for paper reading, replication, proof writing, simulation labs, and research independence.
+- Better longitudinal readiness summaries and bounded context selection for long study histories.
+- Optional semantic retrieval for large local knowledge collections, with explicit privacy and authority boundaries.
+- Additional focused practice/knowledge adapters where a real workflow justifies them.
+
+## Explicitly not a priority
+
+- building a second learner-facing Gallop UI;
+- replacing the four GPT Tutor conversations with a separate agent shell;
+- adding features solely to increase version numbers or architecture surface area;
+- treating model-generated answers as learner evidence;
+- changing mastery because a target is ambitious;
+- broad provider/plugin work without a concrete study use case.
 
 ## Enduring constraints
 
 - Automate learning operations, never fabricate learner work or assessment.
 - Preserve local ownership and explicit migration decisions.
-- Keep synthetic validation isolated from real mastery and cloud Reader data.
-- Prefer reproducible evidence and small useful interfaces over feature counts.
+- Journal state is authoritative; Obsidian and Reader are projections.
+- Keep synthetic validation isolated from real learner authority.
+- Preserve deterministic replay and conservative evidence semantics.
+- Prefer reproducible evidence and small useful interfaces over feature count.
+- Stop architecture work when the accepted system is sufficient; resume only for real defects or justified capability gaps.
