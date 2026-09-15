@@ -1,10 +1,21 @@
 # Automation CLI
 
-All commands join the existing Gallop parser. Place --automation-config FILE
-before the subcommand. Paths in the JSON configuration resolve relative to that
-file. Automation does not load the legacy .env file.
+The Automation CLI remains a supported **developer, compatibility, inspection, and legacy operations surface** in Gallop v1.2. It is not the primary learner-facing interface: normal v1.2 learning happens in the four subject-bound GPT Tutor conversations through the local MCP bridge.
 
-## Elite Training Protocol commands (v1.1 RC)
+All Automation commands join the existing Gallop parser. Place `--automation-config FILE` before the subcommand. Paths in the JSON configuration resolve relative to that file. Automation does not load the legacy `.env` file.
+
+## v1.2 Tutor runtime vs Automation CLI
+
+| Surface | Primary purpose | Learner-facing? |
+|---|---|---|
+| subject-bound Tutor MCP | normal v1.2 teaching, continuity, events, checkpoints, context | **Yes — through GPT Tutor dialogue** |
+| Automation CLI | inspect/replay/test/manage journal-backed Automation state and compatibility workflows | No, developer/operator surface |
+| legacy v0.1 CLI | backward compatibility and old pipeline validation | No |
+| optional DeepTutor jobs | explicit external diagnostic generation | No; generated material is not learner evidence |
+
+The CLI and Tutor runtime share Gallop authority principles: Journal-backed state, conservative evidence, explicit identity, deterministic replay, and no automatic promotion from generated material.
+
+## Evidence / Progressive Mentorship commands
 
 ```text
 gallop --automation-config CONFIG evidence add RECORD --confirm-human
@@ -20,52 +31,65 @@ gallop --automation-config CONFIG target show [TARGET_ID]
 gallop --automation-config CONFIG mentorship [TARGET_ID]
 ```
 
-Without `--confirm-human`, evidence remains visible but cannot establish
-independent performance. `prepare` and `submit` accept optional `--elite-policy
-FILE`; it requests conditions and never reports actual performance.
+Without the required authority confirmation, evidence cannot establish independent performance merely because it is present. `mentorship` reports current capability, explicit target, training zone, task-design guidance, scaffolding, prerequisite gaps, productive struggle, gains, mentor role, and research-independence signals. Mentorship remains advisory and does not silently replace the scheduler.
 
-`mentorship` reports current capability, explicit target, training zone,
-recommended task design, scaffolding, deterministic action, prerequisite gaps,
-struggle records, capability gains, mentor role and research independence. It
-also states `scheduler_changed: false`.
+## Automation commands
 
 | Command | Behavior |
-| --- | --- |
-| intake FILE | Validate truthful v1 input, retain raw bytes, append session and transitions, refresh queue |
-| queue | Refresh deterministic candidates and list every status |
-| prepare QUEUE_ID | Create manifest and human task; mark ready, never started |
-| prepare QUEUE_ID --send | Submit a durable DeepTutor job; return its ID, not ready training |
-| submit QUEUE_ID --questions N | Submit diagnostics (default 7; use 1 for minimal validation) |
-| poll JOB_ID | Show lifecycle, elapsed time, timeout reason and process status without answer keys |
-| collect JOB_ID | Recover correlated output and mark preparation ready; replay is idempotent |
-| submit QUEUE_ID --questions N --retry | Retry a proven stopped failed attempt; never overlap live/uncertain work |
-| start QUEUE_ID --confirm | Explicit learner start; enter in_progress |
-| cancel QUEUE_ID | Cancel unfinished work without mastery evidence |
-| retry QUEUE_ID | Put failed preparation back in queued |
-| ingest-result FILE --confirm-human | Validate linked actual performance and human grading |
-| status | Namespace, event/session/concept counts and training statuses |
-| publish --dry-run | Verify existing Reader target and preview filtering without changing notes |
-| publish | Refresh owned projections and invoke the existing Reader exporter |
-| cycle | Process pending intake, replay, refresh queue/views, publish; never start/complete training |
-| rebuild-state | Back up derived state, verify/replay, compare, atomically replace or fail closed |
-| explain CONCEPT --subject SUBJECT | Mastery, confidence, reasons, mistakes, evidence refs and next work |
+|---|---|
+| `intake FILE` | Validate truthful V1 input, retain raw bytes, append session/transitions, refresh queue |
+| `queue` | Refresh deterministic candidates and list every status |
+| `prepare QUEUE_ID` | Create local manifest/human task; mark ready, never started |
+| `prepare QUEUE_ID --send` | Submit an optional durable DeepTutor job; generated material is not learner performance |
+| `submit QUEUE_ID --questions N` | Submit optional diagnostics |
+| `poll JOB_ID` | Inspect provider-job lifecycle without exposing private answer material |
+| `collect JOB_ID` | Recover correlated provider output; collection is idempotent |
+| `submit QUEUE_ID --questions N --retry` | Retry only a proven stopped/failed attempt; never overlap live/uncertain work |
+| `start QUEUE_ID --confirm` | Explicitly record that the learner started the task |
+| `cancel QUEUE_ID` | Cancel unfinished work without mastery evidence |
+| `retry QUEUE_ID` | Move failed preparation back to queued |
+| `ingest-result FILE --confirm-human` | Validate linked observed performance and configured human assessment |
+| `status` | Show namespace/event/session/concept counts and training statuses |
+| `publish --dry-run` | Verify existing Reader target and preview filtering without mutation |
+| `publish` | Refresh owned projections and invoke existing Reader export |
+| `cycle` | Process pending Automation work/replay/views/publication; never fabricate training completion |
+| `rebuild-state` | Back up derived state, verify/replay, compare, atomically replace or fail closed |
+| `explain CONCEPT --subject SUBJECT` | Show mastery/confidence reasons, mistakes, evidence refs, and next work |
 
-Statuses: queued, ready, in_progress, completed, failed, cancelled. Completed
-means the learner attempted and a human assessed the task, not necessarily a
-successful answer or mastered concept. An ungraded/ambiguous result remains raw
-and does not mark completion. Research judgement stays with a human.
+Statuses remain `queued`, `ready`, `in_progress`, `completed`, `failed`, and `cancelled`. `completed` means an actual task was attempted and the configured assessment boundary was satisfied; it does not necessarily mean success or mastery.
 
-The prepared directory contains manifest.json, practice.json,
-instructor.answer-key.json and result-template.json. The answer key is private,
-not a learner response and never a grading authority. Fill the result template
-from actual activity; do not convert unknown values into invented scores.
+## v1.2 Tutor MCP tool surface
 
-Automation errors return a nonzero exit status without printing private input
-or provider stderr. Correct the source and retry; event IDs preserve idempotency.
-Existing demo, sync-session, manifest, generate, import-result, live-demo and
-mobile-export commands remain supported.
+The Tutor MCP is intentionally not replicated as ordinary learner CLI commands. Each subject-bound server exposes a small tool set to the Tutor host:
 
-Job completion means generated material is available. It is distinct from training
-completion. Logs, manifests, provider IDs and instructor answers stay under the
-private root/jobs directory, outside Obsidian and cloud export. A timeout is a
-soft caller deadline (240 seconds), not permission to submit a duplicate.
+- `get_runtime_status`
+- `open_or_resume_session`
+- `get_learning_context`
+- `record_learning_event`
+- `checkpoint_session`
+- `finalize_session`
+- `get_session`
+
+Read operations are marked read-only in MCP metadata. Write operations validate subject/Tutor identity and append durable Journal events before projection refresh.
+
+## Prepared/private material
+
+The legacy Automation prepared/job directories can contain manifests, provider IDs, answer keys, result templates, and provider outputs. They are private operational data, not learner mastery evidence, and must remain outside Reader/cloud publication.
+
+Never invent missing scores, assistance state, authorship, or assessment outcomes just to make an import pass.
+
+## DeepTutor compatibility
+
+DeepTutor is optional in v1.2. If used, submit/poll/collect remains durable and explicit. A timeout is a soft caller deadline, not proof that the provider job stopped and not permission to submit a duplicate uncertain job.
+
+Job completion means generated material became available. It is distinct from training completion, independent evidence, and mastery.
+
+## Errors and retries
+
+Automation errors return nonzero exit status and should avoid printing private input/provider stderr. Stable event/job IDs provide replay/idempotency boundaries. Correct the source condition and retry the same identity when appropriate; do not create a new identity to escape a conflict or uncertainty.
+
+## Legacy commands
+
+`demo`, `sync-session`, `manifest`, `generate`, `import-result`, `live-demo`, and related v0.1 paths remain supported separately. Their state/mastery model is not silently migrated into v1.2 authority state.
+
+For normal learning, prefer the Four-Tutor v1.2 path described in [Quickstart](quickstart.md), [Tutor Protocol](v1.2-tutor-protocol.md), and [Real Tutor Integration](v1.2-real-tutor-integration.md).
