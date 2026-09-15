@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "gallop-learning"
 version = "1.2.0"
-description = "Local-first orchestration for deliberate practice and mastery tracking."
+description = "Local-first evidence-driven Progressive Mentorship and Zero-Touch learning continuity."
 readme = "README.md"
 requires-python = ">=3.11"
 license = {file = "LICENSE"}
@@ -40,8 +40,8 @@ addopts = "-q"
 target-version = "py311"
 
 [tool.ruff.lint]
-# Zero-debt correctness gate. Broader style adoption is intentionally outside
-# RC2 closure and must not force an unrelated formatting migration.
+# Zero-debt correctness gate. Broader style adoption is intentionally separate
+# from the v1.2 sustained-use baseline and must not force unrelated rewrites.
 select = ["E9", "F63", "F7", "F82"]
 
 [tool.mypy]

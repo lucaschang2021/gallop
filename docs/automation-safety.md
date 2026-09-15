@@ -1,17 +1,18 @@
-# Automation Mastery Safety Gate
+# Evidence and Mastery Safety Gate
 
-The state engine is deterministic and separate from the legacy mastery engine.
-No imported summary, compliment, claimed mastery or model grading number is
-allowed to promote a learner. Sessions record course exposure, questions and
-reported weaknesses. They never become proof of student mastery.
+Gallop's state/evidence engines are deterministic. No imported summary, compliment, target, model grading number, Tutor claim, provider output, or Markdown edit may directly promote a learner.
 
-## Evidence and transition rules
+v1.2 adds an explicit authority split around the existing conservative mastery rules:
 
-Practice events record attempts; separate confirmed assessment events record
-outcomes. Every resulting state update has a reason and evidence references in
-an immutable state_transition event. A result requires a confirmed start, correct
-queue/manifest/practice linkage, actual response references, plausible counts,
-valid timezone-aware timestamps and human confirmation.
+- Tutor observations describe what happened.
+- Tutor assessments are **candidate evidence**.
+- Human attestation is a separate explicit confirmation boundary.
+- Confirmed evidence is still subject to assistance, agent provenance, task, timing, and mastery rules.
+- Derived state/directives/projections never become evidence merely because Gallop produced them.
+
+## Core mastery transition rules
+
+For the compatible Automation mastery model:
 
 | Evidence available | Maximum eligible level |
 | --- | --- |
@@ -21,35 +22,50 @@ valid timezone-aware timestamps and human confirmation.
 | At least 4 days and 3 task types | 4 |
 | At least 5 days, 3 types, a 30-day span, oral evidence and transfer | 5 |
 
-Every accepted assessment can increase at most one level, even if a higher
-ceiling is eligible. Passing requires at least 80% human-confirmed success;
-hinted or dependent work does not count toward independent evidence thresholds.
-Failure increases mistake/weakness evidence and lowers confidence, but does not
-mechanically reset mastery. Counts are performance evidence, not proof of truth.
+Every accepted assessment can increase at most one level even when a higher ceiling is eligible. Passing requires at least 80% human-confirmed success in the compatible Automation rule set. Hinted/dependent work does not count toward independent thresholds.
 
-Confidence is low initially, medium after independent success on two separate
-days, high after four days across three task types, and low after a failure.
-Therefore an established mastery level and low confidence can coexist.
+Failure increases mistake/weakness evidence and can lower confidence, but it does not mechanically erase established mastery. Confidence and mastery are separate; low confidence can coexist with a previously established level.
 
-Concept state includes subject, concept, mastery_level, confidence,
-evidence_count, last_seen, last_practiced, mistake_count, success_count,
-weakness_tags, open_questions, evidence_refs and an explanation history.
-Session-level weakness tags and questions are context for the session's concepts;
-mistake counts are assigned only to an explicitly matching concept or a session
-with one concept. Empty arrays never create invented observations.
+## v1.2 candidate evidence
 
-## Isolation
+Tutor-originated `candidate_assessment` or equivalent evidence is not a human attestation. A valid confirmation must refer to the concrete candidate/attempt and preserve its assistance/provenance facts.
 
-Synthetic and integration markers are rejected by learner intake. Results must
-explicitly match the bound namespace. Integration roots contain their own vault,
-Reader and export state and cannot use an iCloud binding. No integration data is
-published to the real Reader. The old mobile vault remains rejected.
+Contradictory disclosures fail closed. Examples:
 
-Markdown is a view. Free text outside Gallop's managed markers is preserved,
-including existing learning-sync regions. Unknown files are never deleted.
-Edits inside a managed region fail closed. Only privacy-filtered Markdown views
-enter Reader; journals, mastery JSON, raw inputs, answer keys, settings, logs,
-backend sessions and credential files stay outside it.
+- nonzero assistance cannot be relabelled `INDEPENDENT`;
+- AI-generated code cannot count as independent coding evidence;
+- seeing the core solution cannot later become closed-book independent success for that same attempt;
+- a target capability cannot initialize current capability;
+- a fresh chat cannot infer mastery from model memory.
 
-Missing historical evidence means unknown, not permission to invent it.
-Automation never silently seeds mastery from legacy JSON or edits old sessions.
+## Progressive Mentorship safety
+
+Current capability, training zone, scaffolding, prerequisite diagnosis, mentor role, and research-independence state are deterministic derived outputs. They can guide task design but do not bypass mastery/evidence gates.
+
+Prerequisite repair establishes evidence about the repaired prerequisite; it does not automatically certify the original target. Overchallenge/Monster failure is isolated from established capability unless explicit evidence justifies a change.
+
+## Identity and idempotency
+
+Stable event/session identity is part of evidence safety. Exact retries are no-ops; the same identity with different normalized content is a conflict. Duplicate checkpoints, reconnects, or fresh-chat restoration must not multiply evidence.
+
+Each resulting state transition references its causal evidence and is replay-verifiable.
+
+## Subject isolation
+
+The four v1.2 Tutor MCP servers are bound to Mathematics, Statistics & Econometrics, Finance, or CS & AI at launch. Subject/Tutor mismatches fail before authoritative mutation. Evidence from one subject is not silently admitted as another subject's evidence.
+
+## Synthetic / real isolation
+
+Synthetic and integration markers are rejected by learner-mode intake where required. Integration roots use isolated Journal/Vault/Reader state and cannot publish into the real learner Reader. Synthetic Golden E2E demonstrates plumbing and policy behavior; it is never learner performance evidence.
+
+## Projection safety
+
+Markdown is a view. Human text outside Gallop-owned regions is preserved. Edits inside owned regions that break ownership expectations fail closed. Only privacy-filtered Markdown may enter Gallop-Reader; Journal databases, raw inputs, answer keys, private configs, provider runtime, and credentials remain outside it.
+
+Reader is one-way. Phone edits never flow back into mastery or Journal authority.
+
+## Unknown remains unknown
+
+Missing historical evidence means `UNKNOWN`, not zero ability and not permission to invent evidence. Gallop does not silently seed v1.2 capability from legacy scores, model recollections, or prose notes.
+
+See [v1.2 Tutor Protocol](v1.2-tutor-protocol.md), [Progressive Mentorship](progressive-mentorship.md), and [Architecture Governance](architecture-governance.md).

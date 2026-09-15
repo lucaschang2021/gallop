@@ -1,93 +1,66 @@
-# Automation V1
+# Automation V1 — compatible event/CLI subsystem
 
-Automated learning operations, not automated learning. This is a local,
-event-driven CLI. There is no daemon, account scraper, web UI, autonomous
-researcher, or automatically completed training.
+> **Current v1.2 daily-use path:** learners interact with the four subject-bound GPT Tutors. Gallop runs underneath through the Tutor Bridge and Journal. Automation V1 remains a supported event/CLI subsystem for explicit queue operations, compatibility, diagnostics, and legacy integrations; it is not the required learner-facing workflow.
+
+Automation V1 automates learning operations, not learning itself. It has no autonomous learner, automatic completion, or hidden mastery promotion.
 
 ## Authority and compatibility
 
-For new Automation V1 inputs, the append-only event journal is authoritative.
-Learning state, training queues and Markdown are derived views. The legacy
-sync-session/import-result workflows and their historical state are preserved;
-Automation does not read Markdown to guess mastery and does not silently
-import or rewrite legacy mastery. An empty Automation root means no evidence,
-not that a person's historical knowledge is zero.
+For Automation inputs, the append-only Journal is authoritative. Learning state, queues, prepared artifacts, and Markdown are derived. The legacy v0.1 `sync-session` / `import-result` path remains separate and is not silently migrated.
 
-Use the existing Tutor Output Protocol v1. Concepts can be strings or objects
-with a name. Optional arrays may be omitted or empty. Original bytes and
-extension fields are retained. [Protocol details](tutor-protocol.md).
+The v1.2 Tutor Bridge writes into the same authority model while adding per-event identity, incremental checkpointing, bounded context, and fresh-chat continuity. Automation V1 batch intake remains compatible through [Tutor Output Protocol v1](tutor-protocol.md).
 
-## Start in an isolated namespace
+## Isolated example
 
-The example configuration in examples/automation/config.json uses relative
-paths resolved against the configuration file, all inside automation-runtime.
-The root must initially be empty. Runtime state must not be committed.
+The public example stays entirely inside `automation-runtime` and uses synthetic evidence:
 
-~~~bash
+```bash
 python -m gallop --automation-config examples/automation/config.json intake examples/automation/session.json
 python -m gallop --automation-config examples/automation/config.json queue
 python -m gallop --automation-config examples/automation/config.json cycle
-~~~
+```
 
-This example is explicitly synthetic. Its Reader is a local preview, never the
-real cloud Reader. An integration configuration cannot target an outside vault
-or a bound iCloud Reader, and a bound root cannot switch namespaces.
+The example Reader is a local preview. It must not target the real learner Vault, real Reader, or cloud binding.
 
-For real operation, create a private configuration with namespace learner,
-an empty private event root outside both vaults, the existing main vault and
-Reader paths, and the existing mobile export state and iCloud binding. Do not
-create a replacement Reader or reset the export receipt. Optional deeptutor and
-deeptutor_home select the already installed engine. No provider credentials
-belong in this configuration.
+## Explicit Automation workflow
 
-## Normal learning
+For users/developers who intentionally use the CLI path:
 
-1. Save the tutor's truthful v1 JSON package. Run intake on that file, or deposit
-   it atomically into the private root's pending-intake directory and run cycle.
-   Existing 99-Inbox delivery and its legacy synchronizer are not replaced or
-   watched by Automation; intake can also read an explicit file from that flow.
-2. Inspect queue and explain. prepare creates a stable manifest, a human task
-   specification and an incomplete result template. prepare --send explicitly
-   submits a durable DeepTutor job and returns its ID. Use poll JOB_ID and
-   collect JOB_ID to recover the questions before starting training.
-3. Run start QUEUE_ID --confirm when the learner actually starts the work.
-4. Save the actual response and have a human assess it. Fill the prepared result
-   template honestly; null counts and ungraded outcomes are intentionally invalid
-   for assessed import. Run ingest-result FILE --confirm-human.
-5. Run cycle to refresh views and publish through the existing Reader exporter.
+1. `intake` a truthful Tutor v1 package or explicitly process a compatible pending file.
+2. Inspect `queue` / `explain`.
+3. `prepare QUEUE_ID` creates a stable task and incomplete result template.
+4. Optionally use the legacy DeepTutor path with `prepare --send`, then `poll` / `collect` the same durable job.
+5. `start QUEUE_ID --confirm` only when the learner actually starts.
+6. Record real work and an explicit human-confirmed assessment.
+7. `ingest-result FILE --confirm-human` admits the result through deterministic evidence/mastery rules.
+8. `cycle` refreshes derived views and, when configured, publishes through the existing Reader exporter.
 
-Raw inputs are retained, even if malformed. Same session ID and normalized
-content is idempotent; same ID with changed content fails. Results also bind to
-queue, manifest, practice, subject and concept. A new result ID cannot recount an
-already accepted practice. Inputs are never deleted or moved automatically.
-Pending files remain replay-safe; archive them manually after acceptance if desired.
+This workflow is compatible with v1.2 evidence authority. It does not supersede the primary Tutor MCP path.
 
-## Recovery and limitations
+## Idempotency and recovery
 
-The process lock serializes CLI mutations and publishing. SQLite transactions
-commit evidence and its transition audit together; derived state is replaced
-after commit. A cache left behind after a crash can be rebuilt from a verified
-journal prefix. A modified cache fails closed and is backed up before comparison.
-The public rules are version 1; changing them requires an explicit migration.
+Raw intake bytes are retained. Same session identity/content is idempotent; conflicting reuse fails. Results bind to queue/manifest/practice/subject/concept and cannot recount already accepted work by changing only the result ID.
 
-Each projection file is atomic, but all files plus iCloud are not one distributed
-transaction. Retry cycle after an I/O or cloud failure. The journal remains the
-recovery source. Human edits inside a managed area cause a conflict instead of
-being overwritten. The OS releases the new writer lock on process exit. A legacy
-operation.lock remains a fail-closed ownership check; it is not deleted automatically.
+SQLite transactions commit authoritative events before derived-state replacement. A stale/corrupt cache can be rebuilt from a verified Journal prefix. Managed projection conflicts fail closed rather than overwriting learner-owned text.
 
-DeepTutor submissions persist separately from learner evidence. The lifecycle is
-prepared -> submitted -> running -> completed / failed / timed_out. A deadline
-marks waiting as timed_out; it does not kill the provider or discard its output.
-Poll or collect the same job again for a late result. Only a proven stopped failed
-attempt can be retried with submit QUEUE_ID --retry; uncertain spawn ownership
-fails closed. Each attempt retains its records. Repeated collection and recovery
-after journal commit do not invoke the provider or add duplicate evidence.
-Prepared files can be restored from their immutable prepared event. Provider
-exactly-once execution is not claimed across an indeterminate OS spawn failure.
+Each projection file write is atomic, but Journal + all Markdown + iCloud are not one distributed transaction. After an I/O/cloud failure, retry projection/publication from the committed Journal.
 
-The journal uses SQLite triggers and a hash chain for accidental modification
-detection; it is not a tamper-proof trust boundary against its machine owner.
-Human confirmation is an explicit local attestation, not proof of authorship or
-proctoring. [Safety rules](automation-safety.md), [CLI](automation-cli.md),
-[DeepTutor bridge](deeptutor-integration.md).
+## Legacy DeepTutor jobs
+
+DeepTutor is optional and off the v1.2 critical path. Automation V1 retains durable `submitted/running/completed/failed/timed_out` job state for explicit external diagnostic generation.
+
+A caller deadline is not proof the provider stopped. Late results may be collected from the same attempt. Retry is allowed only when prior work is proven stopped; uncertain spawn ownership fails closed. Repeated collection/recovery must not resubmit provider work or create duplicate learner evidence.
+
+See [DeepTutor legacy adapter](deeptutor-integration.md).
+
+## Evidence boundary
+
+Human confirmation is a local attestation, not proctoring. Tutor/model/provider output is not verified learner performance. Assistance, hint usage, and agent provenance constrain independence. Synthetic/integration activity cannot become learner evidence.
+
+## Real learner runtime
+
+The primary v1.2 learner setup uses an existing Obsidian Vault, private Journal root outside cloud storage, existing validated Gallop-Reader binding, and four subject-bound Tutor MCP server entries. See [Quickstart](quickstart.md) and [Real Tutor Integration](v1.2-real-tutor-integration.md).
+
+## Compatibility guarantee
+
+The frozen V1 replay fixture remains exact. Changes to historical event meaning or mastery semantics require an explicit migration; source upgrades never silently reinterpret old evidence.

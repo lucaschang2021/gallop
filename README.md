@@ -1,148 +1,148 @@
 # Gallop
 
-**把 AI 辅导中的概念、薄弱点和真实练习记录，变成可持续追踪的学习计划——一个本地优先的 Python 学习编排工具。**
+**面向数学、统计/计量、金融与 CS/AI 的本地优先、证据驱动 Progressive Mentorship Engine。**
 
-[English](README.en.md) · [快速开始](docs/quickstart.md) · [架构](docs/architecture.md) · [当前状态](docs/current-status.md) · [路线图](docs/roadmap.md) · [贡献](CONTRIBUTING.md) · [安全](SECURITY.md) · [Apache-2.0](LICENSE)
+[English](README.en.md) · [能力与边界](docs/capabilities-and-boundaries.md) · [快速开始](docs/quickstart.md) · [架构](docs/architecture.md) · [当前状态](docs/current-status.md) · [Tutor Protocol](docs/v1.2-tutor-protocol.md) · [路线图](docs/roadmap.md) · [安全](SECURITY.md) · [Apache-2.0](LICENSE)
 
-> **稳定版本：v1.0.0 / Automation V1；当前候选基线：v1.2 Zero-Touch Learning Continuity。** v1.2 增加四个 subject-bound GPT Tutor MCP、Journal 驱动的 fresh-chat 恢复、增量 checkpoint 和自动 Obsidian 投影；它仍属早期项目，不保证学习效果。真实使用前请阅读[当前状态](docs/current-status.md)与[受控 Dogfood 记录](docs/audits/v1.2-real-dogfood-acceptance.md)。
+> **当前源码基线：Gallop v1.2.0 — Zero-Touch Learning Continuity。** 四个 subject-bound GPT Tutor 对话是学习者界面；Gallop 在其下负责 Journal、evidence authority、continuity、mastery/readiness、Progressive Mentorship 与 Obsidian / Gallop-Reader 投影。2026-09-14 的四导师真实 dogfood 已通过。GitHub Release/tag 与源码状态分开管理。
 
-## 为什么需要 Gallop？
+## 核心原则
 
-和 AI 上完一节课，不等于掌握了知识。聊天记录会散落，薄弱点容易被忘记，一次答对也不足以证明能独立完成下一道题。
+> **GPT = TEACH · GALLOP = GOVERN · OBSIDIAN = REMEMBER · EVIDENCE = PROVE**
 
-Gallop 连接三个环节：**导师记录学了什么 → 安排下一次练什么 → 根据真实表现保留证据**。学习者保留本地数据，可以查看每次状态变化的理由，并在 Obsidian 中阅读今天的训练、待复习内容和遗留问题。
+Gallop 不把“GPT 说你会了”当作掌握。学习事件以可重放、可审计的证据写入本地 Journal：概念暴露、错误、提示、独立作答、修复、重测、checkpoint 与 session finalization 都有稳定身份和来源。Obsidian 与 Gallop-Reader 是派生视图，不是权威状态。
 
-例如：你在数学辅导中反复弄错连续性定义的量词顺序。导师输出结构化记录后，Gallop 保留这个薄弱点、建立训练候选项，并准备独立练习任务。你实际作答、由人确认评估后，它才按保守规则更新学习状态。仅导入课程摘要不会提升掌握度。
+## 已有能力全景
 
-**AI 负责组织刻意练习，学习者仍然负责思考。** 详见[项目理念](docs/philosophy.md)。
+Gallop v1.2 不是只有 Four-Tutor bridge。当前仓库已经同时保留并治理下面这些能力：
 
-## 适合谁？
-
-- 希望把长期 AI 辅导与复习连接起来的自学者、学生和研究者。
-- 使用 Obsidian、愿意通过命令行管理学习记录的用户。
-- 想接入结构化导师输出或练习引擎的开发者。
-
-当前 Automation 策略覆盖数学、统计/计量、金融、CS/AI。基础协议可以扩展，但新增学科需要相应策略与验证，不是任意学科开箱即用。它也不是开箱即用的在线课程平台或自动评分系统。
-
-## 已有能力与边界
-
-| 能力 | 当前实现 | 需要知道的边界 |
+| 能力层 | 已有能力 | 当前定位 / 边界 |
 |---|---|---|
-| 导师记录接入 | 从 JSON 或协议 Markdown 导入课程、概念、错误和问题，保留原始输入 | 不抓取 ChatGPT 账号；需要符合[导师协议](docs/tutor-protocol.md)的文件 |
-| 持久学习状态 | SQLite 追加事件、确定性重放、状态变化解释与证据引用 | Automation 日志是新数据的依据，不自动迁移旧掌握度 |
-| 训练与复习 | 四学科策略、P0–P4 优先级、T+1/T+7/T+30 复习候选项 | 手动调用命令，无后台守护进程或自动提醒 |
-| 练习准备 | 本地任务说明；可选 DeepTutor 诊断题及持久 submit/poll/collect 任务 | DeepTutor 单独安装；当前选择题不能代替证明、口试、编程或模拟实验 |
-| 掌握度评估 | 根据人确认的真实结果更新 0–5 级状态与 low/medium/high 置信度 | 生成题目不等于完成训练；一次答对不会自动升级 |
-| 精英训练与渐进指导（v1.1 RC） | 区分独立、提示、看过答案和 AI 生成证据；根据显式目标与当前证据给出训练区间、支架和先修修复建议 | 目标不会抬高当前能力；建议不直接调度任务，Human Production E2E 尚待执行 |
-| 笔记与手机阅读 | Obsidian Markdown 受管区域、过滤后的单向 Gallop-Reader 导出 | Reader 是阅读镜像，不是双向同步；真实发布依赖现有已验证的 Reader 绑定 |
-| 兼容旧流程 | 保留 v0.1 的 session/manifest/generate/import-result 和离线 demo | 旧流程的配置、状态和掌握度规则与 Automation 分开 |
+| Learner surface | Mathematics / Statistics & Econometrics / Finance / CS & AI 四个 subject-bound GPT Tutor MCP | 四导师是主学习界面；每个 Tutor 只能访问自己的 subject context |
+| Session continuity | 稳定 session/event identity、open/resume、record、checkpoint、finalize、readback | exact retry 幂等；同 ID 不同内容 fail closed |
+| Fresh-chat continuity | 新对话可从 Journal 恢复有界上下文 | 不依赖旧 transcript 或模型记忆作为权威 |
+| Recovery | incremental checkpoint、abrupt-close restore、projection recovery | Journal commit 先于投影；投影失败不抹掉已提交证据 |
+| Journal / Replay | append-only Journal、deterministic replay、hash/integrity guards | Journal 是 source of truth；derived cache 可重建 |
+| Evidence authority | observation / attempt / candidate assessment / human attestation / independent / assisted / solution-seen / AI-assisted/generated 等来源区分 | Tutor/model/provider 输出不能直接升级 mastery |
+| Mastery / Readiness | conservative mastery、confidence、evidence refs、readiness profiles | 一次正确、一句夸奖、model score 都不能直接构成 mastery |
+| Elite evidence | task type、quality、hint、agent provenance、transfer、failure mode、benchmark、prerequisite link | 不合并成黑盒总分，也不预测竞赛奖项 |
+| Progressive Mentorship | current capability、target gap、prerequisite diagnosis、training zone、productive struggle、scaffolding、next action、gains、mentor role、research independence | target 不抬高 current；mentorship 只建议，不暗改 scheduler/queue |
+| Training policy | 四学科共用统一引擎 + subject-specific policy data | Proof / derivation / simulation / empirical / oral / paper / coding / no-agent / systems / research / benchmark 等任务均可表达 |
+| Automation V1 | intake、queue/explain、prepare、start、human-confirmed ingest、cycle、replay、projection、recovery | 真实存在但属于 compatibility/developer surface，不是第二套 learner UI |
+| DeepTutor bridge | durable submit / poll / collect、provider lifecycle、recovery | legacy / optional / non-authoritative；v1.2 主路径零 DeepTutor 必需依赖 |
+| Legacy v0.1 | session → manifest → result → mastery、offline demo、旧 schemas/CLI | 历史流程继续可用，不静默重解释为 v1.2 证据 |
+| No-Agent evidence | no-agent、closed-book、assistance/agent provenance 条件 | 是证据语义，不是技术层面的监考/防作弊系统 |
+| Obsidian | Session / Concept / Mistake / Home / Development / readiness / benchmark 等受管投影 | 手工编辑投影不能成为 authority；owned region 冲突 fail closed |
+| Gallop-Reader | Main Vault → Reader 单向发布、dry-run、ownership receipt、backup/recovery、mobile visibility | Reader 是阅读镜像，不做 phone → Vault 权威回写 |
+| iCloud-aware safety | Windows/iCloud binding、Cloud Files metadata gate、fail-closed publish | 是安全门禁，不是通用云端 provisioning/repair engine |
+| Schemas | session、practice、automation、Elite evidence、benchmark、readiness、target、prerequisite、Tutor event/directive、learning context 等 versioned schema | 非法/矛盾输入拒绝，而不是“自动猜对” |
+| Governance / CI | Architecture Gate、privacy audit、V1 exact replay、pytest、Ruff、Mypy、examples、demo、wheel | Windows/Ubuntu × Python 3.11/3.13 是主 CI matrix |
 
-## 先跑一个不联网的示例
+完整、逐项的权威清单见 **[Existing Capabilities and Product Boundaries](docs/capabilities-and-boundaries.md)**。
 
-需要 **Python 3.11+** 和 Git；CI 覆盖 Windows/Ubuntu、Python 3.11/3.13。示例不需要 Obsidian、DeepTutor、模型账号或 API key。
+## v1.2 主路径
+
+```mermaid
+flowchart LR
+    U[学习者] --> T[四个 GPT Tutors]
+    T <--> G[Gallop Tutor Bridge / Journal]
+    G --> E[Evidence + Mastery + Continuity + Mentorship]
+    G --> O[Obsidian Views]
+    O --> R[Gallop-Reader]
+```
+
+日常学习直接发生在对应 Tutor 对话中。Tutor Bridge 打开/恢复 session，返回有界 context，记录 learning events、checkpoint 与 finalization。Gallop 维护 append-only Journal、deterministic replay、evidence authority 与 Progressive Mentorship；Obsidian/Reader 负责阅读与回顾。
+
+**DeepTutor 现在是可选 legacy adapter，不在 v1.2 critical path 上。**
+
+## 硬产品边界
+
+下面这些不是“以后忘了补”，而是 v1.2 的明确边界：
+
+- **没有单独 Gallop UI。** 四个 GPT Tutor 对话就是 learner-facing surface。
+- **没有 model-as-grader authority。** GPT/provider 可以教学、观察、提交 candidate evidence，但不能直接宣告 mastery。
+- **没有身份验证/监考能力。** human attestation 是显式本地确认，不是 authorship/proctoring 证明。
+- **没有 autonomous curriculum owner。** Progressive Mentorship 只做 advisory；不会暗中改 target、课程表或 scheduler。
+- **没有 agent swarm。** Gallop 是学习治理/连续性/证据系统，不是通用 autonomous-agent framework。
+- **没有强制 DeepTutor。** DeepTutor 仅保留 legacy optional adapter。
+- **没有跨学科/跨概念证据泄漏。** Math 证据不会自动变成 Finance/CS/Stats 证据，Concept A 也不会证明 Concept B。
+- **没有 silent migration。** 旧 Journal/event meaning 不会为了新版叙事被静默重解释。
+- **没有 psychometric validity claim。** mastery/readiness 是保守的软件治理模型，不是经过心理测量学验证的教育测量工具。
+- **没有 hostile-owner tamper-proof claim。** hash-chain / SQLite trigger 用于一致性与损坏检测，不对拥有机器完全权限的人提供不可篡改保证。
+- **没有 distributed atomicity claim。** Journal commit 是权威；Obsidian/Reader/cloud 多文件发布可恢复，但不是一个分布式事务。
+- **没有通用 cloud provisioning。** Gallop 能在已验证的 Reader 路径上安全发布，但不负责修复任意 iCloud/Obsidian 环境。
+- **没有“隐私过滤必定抓到所有敏感信息”的承诺。** repository audit 与 Reader filter 都是 defense in depth。
+- **v1.2 baseline 没有 semantic retrieval / broad plugin ecosystem / Gallop UI / Yau-specific competition engine。** 这些都不是当前已有核心能力。
+- **源码版本不等于发布状态。** `gallop-learning==1.2.0`、GitHub Release/tag、PyPI、assets 必须分别陈述。
+
+## 权威边界
+
+| Surface | 可以做 | 不可以做 |
+|---|---|---|
+| GPT Tutor | 教学、提问、解释、观察、提交 candidate event/assessment | 直接宣告 mastery、写其他 subject、替代 Journal |
+| Tutor MCP / Runtime Bridge | 校验、记录、checkpoint、resume、给 bounded context | 绕过 evidence rules、伪造历史 |
+| Journal | 保存权威 accepted events、支持 replay | 猜测未发生的 learner success |
+| Evidence / mastery policy | admission、provenance、capability derivation | 把 praise / provider output / model confidence 当 mastery |
+| Progressive Mentorship | 给 zone、scaffold、repair/retest、next action | 暗改 queue、降低 target ceiling、无证据认证能力 |
+| Obsidian | 展示 human-readable governed projection | 通过手改 Markdown 改 authoritative state |
+| Gallop-Reader | 提供移动端阅读连续性 | 向 Journal/Vault 回写权威学习状态 |
+| DeepTutor / provider | 可选生成练习材料 | 成为强制依赖或独立评分 authority |
+
+## 真实验收
+
+[v1.2 Real Four-Tutor Dogfood Acceptance](docs/audits/v1.2-real-dogfood-acceptance.md) 已覆盖：
+
+- 四个真实 subject-bound Tutor session；
+- 数学证明 → 错误诊断 → assisted repair → fresh-chat closed-book retest；
+- 统计 fixed-seed simulation reasoning；
+- 金融 closed-book derivation；
+- CS/AI `NO_AGENT_CODING`；
+- abrupt-close restore 与 duplicate checkpoint recovery；
+- 自动 Obsidian projection、fail-closed projection recovery；
+- Gallop-Reader 单向发布、恢复与手机端可见性；
+- 四学科隔离、candidate evidence / human attestation 权限边界。
+
+验收没有为了“好看”而放宽标准：数学独立重测结果为 `PARTIAL` 时，系统保持 `GUIDED`、mastery `0`，而不是伪造升级。
+
+## 隔离离线示例
+
+需要 Python 3.11+：
 
 ```bash
 git clone https://github.com/lucaschang2021/gallop.git
 cd gallop
 python -m venv .venv
-```
-
-激活环境：PowerShell 使用 `.venv\Scripts\Activate.ps1`；Linux/macOS 使用 `source .venv/bin/activate`。然后安装：
-
-```bash
-python -m pip install -e .
-python -m gallop --help
-python -m gallop --automation-config examples/automation/config.json intake examples/automation/session.json
-python -m gallop --automation-config examples/automation/config.json queue
-python -m gallop --automation-config examples/automation/config.json cycle
-python -m gallop --automation-config examples/automation/config.json status
-python -m gallop --automation-config examples/automation/config.json explain Continuity --subject mathematics
-```
-
-这个虚构的连续性课程示例会创建一个概念与训练候选项，**掌握度保持 0、置信度 low，训练不会自动开始或完成**。重复导入同一文件不会重复记为学习证据。
-
-生成内容全部位于仓库内被忽略的 `automation-runtime/integration_tests/`：
-
-```text
-automation-runtime/integration_tests/
-├── events.sqlite3          # 原始输入和追加事件，重放依据
-├── derived-state.json      # 可重建的学习状态
-├── vault/Today.md          # 今天的训练、薄弱点和问题
-├── vault/Gallop/Automation/
-└── reader/Gallop-Reader/    # 本地阅读预览，不连接真实云端
-```
-
-首次使用要求配置中的运行根目录为空；不要把它改成真实 Vault。配置路径相对于 JSON 配置文件解析，Automation 不读取旧流程的 `.env`。
-
-若想看完整的旧版模拟练习闭环：
-
-```bash
+python -m pip install -e ".[dev]"
 python -m gallop demo --output demo-output
 ```
 
-该 **legacy 合成示例**生成 7 道题、虚构 5/7 成绩和 1 → 2 状态变化，只写入 `integration_tests`；它不是真实成绩，也不代表 Automation 的升级规则。详细操作见[快速开始](docs/quickstart.md)。
+完整的 Automation V1 / legacy CLI 仍可用于测试、迁移兼容与开发。不要把 synthetic demo 当成真实 learner evidence。详见[快速开始](docs/quickstart.md)和[CLI](docs/automation-cli.md)。
 
-## 实际学习如何进行？
+## 工程边界
 
-```mermaid
-flowchart TD
-    T[导师结构化记录] --> I[intake 校验]
-    I --> E[(本地追加事件日志)]
-    E --> S[学习状态与训练队列]
-    S --> P[prepare 本地任务 / 可选 DeepTutor 诊断题]
-    P --> H[学习者确认开始并实际作答]
-    H --> A[人评估并确认结果]
-    A --> E
-    E --> V[cycle 生成 Obsidian 视图]
-    V --> R[过滤后单向导出 Gallop-Reader]
-```
+- `gallop/tutor/`：v1.2 Tutor Protocol、Runtime Bridge、bounded context、MCP transport。
+- `gallop/automation/`：Journal/application orchestration、replay、queue、views、durable jobs。
+- `gallop/progression/`：无 I/O 的 Progressive Mentorship 决策域。
+- `gallop/projections/`：v1.2 Tutor/Obsidian projection。
+- `gallop/schemas/`：协议、证据、readiness、target、prerequisite 等 schema。
+- `ARCHITECTURE.toml` + `scripts/check_architecture.py`：可执行架构约束与漂移门禁。
+- `.github/workflows/tests.yml`：Windows/Ubuntu × Python 3.11/3.13 的 Ruff、Mypy、pytest、V1 exact replay、examples、architecture、privacy audit、demo 与 wheel build。
 
-1. 导入导师记录，用 `queue` 和 `explain` 查看下一步及其依据。
-2. `prepare QUEUE_ID` 准备本地任务；需要外部诊断题时显式调用 `prepare QUEUE_ID --send`，再用返回的 job ID 执行 `poll` / `collect`。
-3. 学习者真正开始时才执行 `start QUEUE_ID --confirm`，按实际表现填写结果模板。
-4. 人评估后执行 `ingest-result FILE --confirm-human`；再运行 `cycle` 更新视图与 Reader。
+## 安全与证据
 
-以上 Automation 命令都要先带 `--automation-config FILE`。真实模式需要已有 Obsidian Vault；`publish` / `cycle` 还要求现有已验证的 Reader 绑定。首次体验请停留在隔离示例，不要创建替代 Reader 或重置导出回执。完整步骤见 [Automation V1](docs/automation-v1.md) 和 [CLI](docs/automation-cli.md)。
+- 私有 Journal、真实答案、provider runtime、配置与凭据不得进入仓库或 Reader。
+- Tutor assessment 不是 human attestation；Obsidian edit 不是 progression mutation。
+- 独立证据必须遵守 assistance / agent-usage 约束；AI 生成代码不能算 independent coding evidence。
+- Reader 过滤是 defense in depth，不承诺识别所有敏感文本。
 
-## 数据、安全与学习证据
+详见[能力与边界](docs/capabilities-and-boundaries.md)、[架构](docs/architecture.md)、[v1.2 Tutor Protocol](docs/v1.2-tutor-protocol.md)、[真实集成](docs/v1.2-real-tutor-integration.md)、[安全规则](docs/automation-safety.md)与[当前状态](docs/current-status.md)。
 
-- 原始记录、事件日志、任务输出和答案文件保存在本地私有运行目录；Obsidian 是可读视图。不要提交真实笔记、作答、配置、凭据或运行日志。
-- 外部模型调用需要显式请求，会把选定的练习上下文交给 DeepTutor 配置的服务。`cycle` 不调用模型，也不替学习者作答。
-- 最高掌握度要求跨天、独立、多种任务、延迟回忆、迁移和口试证据。规则是软件中的保守启发式，不是经验证的教育测量工具。
-- 人确认不是监考或身份认证；本地哈希链不是对机器所有者的防篡改保证。导出过滤也不能保证识别所有敏感文字。
+## 当前工程状态
 
-参阅[安全策略](SECURITY.md)、[Automation 掌握度规则](docs/automation-safety.md)、[Elite Training Protocol](docs/elite-training-protocol.md)、[Progressive Mentorship](docs/progressive-mentorship.md)及 [Reader 边界](docs/mobile-export.md)。
+`gallop-learning` 源码版本为 `1.2.0`。v1.2 已完成受控真实 dogfood；此前 main 的完整 Windows/Ubuntu × Python 3.11/3.13 CI matrix 已全绿。发布页面、tags、PyPI/asset 分发是独立的 release-management 问题，不应与源码能力或 dogfood acceptance 混为一谈。
 
-## 代码地图与工程状态
-
-```text
-gallop/
-├── ARCHITECTURE.toml       # 可执行架构契约与漂移基线
-├── gallop/automation/       # 接入、事件库、状态、队列、任务恢复、视图、CLI
-├── gallop/progression/      # 无 I/O 的能力、训练区间、支架与指导决策
-├── gallop/adapters/         # DeepTutor、Obsidian、离线 mock
-├── gallop/core/             # 旧流程的校验、同步、掌握度和复习
-├── gallop/schemas/          # JSON 协议与四学科策略
-├── gallop/mobile.py         # 过滤后的单向阅读导出
-├── examples/               # 合成课程和练习输入
-├── tests/                  # 单元、掌握度、安全和集成测试
-├── scripts/                # 示例校验与 Git 历史隐私审计
-└── .github/workflows/       # Windows/Ubuntu CI 与 wheel 构建检查
-```
-
-CI 对 push/PR 运行测试、示例校验、仓库审计、离线 demo 和 wheel 构建。v1.0.0 的发布记录报告了 177 项本地测试及一次隔离的真实 DeepTutor 验证；这不证明所有环境、模型或长期学习效果都已验证。
-
-架构依赖、证据权限、时间输入和热点文件增长由
-[Architecture Governance](docs/architecture-governance.md) 与 CI 中的可执行 Gate 约束。
-
-截至 2026-08-31，v1.0.0 GitHub Release 没有附加 wheel/checksum 资产，当前 CI 也不自动上传发布资产。请使用上面的源码安装方式；不要把 v0.1.0 wheel 当成 v1.0.0。[当前状态与证据](docs/current-status.md)区分已实现、历史验证和待完善项。
-
-## 后续方向与参与方式
-
-优先完善发布可复现性、真实环境接入说明、证据校准与外部贡献体验；语义检索、动态难度和更多适配器属于后续探索，不是当前承诺。详见[路线图](docs/roadmap.md)。
-
-欢迎提交可复现 bug、文档改进、合成学习样例和聚焦的适配器 PR。开发者安装 `python -m pip install -e ".[dev]"` 后，按 [CONTRIBUTING.md](CONTRIBUTING.md) 运行与 CI 一致的检查。漏洞请按 [SECURITY.md](SECURITY.md) 私下报告，不要在公开 issue 中上传真实学习数据。
+下一阶段以 **稳定日用、真实学习证据积累、回归监控与小步维护** 为主，而不是继续扩张架构。
 
 ## License
 
-Gallop 使用 [Apache License 2.0](LICENSE)。DeepTutor 是独立外部项目，未随 Gallop 分发；第三方代码和服务遵循各自条款。参阅[依赖边界](docs/dependencies.md)。
+Gallop 使用 [Apache License 2.0](LICENSE)。第三方工具与服务遵循各自条款。

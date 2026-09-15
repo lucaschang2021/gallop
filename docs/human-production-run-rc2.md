@@ -1,29 +1,27 @@
-# RC2 Human Production Run procedure
+# RC2 Human Production Run — historical procedure
 
-Automated RC2 PASS is not Human E2E PASS. Run this only after reviewing and
-committing the candidate, with the existing learner configuration and verified
-Reader binding.
+> **Superseded acceptance status:** RC2 originally required a later human production run. Gallop v1.2 has since completed controlled real learner dogfood across all four subject-bound Tutors, including fresh-chat restoration, incremental checkpoints, abrupt-close recovery, duplicate recovery, owned Obsidian projection, and learner-confirmed Reader visibility. See the [v1.2 real dogfood acceptance](audits/v1.2-real-dogfood-acceptance.md).
 
-1. Record one real lesson through Tutor Protocol v1. Optional mentorship data
-   may state an explicit target, but must not claim current capability.
-2. Confirm Gallop ingests the session and shows the target separately from an
-   evidence-backed current capability.
-3. Review the recommended zone and scaffold. The learner decides whether to
-   accept the task; Gallop does not auto-start it.
-4. Prepare or submit the existing queue item and open it in the real DeepTutor
-   UI. A manifest request is not performance telemetry.
-5. The learner completes the work and records actual hints, agent use, zone,
-   designed scaffold, response refs and assessment context.
-6. A human reviews the response and explicitly confirms ingestion. Do not mark
-   independent performance merely because code runs or an answer is correct.
-7. Verify the immutable evidence, mastery transition, readiness and mentorship
-   decision. Check that one success fades at most one scaffold level.
-8. Project and publish through the existing one-way Reader path. Verify
-   `Development.md` and `North Star.md` while keeping raw events and answers out.
-9. On a later day, perform transfer and delayed closed-book retention checks
-   before expecting higher progression.
+This file is retained to document the earlier RC2 acceptance procedure and the governance intent behind it. It is not the current daily-use checklist.
 
-Record command outputs, event IDs, timings and screenshots as private acceptance
-evidence. Do not add real learner work, local paths or DeepTutor private state to
-the public repository. Human E2E is PASS only after all nine steps occur with
-real learner work.
+## Historical RC2 procedure
+
+1. Record one real lesson through Tutor Protocol v1. Optional mentorship data may state an explicit target but must not claim current capability.
+2. Confirm Gallop ingests the session and keeps target separate from evidence-backed current capability.
+3. Review recommended zone/scaffold; learner decides whether to accept work.
+4. Prepare/submit the existing queue item; provider request is not performance telemetry.
+5. Learner completes real work and records actual hints, agent use, zone, designed scaffold, response refs, and assessment context.
+6. Human reviews the response and explicitly confirms ingestion. Correctness alone does not establish independence.
+7. Verify immutable evidence, mastery transition, readiness, and mentorship decision; one success fades at most one scaffold level.
+8. Project/publish through the one-way Reader path while keeping raw events and answers private.
+9. On a later day, perform transfer and delayed closed-book retention checks before expecting higher progression.
+
+At RC2, completing all nine steps was the intended Human E2E boundary.
+
+## Current v1.2 procedure
+
+Normal real use now happens through the corresponding subject-bound GPT Tutor MCP surface:
+
+`open/resume → bounded Journal context → incremental learning events/checkpoints → candidate assessment/human attestation → deterministic replay/mentorship → owned Obsidian projection → one-way Reader publication`.
+
+The real dogfood acceptance record is authoritative for what was actually exercised. Historical RC2 steps remain useful background but should not be cited as an outstanding blocker.
