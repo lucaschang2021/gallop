@@ -1,121 +1,104 @@
 # Current status
 
-**Snapshot: 2026-09-14.** The RC2 governance baseline is frozen at record commit
-`22a3fe2c27b4128fc1124eefe003fbad6194b127`. The v1.2 implementation and
-controlled real four-Tutor dogfood are complete on the Zero-Touch candidate
-branch. The [v1.2 baseline](baselines/v1.2-zero-touch-baseline.md) becomes frozen
-only when the exact record commit completes the required CI matrix successfully.
+**Snapshot: 2026-09-15.** Gallop's current source baseline is **v1.2.0 — Zero-Touch Learning Continuity**. The RC2 governance work is closed, the v1.2 architecture is implemented, and controlled real four-Tutor dogfood has passed. GitHub Release metadata is intentionally not being updated as part of this source refresh.
 
-Gallop is headless. The frozen target product definition is:
+> **GPT = TEACH · GALLOP = GOVERN · OBSIDIAN = REMEMBER · EVIDENCE = PROVE**
 
-> GPT = TEACH · GALLOP = GOVERN · OBSIDIAN = REMEMBER · EVIDENCE = PROVE
+## Product state
 
-## Current RC2 implementation
+Gallop is headless. The four subject-bound GPT Tutor conversations are the learner-facing surface:
 
-Automation V1 provides explicit tutor intake, raw-byte preservation, append-only
-SQLite evidence, replayable learning state, four-subject queues, conservative
-mastery/confidence rules, human start/assessment gates, Obsidian projections,
-the filtered Reader exporter, and the pure advisory Progressive Mentorship
-domain. CLI/file operations remain the current operational interface; Gallop
-ships no learner UI.
+- Mathematics Tutor
+- Statistics / Econometrics Tutor
+- Finance Tutor
+- CS / AI Tutor
 
-The governed baseline adds a non-destructive exact-commit privacy-debt gate,
-Ruff and scoped Mypy gates, a mutation-free construction/composition boundary,
-explicit application Clock/Journal seams, and expanded architecture checks.
-Its exact counts and drift results are in the
-[governed-baseline record](baselines/rc2-governed-baseline.md).
+Gallop owns the local append-only Journal, deterministic replay, evidence authority, mastery state, bounded fresh-chat continuity, incremental checkpoints, and derived Obsidian / Gallop-Reader projections. Obsidian and Reader are views, never learner authority. DeepTutor is optional legacy compatibility and is not on the v1.2 critical path.
 
-## Target v1.2 architecture
+## v1.2 implementation
 
-The first seven sequential v1.2 stages, a versioned bidirectional
-[Tutor Protocol](v1.2-tutor-protocol.md) and its transport-neutral Runtime
-Bridge plus incremental unconfirmed candidate-evidence admission, are
-implemented on the v1.2 branch together with automatic privacy-filtered
-Obsidian projection into the existing four subject roots and deterministic,
-bounded, journal-derived learning context packets.
-It targets four GPT tutor conversations as the complete learner-facing surface,
-backed by one Gallop Journal/application. Opening or resuming a Tutor session
-automatically returns that context, including across a process restart and an
-unfinished prior chat. Four-subject continuity is now covered by an isolated
-synthetic Golden E2E over one runtime.
-Controlled real dogfood now covers all four Tutors, incremental checkpoints,
-exact duplicate recovery, abrupt-close restoration, a no-transcript fresh chat,
-owned Obsidian projection, and learner-confirmed mobile Reader visibility. The
-[dated acceptance record](audits/v1.2-real-dogfood-acceptance.md) keeps actual
-learner outcomes separate from runtime acceptance: in particular, a partial
-Mathematics independent retest remained `GUIDED` at mastery level `0`. Synthetic
-E2E remains isolated and is not learner evidence.
+The current implementation includes:
 
-## Legacy compatibility
+- versioned v1.2 Tutor Protocol and subject-bound native STDIO MCP servers;
+- Runtime Bridge between Tutor calls and the authoritative Gallop application/Journal;
+- bounded, deterministic learning-context construction from Journal state;
+- fresh-chat restoration without access to prior chat transcripts;
+- incremental candidate-evidence admission and checkpointing;
+- exact duplicate detection and idempotent recovery;
+- conservative evidence classes and human-attestation authority;
+- Progressive Mentorship logic for current capability, target capability, prerequisites, training zone, productive struggle, scaffolding, and evidence progression;
+- automatic owned Obsidian projection;
+- fail-closed projection recovery when a managed region disappears;
+- validated one-way PC → Vault → Gallop-Reader publication;
+- legacy Automation V1 / v0.1 compatibility without silent historical migration.
 
-DeepTutor is legacy, optional, non-authoritative, and not part of the target
-primary workflow. Existing isolated adapter/job compatibility remains to avoid
-unnecessary migration risk; v1.2 must require zero DeepTutor runtime
-dependencies. Legacy v0.1 commands and their separate state also remain
-available but are not the future learner workflow.
+See [v1.2 Tutor Protocol](v1.2-tutor-protocol.md), [Architecture](architecture.md), and [Architecture Governance](architecture-governance.md).
 
-## Historical V1 baseline
+## Real four-Tutor acceptance
 
-The following release/repository evidence describes the historical V1 baseline
-at [`c8d0dfd`](https://github.com/lucaschang2021/gallop/commit/c8d0dfdcdee1dd002688ebf43d20bd2b48766fc8),
-tagged `v1.0.0`. It remains compatibility evidence, not a current health check.
+The dated [v1.2 Real Four-Tutor Dogfood Acceptance](audits/v1.2-real-dogfood-acceptance.md) is **PASS** and covers:
 
-## Release and repository evidence
+- four real subject-bound Tutor sessions;
+- Mathematics proof attempt, diagnosed mistake, assisted repair, restart restore, and fresh-chat closed-book retest;
+- Statistics simulation reasoning;
+- Finance closed-book derivation and a different-task independent retest;
+- CS/AI learner-authored No-Agent Coding;
+- incremental checkpointing;
+- abrupt-close restoration;
+- exact duplicate recovery;
+- automatic Obsidian projection;
+- fail-closed backup-based projection recovery;
+- Reader publication recovery and learner-confirmed mobile visibility;
+- four-subject isolation and conservative evidence authority.
 
-| Area | Verified snapshot | Meaning / limit |
-|---|---|---|
-| Package | `gallop-learning` 1.0.0, Python >=3.11, Alpha classifier in [pyproject.toml](../pyproject.toml) | v1.0.0 names the Automation milestone; it is not a production-readiness guarantee |
-| Releases | [v1.0.0](https://github.com/lucaschang2021/gallop/releases/tag/v1.0.0), [v0.1.0](https://github.com/lucaschang2021/gallop/releases/tag/v0.1.0) | v1.0.0 has GitHub source archives but no attached wheel/checksum assets; v0.1.0 has a source ZIP, wheel and checksums |
-| Tags | `v0.1.0-rc1`, `v0.1.0`, `v1.0.0` | Release candidates and releases are distinct; no PyPI publication is established here |
-| Pull requests | [#1](https://github.com/lucaschang2021/gallop/pull/1) and [#2](https://github.com/lucaschang2021/gallop/pull/2) merged | No open PR at the start of this documentation review; this review's PR is subsequent work |
-| Issues | No standalone issues returned by the repository's all-state issue listing at review start | Absence of reported bugs is not proof of absence of defects |
-| CI | Main [run 33401439397](https://github.com/lucaschang2021/gallop/actions/runs/33401439397) and tag [run 33401773433](https://github.com/lucaschang2021/gallop/actions/runs/33401773433) succeeded at the baseline SHA | Historical checks, not results for future commits |
+The acceptance did not promote weak evidence for presentation purposes. The Mathematics independent retest remained `PARTIAL`, so its state remained `GUIDED` with mastery `0`. That is expected safety behavior, not a release exception.
 
-The [CI workflow](../.github/workflows/tests.yml) runs on push and pull request
-with Windows/Ubuntu × Python 3.11/3.13. It installs development dependencies,
-runs Ruff and the scoped Mypy gate, pytest, examples, architecture and privacy
-audits, the offline demo, and a wheel build. It does **not** upload release
-artifacts or implement a tag/version release gate. macOS and other Python
-versions are not covered by this matrix.
+The learner runtime recorded 91 append-only events and 5 concepts after dogfood, with no synthetic fixture admitted into learner authority state.
 
-## Evidence strength
+## Engineering gates
 
-- **Public reproducible checks:** the source tree contains offline synthetic
-  unit/integration tests, protocol examples and demos; CI runs without private
-  model credentials. They verify contracts and failure/recovery behavior.
-- **Historical real acceptance:** the [v1.0.0 final gate](automation-final-gate.md)
-  reports 177/177 local tests, one real DeepTutor generation/collection, a
-  user-confirmed non-independent response, isolated projection, unchanged real
-  mastery, and 7/7 Reader files synced. Private evidence was deliberately not
-  published. These are release-record claims, not a new live rerun here.
-- **Not established:** broad provider compatibility, learning efficacy, validated
-  mastery calibration, independent authorship, or general production readiness.
-  Synthetic results must never be described as real learner performance.
+The v1.2 governed baseline requires:
 
-## Known limitations and remaining work
+- full pytest regression;
+- Ruff;
+- scoped Mypy;
+- architecture hard violations `existing=0 / introduced=0`;
+- repository privacy audit;
+- Tutor protocol example validation;
+- isolated offline demo;
+- wheel build;
+- V1 replay EXACT;
+- mastery / queue / evidence drift NONE.
 
-1. **Real setup remains technical.** v1.2 provides subject-bound local Tutor MCP
-   tools, but no daemon, account scraper, automatic notifications, or Gallop UI.
-   `learner` mode requires an existing
-   Obsidian Vault; `cycle`/`publish` need an existing verified Reader binding.
-   The isolated preview works without those external applications. A portable
-   first-time real Reader setup is not delivered by the sample configuration.
-2. **Human evidence authority is essential.** Legacy DeepTutor choice diagnostics do not establish
-   proof, oral, coding or simulation performance. Gallop accepts human-confirmed
-   evidence; it does not independently verify the person or replace an examiner.
-3. **Two state models coexist.** Automation never silently migrates legacy
-   mastery. The legacy demo's synthetic 1 → 2 result is not the Automation rule.
-4. **Privacy needs user review.** Raw input and answers remain private. External
-   generation sends selected context to a configured provider; Reader filtering
-   is defense in depth, not complete sensitive-text detection.
-5. **Recovery has limits.** No provider exactly-once claim across uncertain OS
-   spawning; no atomic transaction across all Markdown files and cloud sync.
-   Existing live/uncertain jobs must not be duplicated to escape a timeout.
-6. **Distribution can improve.** v1.0.0 artifact uploads, checksums and release
-   version checks are missing from the current workflow. Use source installation.
-7. **Future capabilities stay future.** Built-in semantic retrieval, a general
-   plugin ecosystem, Competition Mathematics, Yau specialization, and a Gallop
-   UI are not part of the v1.2 baseline.
+Local pre-freeze Windows / Python 3.13 verification completed with 374 tests, Ruff PASS, Mypy PASS across 20 source files, architecture hard violations `0 / 0`, protocol examples PASS, and isolated offline demo PASS. The frozen V1 replay source remains `c8d0dfdcdee1dd002688ebf43d20bd2b48766fc8`.
 
-See [roadmap](roadmap.md) for proposed priorities. No existing learning data,
-cloud account or external provider was changed by this documentation review.
+A later stable-version promotion exposed one response-order-sensitive MCP STDIO integration assertion on Ubuntu / Python 3.13. Runtime behavior was not the failing invariant: the test assumed JSON-RPC response ordering. The integration test has been hardened to select responses by JSON-RPC request ID so initialization and tool responses may legally arrive in either order. Main promotion is gated on the resulting cross-platform CI matrix.
+
+## Daily-use readiness
+
+**Controlled daily use is accepted.** The core question is no longer whether Gallop can be used as the learner's daily system; it can. The normal workflow is:
+
+1. learn directly in one of the four GPT Tutor conversations;
+2. let the Tutor Bridge open or resume the subject session;
+3. commit meaningful learning events and checkpoints to the Journal;
+4. preserve evidence authority and conservative mastery updates;
+5. project the resulting state into Obsidian and one-way Gallop-Reader views;
+6. open a fresh chat when needed and restore from Gallop rather than relying on transcript memory.
+
+Further engineering should be driven by real daily-use evidence, reproducible bugs, or clearly justified new scope—not by redesigning the core architecture.
+
+## Distribution and Release boundary
+
+The repository source identifies `gallop-learning` as version `1.2.0`. GitHub Release records are deliberately left unchanged in this update; no new Release page, release asset upload, or release tag is implied here. Source state, controlled acceptance, and GitHub Release publication are separate governance decisions.
+
+## Known limits
+
+1. Gallop has no learner-facing UI or hosted service; the four GPT Tutors are the intended front end.
+2. Human attestation is not identity verification or proctoring.
+3. Mastery heuristics are conservative software rules, not validated educational measurement.
+4. Reader publication is one-way; phone-to-Vault writes are outside the accepted architecture.
+5. Local ownership and privacy still require the user not to commit real answers, private paths, credentials, or runtime state.
+6. macOS and environments outside the configured Windows/Ubuntu × Python 3.11/3.13 matrix are not part of current CI evidence.
+7. Competition Mathematics / Yau specialization, semantic retrieval, broader plugin ecosystems, and a Gallop UI are outside the v1.2 baseline.
+
+See the [roadmap](roadmap.md) for post-v1.2 priorities.
