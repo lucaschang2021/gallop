@@ -1,118 +1,84 @@
-# Progressive Mentorship Engine — RC2
+# Progressive Mentorship Engine
 
-The pure `gallop.progression` domain keeps the summit fixed and builds an
-evidence-backed path toward it. `gallop.mentorship` loads validated policy data
-and preserves the RC2 public interface; Automation only orchestrates the call.
-Its permanent principles are: ceiling stays fixed, difficulty adapts,
-assistance fades, evidence determines progression, and independence is the
-destination.
+The pure `gallop.progression` domain keeps the summit fixed and builds an evidence-backed path toward it. `gallop.mentorship` remains the compatibility/policy-loading facade; v1.2 also exposes the resulting guidance to the four GPT Tutors as bounded advisory context.
 
-## Current implementation
+Its permanent principles are:
 
-RC2 implements deterministic, advisory-only mentorship over the shared
-four-subject evidence architecture. It emits no queue mutation and requires no
-provider, filesystem, Obsidian, CLI, or current wall clock.
+> **ceiling stays fixed · difficulty adapts · assistance fades · evidence determines progression · independence is the destination**
 
-Readiness dimensions are subject-level aggregates, while concept evidence and
-mastery remain keyed by subject plus concept. Evidence attributed to Concept A
-does not become Concept B evidence. A shared readiness label may summarize its
-explicitly labelled source records, but it cannot certify another concept.
+## v1.2 role
 
-## Target v1.2 architecture
+Progressive Mentorship is part of the accepted v1.2 architecture, not a future RC2 target. The Runtime Bridge and Context Builder can surface current capability, target, training zone, scaffolding, prerequisite focus, review/retest signals, unfinished work, and next action to the subject-bound Tutor.
 
-After governance closure, the same engine may supply bounded training directives
-to the four GPT tutors through the Tutor Protocol. Gallop continues to own
-training policy; GPT owns explanation and task presentation. This bridge and
-fresh-chat restoration are not RC2 features.
+The engine remains advisory. Tutor wording and teaching interaction are not authority. A target never raises current capability, and a Tutor directive never directly promotes mastery.
 
-## Legacy compatibility
+## Current capability and target
 
-`gallop.mentorship` preserves the RC2 public/policy-loading call shape. The V1
-queue remains the scheduler. DeepTutor output, where the legacy optional adapter
-is used, is provider material rather than learner capability evidence.
+A target is explicit and immutable: subject, readiness dimension, target state, description, North-Star flag, and explicit prerequisite refs. Missing evidence stays `UNKNOWN`.
 
-## Historical V1 baseline
+Current capability is evidence-derived as:
 
-Histories without RC2 records replay to the exact V1 state/projection shape.
-The historical V1 mastery and review rules are compatibility constraints, not
-claims that the future Zero-Touch tutor workflow already exists.
+`UNKNOWN` → `EXPOSED` → `GUIDED` → `PARTIALLY_INDEPENDENT` → `INDEPENDENT` → `TRANSFERRED` → `RETAINED` → `RESEARCH_USABLE`.
 
-## Current and target capability
+Outputs carry confidence, independent/assisted counts, timestamps, and evidence refs. The engine cannot infer achieved capability from aspiration, Tutor praise, or a target record.
 
-A target is explicit and immutable: subject, readiness dimension, target state,
-description, North-Star flag and explicit prerequisite link refs. A high target
-never initializes current state. Current capability is derived as `UNKNOWN`,
-`EXPOSED`, `GUIDED`, `PARTIALLY_INDEPENDENT`, `INDEPENDENT`, `TRANSFERRED`,
-`RETAINED`, or `RESEARCH_USABLE`. Output carries confidence, independent and
-assisted counts, timestamps and evidence refs. Missing evidence stays UNKNOWN.
+## Training zones
 
-## Training zones and task design
+- `FOUNDATION`: repair prerequisites and build components.
+- `PRODUCTIVE`: normal daily growth frontier.
+- `STRETCH`: unfamiliar contexts above stable capability.
+- `MONSTER_BENCHMARK`: low-frequency calibration/exposure.
 
-- `FOUNDATION` repairs prerequisites and builds components.
-- `PRODUCTIVE` is the normal daily growth frontier.
-- `STRETCH` introduces unfamiliar contexts above stable capability.
-- `MONSTER_BENCHMARK` is low-frequency calibration and exposure.
+Task-design recommendations increase difficulty, novelty, and ambiguity as evidence supports higher capability. These are annotations/directives, not hidden queue mutations.
 
-The derived task-design recommendation increases difficulty, novelty and
-ambiguity as capability improves. This is an annotation, not a queue mutation.
-Only mathematics policy records the familiar 60-70/20-30/about-10 guidance, and
-it is descriptive rather than a universal enforced percentage.
+Monster failure is isolated as overchallenge when appropriate. It can inform North-Star calibration without erasing established mastery or current capability.
 
-Monster failure is classified as overchallenge when its zone is explicit. It
-updates North-Star observations without reducing established current state or
-mastery. Foundation, Productive, Stretch and Monster evidence remain separately
-counted; they are not collapsed into one score.
+## Scaffolding
 
-## Scaffolding and hints
+Designed support is:
 
-Designed support is `S5 FULL_INSTRUCTION`, `S4 STRUCTURED_GUIDANCE`, `S3
-PARTIAL_SCAFFOLD`, `S2 MINIMAL_GUIDANCE`, `S1 ASSESSMENT_MODE`, and `S0
-RESEARCH_INDEPENDENCE`. Hint level remains the assistance actually consumed.
-The engine starts at S5 when evidence is absent and fades exactly one level after
-a successful observation designed at the currently recommended level. Evidence
-at S0 cannot jump an unobserved learner from S5 to assessment. Independent work
-designed under S5-S2 cannot count as independent mastery evidence.
+`S5 FULL_INSTRUCTION` → `S4 STRUCTURED_GUIDANCE` → `S3 PARTIAL_SCAFFOLD` → `S2 MINIMAL_GUIDANCE` → `S1 ASSESSMENT_MODE` → `S0 RESEARCH_INDEPENDENCE`.
+
+Hint level records assistance actually consumed. Scaffolding fades conservatively, one step at a time after qualifying evidence. Evidence produced under heavy designed support cannot be relabelled as independent merely because the final answer is correct.
 
 ## Deterministic progression and repair
 
-Actions are `MAINTAIN`, `REDUCE_SCAFFOLDING`, `INCREASE_NOVELTY`,
-`INCREASE_DIFFICULTY`, `ADD_TRANSFER_TEST`, `ADD_RETENTION_TEST`,
-`REPAIR_PREREQUISITE`, `RETEST_TARGET`, `REDUCE_TASK_SPAN`,
-`MOVE_TO_ASSESSMENT`, or `MOVE_TO_RESEARCH_MODE`. There is no probability or LLM
-intuition in the decision.
+Available actions include `MAINTAIN`, `REDUCE_SCAFFOLDING`, `INCREASE_NOVELTY`, `INCREASE_DIFFICULTY`, `ADD_TRANSFER_TEST`, `ADD_RETENTION_TEST`, `REPAIR_PREREQUISITE`, `RETEST_TARGET`, `REDUCE_TASK_SPAN`, `MOVE_TO_ASSESSMENT`, and `MOVE_TO_RESEARCH_MODE`.
 
-Prerequisite diagnosis uses only link IDs explicitly named by the target. Two
-confirmed target failures plus an unestablished linked prerequisite produce
-`POSSIBLE`; missing evidence is `UNKNOWN`. Independent prerequisite repair marks
-the gap `CLOSED`, then recommends retesting the original target. Repair never
-certifies the target itself.
+Prerequisite diagnosis uses explicit links. Repairing a prerequisite closes that gap; it does not certify the original target. The target must be retested.
 
-Struggle is recorded or conservatively classified as `PRODUCTIVE_FAILURE`,
-`PREREQUISITE_FAILURE`, `OVERCHALLENGE`, `CARELESS_FAILURE`, or
-`CONCEPTUAL_FAILURE`. Milestones on partial Monster work remain visible without
-turning the attempt into global failure.
+Struggle can be classified as `PRODUCTIVE_FAILURE`, `PREREQUISITE_FAILURE`, `OVERCHALLENGE`, `CARELESS_FAILURE`, or `CONCEPTUAL_FAILURE` when evidence supports the classification.
 
-## Gains, mentor role and research independence
+## Evidence authority
 
-Capability gains are emitted only when an evidence prefix crosses a capability
-state or fades one scaffold step. Weekly feedback contains those descriptions
-and refs; it adds no motivational claim. Mentor roles progress per capability
-through Teacher, Coach, Domain Mentor, Research Supervisor and Evaluator, with
-subject-specific labels supplied by policy data.
+Tutor-originated assessments enter as candidate evidence. Explicit human attestation is distinct. Agent provenance and assistance constrain independence classification; AI-generated code cannot become independent coding evidence.
 
-Research independence is `RI0 DEPENDENT`, `RI1 GUIDED`, `RI2 STRUCTURED`, `RI3
-SEMI_INDEPENDENT`, `RI4 INDEPENDENT_COMPONENT`, `RI5 INDEPENDENT_PROJECT`, or
-`RI6 RESEARCH_READY`. RI6 requires repeated independent research components,
-an explicit project, transfer and delayed retention evidence.
+Readiness and concept evidence remain scoped to their subject/concept. Evidence for Concept A does not become Concept B evidence merely because they share a readiness dimension.
 
-## Subject policies and views
+## Gains, mentor role, and research independence
 
-One core engine serves mathematics, statistics/econometrics, finance and CS/AI.
-`mentorship-policies.json` contains their trajectories, simulation/empirical,
-derivation/paper and coding ladders, benchmark labels and mentor labels.
+Capability gains are emitted only when evidence crosses a real capability boundary or justifies a scaffold reduction. Weekly feedback is evidence-backed rather than motivationally fabricated.
 
-`Development.md` is the normal daily view: current capability, frontier,
-scaffolding, next action and evidence-backed weekly gains. `North Star.md` holds
-high targets, Monster and benchmark calibration, and unresolved gaps. `Today.md`
-is unchanged. Raw events, answers, metadata and integration runtime stay outside
-the learner Reader.
+Mentor roles progress from Teacher through Coach, Domain Mentor, Research Supervisor, and Evaluator, with subject-specific labels supplied by policy data.
+
+Research independence uses `RI0 DEPENDENT` through `RI6 RESEARCH_READY`. Higher levels require repeated independent components, explicit project work, transfer, and delayed retention—not one successful event.
+
+## Four-subject policy
+
+One core engine serves Mathematics, Statistics & Econometrics, Finance, and CS & AI. `mentorship-policies.json` contains trajectories, simulation/empirical ladders, derivation/paper ladders, coding ladders, benchmark labels, and mentor labels.
+
+## Tutor integration and fresh-chat continuity
+
+The v1.2 Context Builder converts replayed Journal state into bounded advisory context for the correct subject Tutor. A stable Journal head produces deterministic directive identity/content. A fresh chat restores from Journal state, not from the prior transcript or model memory.
+
+If restoration fails, Gallop returns no fabricated context; committed evidence remains authoritative.
+
+## Projections
+
+`Development.md` and related Tutor/subject projections show current capability, frontier, scaffolding, next action, evidence-backed gains, and unresolved gaps. `North Star.md` can hold high targets and benchmark calibration. These Markdown files are readable projections; edits do not mutate authority.
+
+## Compatibility
+
+The RC2 implementation and gates remain historical evidence for how the engine was introduced. Historical V1 replay remains exact. DeepTutor, when used through the legacy adapter, supplies provider material—not progression authority.
+
+See [v1.2 Tutor Protocol](v1.2-tutor-protocol.md), [Architecture](architecture.md), and [Current Status](current-status.md).
