@@ -1,12 +1,31 @@
 # Architecture
 
-[Home](../README.en.md) · [Current status](current-status.md) · [Quickstart](quickstart.md) · [Tutor Protocol](v1.2-tutor-protocol.md)
+[Home](../README.en.md) · [Capabilities & boundaries](capabilities-and-boundaries.md) · [Current status](current-status.md) · [Quickstart](quickstart.md) · [Tutor Protocol](v1.2-tutor-protocol.md)
 
 Gallop is a **headless local learning control plane**. In v1.2, the four GPT Tutor conversations are the learner-facing surface; Gallop runs underneath them to govern evidence, continuity, replay, progression, and projections. There is no separate learner UI.
 
 The permanent product boundary is:
 
 > **GPT = TEACH · GALLOP = GOVERN · OBSIDIAN = REMEMBER · EVIDENCE = PROVE**
+
+The authoritative public inventory of what already exists, what is compatibility-only, and what is explicitly outside the product is [Existing Capabilities and Product Boundaries](capabilities-and-boundaries.md).
+
+## Existing capability layers
+
+The architecture must preserve the fact that Gallop already has several mature capability layers rather than only a Tutor bridge:
+
+| Layer | Existing capability |
+|---|---|
+| Learner interface | Four subject-bound GPT Tutors over local MCP |
+| Continuity | Stable session/event identity, open/resume, bounded fresh-chat context, checkpoint/finalize/readback |
+| Authority | Append-only Journal, deterministic replay, evidence admission, mastery/readiness derivation |
+| Training policy | Elite evidence semantics + Progressive Mentorship + four-subject policy data |
+| Recovery | Idempotent retry, conflict detection, abrupt-close restore, projection recovery |
+| Knowledge projection | Owned Obsidian views and one-way Gallop-Reader publication |
+| Compatibility | Automation V1, optional DeepTutor jobs, legacy v0.1 session/manifest/result path |
+| Governance | Schemas, Architecture Gate, exact V1 replay, privacy audit, CI/test/type/example/demo/wheel gates |
+
+The architecture does not permit a new layer to silently bypass or duplicate authority already owned by another layer.
 
 ## v1.2 runtime architecture
 
@@ -44,7 +63,9 @@ Authority is intentionally asymmetric:
 2. **Journal commit is authoritative for durable learning events.** Stable IDs make exact retries idempotent and conflicting retries fail.
 3. **Evidence admission is governed.** Tutor assessment never directly means `MASTERED`; independence depends on assistance/agent-use constraints and confirmation policy.
 4. **Derived state is replayed.** Mastery, readiness, unfinished work, and context are consequences of accepted Journal history, not mutable truth files.
-5. **Obsidian and Gallop-Reader are projections.** They cannot directly promote mastery or rewrite evidence authority.
+5. **Progressive Mentorship is advisory.** It may recommend zone/scaffold/repair/retest but cannot silently own the scheduler or certify capability without evidence.
+6. **Obsidian and Gallop-Reader are projections.** They cannot directly promote mastery or rewrite evidence authority.
+7. **Legacy providers are subordinate.** DeepTutor/provider output may supply material but never learner-performance authority.
 
 ## Tutor Protocol and Runtime Bridge
 
@@ -79,28 +100,44 @@ Meaningful checkpoints are committed incrementally. If the Tutor process or desk
 
 Projection failure after Journal commit is recoverable and must not cause the event to be fabricated as uncommitted. Projection ownership conflicts fail closed rather than silently replacing user decisions.
 
+## Evidence, mastery, readiness, and Elite semantics
+
+Gallop's authority model distinguishes exposure, attempts, candidate assessments, explicit attestation, independent evidence, assisted work, solution-seen work, AI/provider provenance, benchmarks, transfer, failures, and prerequisite links. Missing evidence remains unknown.
+
+Mastery/readiness is conservative: one answer, one day, praise, provider output, or model confidence cannot become robust mastery by itself. Elite evidence carries task type, hint/agent provenance, quality, transfer and benchmark conditions. These records support readiness and mentorship without collapsing the learner into one opaque score.
+
+No-Agent and closed-book conditions are evidence semantics. They constrain what may count as independent evidence but do not claim technical proctoring or identity verification.
+
 ## Progressive Mentorship
 
-`gallop/progression/` is the pure decision domain. It derives current capability, target gap, prerequisite diagnosis, productive-struggle state, scaffolding, progression action, capability gains, mentor role, and research-independence signals from governed evidence.
+`gallop/progression/` is the pure decision domain. It derives current capability, target gap, prerequisite diagnosis, productive-struggle state, scaffolding, training zone, progression action, capability gains, mentor role, and research-independence signals from governed evidence.
 
 Important invariants:
 
 - target capability never initializes or raises current capability;
+- difficulty may adapt while the target ceiling remains fixed;
 - scaffolding fades conservatively;
 - assisted work does not become independent evidence;
 - AI-generated code cannot count as independent coding evidence;
+- prerequisite repair does not certify the original target;
 - failed advanced work does not erase unrelated mastery without explicit evidence;
-- mentorship is advisory and does not silently create scheduler mutations.
+- mentorship is advisory and does not silently create scheduler/queue mutations.
 
 `gallop/mentorship/` remains the policy-loading / compatibility facade around this domain.
 
 ## Automation V1 and legacy compatibility
 
-`gallop/automation/` remains a major internal subsystem and compatibility surface. It owns the append-only store/application orchestration, replay, queue lifecycle, CLI operations, projections, and durable provider jobs.
+`gallop/automation/` remains a major internal subsystem and compatibility surface. It owns append-only store/application orchestration, replay, queue lifecycle, CLI operations, projections, and durable provider jobs. Existing intake, queue/explain, prepare, confirmed start, human-confirmed ingestion, cycle/recovery, and provider lifecycle behavior remains real functionality.
 
 DeepTutor is now **legacy, optional, and non-authoritative**. The existing submit/poll/collect adapter is preserved because it is useful for explicit diagnostics and compatibility, but it is not on the v1.2 primary path and Zero-Touch requires no DeepTutor runtime dependency.
 
 Legacy v0.1 session/manifest/generate/import-result commands remain separate and are never silently migrated into v1.2 authority state.
+
+## Obsidian and Gallop-Reader
+
+Obsidian is the human-readable projection layer. Gallop-owned regions are updated from replayed governed state; unknown ownership or conflicting edits fail closed. Projection Markdown is rebuildable and never becomes a second truth store.
+
+Gallop-Reader is a filtered one-way mobile mirror with ownership receipts, backup/recovery, dry-run support, and supported iCloud-aware safety checks. Reader publication is not bidirectional sync and does not give phone edits progression authority.
 
 ## Storage ownership
 
@@ -131,23 +168,30 @@ Stable event identity provides:
 
 CI also runs Ruff, scoped Mypy, full pytest, V1 exact replay, examples, repository/privacy audit, offline demo, and wheel build across Windows/Ubuntu and Python 3.11/3.13.
 
-## Trust boundaries
+## Hard product / trust boundaries
 
-Gallop does **not** claim:
+Gallop v1.2 deliberately does **not** claim or own:
 
-- that Tutor text is automatically correct;
-- that human confirmation is proctoring or identity verification;
-- that local hashes resist a hostile machine owner;
-- that Markdown/cloud publication is a distributed atomic transaction;
-- that its mastery/readiness model is validated educational measurement;
-- that Reader filtering catches every possible sensitive string.
+- a separate Gallop learner UI beyond the four Tutor conversations;
+- model/provider grading authority;
+- identity verification or proctoring;
+- autonomous curriculum/scheduler ownership;
+- a general agent-swarm runtime;
+- mandatory DeepTutor dependency;
+- cross-subject or cross-concept evidence transfer without explicit governed provenance;
+- silent migration or reinterpretation of historical event meaning;
+- psychometrically validated educational measurement;
+- hostile-owner tamper-proof local security;
+- distributed atomicity across Journal, Markdown, Reader, and cloud;
+- generic cloud provisioning or repair;
+- perfect sensitive-text detection;
+- semantic retrieval infrastructure, a broad plugin ecosystem, a Gallop UI, or Yau-specific competition specialization as part of the v1.2 baseline;
+- any implication that source version automatically means GitHub Release/tag/PyPI/artifact publication.
 
-These limits are part of the architecture, not missing disclaimers.
+These limits are architecture, not missing disclaimers.
 
 ## Extension rule
 
-v1.2 is in sustained-use mode. New adapters or subject fixtures are acceptable when they preserve existing authority/replay contracts. Changes to event meaning, persistent formats, independence semantics, subject isolation, or migration rules require explicit architecture review and compatibility evidence.
+v1.2 is in sustained-use mode. New adapters or subject fixtures are acceptable when they preserve existing authority/replay contracts. Changes to event meaning, persistent formats, independence semantics, subject isolation, Reader directionality, migration rules, or the learner-facing surface require explicit architecture review and compatibility evidence.
 
-Competition Mathematics / Yau specialization, semantic retrieval infrastructure, a broad plugin ecosystem, and a Gallop UI are outside the v1.2 baseline.
-
-See [Architecture Governance](architecture-governance.md), [Tutor Protocol](v1.2-tutor-protocol.md), [Real Integration](v1.2-real-tutor-integration.md), [Automation CLI](automation-cli.md), and [Current Status](current-status.md).
+See [Capabilities & Boundaries](capabilities-and-boundaries.md), [Architecture Governance](architecture-governance.md), [Tutor Protocol](v1.2-tutor-protocol.md), [Real Integration](v1.2-real-tutor-integration.md), [Automation CLI](automation-cli.md), and [Current Status](current-status.md).
