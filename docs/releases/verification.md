@@ -1,58 +1,64 @@
-# v0.1.0 verification record
+# Verification and acceptance index
 
-Release preparation was verified on 2026-08-31.
+Gallop keeps **source capability**, **historical release records**, **real acceptance**, and **GitHub Release/tag/PyPI publication** separate. A source version or successful wheel build is not by itself proof of publication.
 
-## Reproducible checks
+## Current v1.2 source verification
+
+The maintained source baseline is `gallop-learning 1.2.0` with four subject-bound GPT Tutor MCP surfaces, Journal-backed continuity, Progressive Mentorship, Obsidian projection, and Gallop-Reader publication.
+
+The v1.2 source baseline has evidence for:
+
+- Windows/Ubuntu × Python 3.11/3.13 CI;
+- Ruff and scoped Mypy;
+- full pytest regression;
+- exact V1 replay;
+- public protocol/example validation;
+- executable architecture gate;
+- repository privacy audit on the clean mainline baseline;
+- offline synthetic demo and wheel build;
+- controlled real four-Tutor dogfood.
+
+The authoritative real-use record is [v1.2 Real Four-Tutor Dogfood Acceptance](../audits/v1.2-real-dogfood-acceptance.md). It covers real sessions in Mathematics, Statistics & Econometrics, Finance, and CS & AI; fresh-chat continuation; incremental checkpoints; abrupt-close and duplicate recovery; owned Obsidian projection; Reader recovery; and learner-confirmed mobile visibility.
+
+Synthetic Golden E2E remains implementation evidence, not learner evidence.
+
+## Historical v1.0.0 verification
+
+Automation V1 acceptance is preserved in [Automation V1 final gate](../automation-final-gate.md). That record includes the historical real DeepTutor generation/collection and user-confirmed isolated response, while preserving real mastery.
+
+It remains compatibility/transport evidence; DeepTutor is now optional legacy infrastructure rather than the v1.2 primary workflow.
+
+## Historical v0.1.0 verification
+
+v0.1.0 release preparation was verified on 2026-08-31 using the then-current test/schema/audit/demo/build workflow. Historical local verification included 47 tests on Python 3.13/Windows plus protocol-example validation and installed-wheel checks.
+
+An explicit opt-in DeepTutor 1.6.1 run generated questions from a fictional manifest and wrote only to an isolated integration namespace. That verified the historical transport/writeback loop, not human learning performance or pedagogical quality.
+
+See [v0.1.0 release record](v0.1.0.md).
+
+## Reproducible source checks
+
+Current contributors should use the maintained gate set rather than copying historical counts:
 
 ```bash
 python -m pip install -e ".[dev]"
-python -m pytest
+ruff check gallop tests scripts
+mypy
+pytest
+python scripts/verify_v1_replay.py
 python scripts/validate_examples.py
+python scripts/check_architecture.py
 python scripts/audit_repository.py
 python -m gallop demo --output demo-output
 python -m pip wheel . --no-deps --wheel-dir dist
 ```
 
-- 47 local automated tests passed on Python 3.13 / Windows.
-- Four public protocol examples passed schema validation.
-- The suite includes the four original mastery safety cases, replay and
-  collision checks, namespace isolation, path containment, lock handling,
-  recoverable write failures, CLI configuration and DeepTutor transport checks.
-- The installed wheel was exercised outside the source checkout; its bundled
-  schemas and offline demo worked, with synthetic mastery 1 -> 2.
-- CI runs the same test/schema/audit/demo/build workflow on Windows and Ubuntu,
-  with Python 3.11 and 3.13. Its current status is recorded by GitHub Actions,
-  not inferred from local success.
+CI status should be read from GitHub Actions for the exact commit/ref being evaluated; do not infer a future commit's health from an older successful run.
 
-## Live DeepTutor acceptance
+## Privacy and publication boundary
 
-An explicit opt-in run against DeepTutor 1.6.1 generated seven real questions
-from the bundled fictional continuity manifest. A scripted test actor supplied
-a synthetic 5/7 summary with one hint. Gallop evaluated mastery 1 -> 2 and
-wrote the result, Markdown, review entries and state only inside an isolated
-`integration_tests` namespace. A replay reused saved practice without making
-another external generation call.
+The repository audit scans reachable text blobs and commit metadata and rejects private commit identities outside the explicitly governed debt baseline. Manual review complements the scanner.
 
-This verifies the transport and writeback loop. It is not evidence of a human
-learner's performance, independent grading or pedagogical question quality.
-Provider credentials and local account state are not part of the test assets.
+Only synthetic examples and public engineering records belong in source history. Real learner work, Journal databases, Vault/Reader private content, credentials, private paths, provider state, and cloud metadata stay outside the public repository.
 
-## Privacy and security scope
-
-The release audit scans text blobs across every reachable Git ref, checks
-commit author/committer identities, and rejects unexpected large/binary blobs.
-Manual review complements the pattern scan. Only synthetic examples belong in
-the public source tree. Public GitHub account/repository identifiers are
-intentional; private notes, local paths, learning state and credentials are not.
-
-The scanner is a release guardrail, not a proof that arbitrary secrets can
-never escape detection. Publish source archives or a fresh remote clone; do
-not distribute a development checkout's private reflogs or recovery objects.
-
-## Scope boundaries
-
-The release does not scrape ChatGPT accounts, install a background scheduler,
-enable embeddings, copy DeepTutor, or assess genuine proof/oral performance
-automatically. No-agent mode is a learning workflow, not an access-control or
-proctoring boundary. Recovery and single-writer limitations are documented in
-the [quickstart](../quickstart.md).
+A GitHub Release/tag/PyPI/artifact statement must be backed by the corresponding publication record. Current source documentation intentionally does not convert `version = 1.2.0` into an unsupported publication claim.
