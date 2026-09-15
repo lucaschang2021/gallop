@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+from typing import TextIO
 
 from gallop.automation.config import AutomationConfig
 from gallop.tutor.mcp import call_tool, runtime_status, tool_catalog
@@ -40,6 +41,21 @@ def initialized_input(*calls: dict) -> str:
         *calls,
     ]
     return "\n".join(json.dumps(message) for message in messages) + "\n"
+
+
+def response_by_id(stdout: str, request_id: int) -> dict:
+    responses = [json.loads(line) for line in stdout.splitlines() if line.strip()]
+    return next(response for response in responses if response.get("id") == request_id)
+
+
+def read_response_by_id(stream: TextIO, request_id: int) -> dict:
+    while True:
+        line = stream.readline()
+        if not line:
+            raise AssertionError(f"MCP response id={request_id} was not emitted")
+        response = json.loads(line)
+        if response.get("id") == request_id:
+            return response
 
 
 def test_catalog_is_subject_bound_and_safety_annotated():
@@ -118,7 +134,7 @@ def test_stdio_restart_restores_session_without_chat_transcript(tmp_path):
         })),
         text=True, capture_output=True, check=True,
     )
-    first_result = json.loads(first.stdout.splitlines()[-1])["result"]["structuredContent"]
+    first_result = response_by_id(first.stdout, 1)["result"]["structuredContent"]
     assert first_result["created"] is True
 
     second = subprocess.run(
@@ -129,7 +145,7 @@ def test_stdio_restart_restores_session_without_chat_transcript(tmp_path):
         })),
         text=True, capture_output=True, check=True,
     )
-    second_result = json.loads(second.stdout.splitlines()[-1])["result"]["structuredContent"]
+    second_result = response_by_id(second.stdout, 1)["result"]["structuredContent"]
     assert second_result["created"] is False
     assert second_result["context_restore"]["status"] == "PASS"
 
@@ -158,8 +174,7 @@ def test_stdio_abrupt_exit_and_duplicate_checkpoint_recover(tmp_path):
         "arguments": {"session_id": "session.finance.abrupt"},
     })))
     process.stdin.flush()
-    json.loads(process.stdout.readline())
-    opened = json.loads(process.stdout.readline())["result"]["structuredContent"]
+    opened = read_response_by_id(process.stdout, 1)["result"]["structuredContent"]
     process.kill()
     process.wait(timeout=10)
 
@@ -187,7 +202,7 @@ def test_stdio_abrupt_exit_and_duplicate_checkpoint_recover(tmp_path):
             command, input=initialized_input(checkpoint_call), text=True,
             capture_output=True, check=True,
         )
-        response = json.loads(retried.stdout.splitlines()[-1])
+        response = response_by_id(retried.stdout, 2)
         assert "structuredContent" in response["result"], response
         results.append(response["result"]["structuredContent"])
     assert results[0]["duplicate"] is False
@@ -211,8 +226,9 @@ def test_initialize_and_notification_framing_do_not_write(tmp_path):
     ]
     requests = initialized_input(request("tools/list", request_id=2))
     result = subprocess.run(command, input=requests, text=True, capture_output=True, check=True)
-    responses = [json.loads(line) for line in result.stdout.splitlines()]
-    assert responses[0]["result"]["protocolVersion"] == "2025-06-18"
-    assert responses[0]["result"]["serverInfo"]["version"] == "1.2"
-    assert len(responses[1]["result"]["tools"]) == 7
+    initialize_response = response_by_id(result.stdout, 0)
+    tools_response = response_by_id(result.stdout, 2)
+    assert initialize_response["result"]["protocolVersion"] == "2025-06-18"
+    assert initialize_response["result"]["serverInfo"]["version"] == "1.2"
+    assert len(tools_response["result"]["tools"]) == 7
     assert not cfg.root.exists()
