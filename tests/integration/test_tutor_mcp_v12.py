@@ -145,7 +145,7 @@ def test_stdio_abrupt_exit_and_duplicate_checkpoint_recover(tmp_path):
         "export_state": str(cfg.export_state),
     }), encoding="utf-8")
     command = [
-        sys.executable, "-m", "gallop.tutor.mcp", "--config", str(config_path),
+        sys.executable, "-u", "-m", "gallop.tutor.mcp", "--config", str(config_path),
         "--subject", "finance",
     ]
     process = subprocess.Popen(
