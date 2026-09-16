@@ -1,11 +1,30 @@
-# Mastery model
+# Mastery and capability models
 
-> **Scope: legacy v0.1 pipeline** (`import-result` and the offline `demo`).
-> Automation V1 has a separate [Mastery Safety Gate](automation-safety.md):
-> course exposure never promotes mastery, confidence is explicit, and failure
-> does not mechanically reset an established level. Do not mix the two models.
+Gallop represents learning state as evidence-backed, replayable state—not as a model opinion or one quiz score.
 
-Gallop represents mastery as evidence-backed state, not a quiz score.
+## Current v1.2 authority model
+
+In v1.2, the append-only Journal is authoritative. Tutor observations and assessments enter as observation/candidate evidence; explicit human attestation is separate. Assistance, agent provenance, task type, timing, transfer, and retention determine what evidence may support mastery/readiness.
+
+Neither GPT output, a target, an Obsidian edit, nor a Reader file can directly promote mastery.
+
+Progressive Mentorship also derives a richer current-capability ladder (`UNKNOWN` through `RESEARCH_USABLE`) for advisory task design. That ladder is related to, but not a silent replacement for, the compatible 0–5 mastery model.
+
+See [Evidence and Mastery Safety Gate](automation-safety.md) and [Progressive Mentorship](progressive-mentorship.md).
+
+## Compatible Automation V1 mastery
+
+Automation V1 uses a conservative 0–5 concept-level model. Its detailed promotion ceilings are maintained in [automation-safety.md](automation-safety.md). Key principles are:
+
+- exposure alone never promotes;
+- independent evidence must occur across separate days for higher levels;
+- task diversity, delayed retention, transfer, and oral evidence are required at the top end;
+- each accepted assessment can raise at most one level;
+- failure can lower confidence/add weakness without mechanically erasing established mastery.
+
+## Legacy v0.1 mastery
+
+> **Scope:** `import-result` and the historical offline `demo`. Do not mix this state with Automation/v1.2 state by inference.
 
 | Level | Meaning |
 |---:|---|
@@ -16,47 +35,26 @@ Gallop represents mastery as evidence-backed state, not a quiz score.
 | 4 | independent application |
 | 5 | robust mastery |
 
-## Evidence considered
+The legacy algorithm considers correctness, independence, hints, repetition, delayed recall, transfer, oral explanation, and difficulty. It is deterministic and intentionally conservative.
 
-1. correctness;
-2. independent completion;
-3. hint usage;
-4. repeated performance;
-5. delayed recall;
-6. transfer problems;
-7. oral explanation;
-8. difficulty.
+Distinct committed practice records—not an input claim—supply repetition. Zero hints alone does not prove independence. Easy exercises cannot establish high independent capability. Historical confidence may be uncalibrated/null.
 
-## Safety rules
+Legacy state remains compatibility data; v1.2 does not silently migrate it into Journal evidence.
 
-- No attempt means no transition.
-- Weak evidence may lower an overconfident state.
-- Guided success can establish basic or guided application.
-- One excellent quiz cannot produce level 5.
-- Level 5 requires repeated independent performance plus delayed recall,
-  transfer, and oral evidence.
+## Elite/readiness evidence retained in v1.2
 
-The v0.1 algorithm is intentionally conservative and deterministic. Future
-versions may improve calibration without changing the protocol's evidence model.
+The v1.1 Elite layer introduced explicit assistance, agent provenance, quality, transfer, benchmarks, prerequisite links, and readiness dimensions. Those semantics are retained in v1.2.
 
-The import pipeline counts repeated success from distinct committed practice
-records, not an input claim. Independence defaults to unknown/false; zero hints
-alone does not prove independent completion. Easy exercises cannot establish
-independent application. Confidence is persisted as null (uncalibrated).
-Delayed, transfer and oral flags remain explicit observer-supplied evidence;
-Gallop cannot verify a person's behavior or the truth of self-reported results.
+Independent evidence requires compatible provenance and actual independent conditions. AI-generated work, solution-seen attempts, or assisted attempts cannot be reclassified as independent merely because the final answer is correct.
 
-## Elite safety gate (v1.1)
+Higher readiness requires repeated evidence across days/contexts/task types and, when relevant, novel transfer, delayed retention, oral/closed-book/no-agent evidence, and research components.
 
-Only confirmed, passing, independently performed evidence with zero hints,
-recorded agent provenance, response references, explicit assessment context and
-distinct attempt/context IDs can enter the Elite gate. Proofs and derivations
-also require recorded quality dimensions. Benchmark evidence requires explicit
-closed-book and no-AI conditions. Duplicate attempts count once; assistance
-disclosed for the same attempt disqualifies it.
+## Current capability versus target
 
-Progression requires repeated days, contexts and task types. Higher levels also
-require explicit novel transfer, a linked verified benchmark and delayed oral
-evidence. One event raises at most one level. Failures add weakness and lower
-confidence without mechanically erasing prior mastery. A benchmark record alone
-never changes mastery.
+An explicit target is a destination, not evidence. The Progressive Mentorship Engine derives current capability only from admitted evidence. Missing evidence remains `UNKNOWN`.
+
+This separation is fundamental: Gallop may keep the target at an elite/research level while adapting the next task to the learner's evidenced frontier.
+
+## Compatibility rule
+
+Historical V1 replay is protected by an exact regression fixture. Any change that would reinterpret old events or persistent mastery semantics requires explicit versioning/migration; a source upgrade does not rewrite the learner's past.

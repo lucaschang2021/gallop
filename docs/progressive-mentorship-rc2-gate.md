@@ -1,30 +1,26 @@
-# Progressive Mentorship RC2 gate
+# Progressive Mentorship RC2 gate — historical record
 
-Candidate version: `1.1.0rc2`. The candidate is developed on
-`feat/elite-training-v1.1`, based on current `main`; stable v1.0 replay remains
-the compatibility oracle.
+> **Historical record.** This gate captured the `1.1.0rc2` governance milestone. RC2 subsequently closed and its Progressive Mentorship architecture was integrated into Gallop v1.2. The statement below that Human Production E2E was pending was true at this checkpoint; current v1.2 controlled real four-Tutor dogfood is PASS.
 
-The gate requires the original 243 tests, unified engine tests, four updated
-Golden E2Es, novice-to-Elite simulation, overchallenge isolation, prerequisite
-repair/retest, stepwise scaffolding fading, AI-dependence separation, exact v1
-replay, RC1 semantic compatibility, privacy and real-state integrity. Automated
-PASS does not claim Human E2E PASS and does not authorize a release.
+Candidate version at the time: `1.1.0rc2`, developed on `feat/elite-training-v1.1`. Stable v1.0 replay remained the compatibility oracle.
 
-## Final local gate
+The gate required the original 243 tests, unified-engine tests, four updated Golden E2Es, novice-to-Elite simulation, overchallenge isolation, prerequisite repair/retest, stepwise scaffolding fading, AI-dependence separation, exact v1 replay, RC1 semantic compatibility, privacy, and real-state integrity.
 
-- 293/293 tests pass, including Architecture Contract, import-safety, pure
-  progression boundary, evidence-authority, and RC2 behavior tests.
-- Updated mathematics, statistics/econometrics, finance and CS/AI Golden E2Es pass.
-- Novice-to-Elite, overchallenge, repair/retest, stepwise scaffolding,
-  AI-dependence and Monster isolation simulations pass.
-- Frozen v1.0 replay is exact. RC1 evidence retains its state shape when no
-  target event exists, preventing a derived-cache mismatch or readiness inflation.
-- Main Vault is 56/56 unchanged and real mastery is unchanged.
-- All expected seven Reader notes remain synchronized. The previously observed
-  external empty `00-System/Review Queue.md` remains an eighth synchronized note;
-  RC2 did not write to the live Reader.
-- Reachable-history and 55-file prospective privacy scans have zero findings.
-- The candidate is published for review in PR #4 and remains unreleased. RC2
-  Human Production E2E remains pending.
-- `ARCHITECTURE.toml` validates with zero existing or introduced violations;
-  the four named large files emit review warnings without line-driven splitting.
+## Final local gate at the time
+
+- 293/293 tests passed, including Architecture Contract, import safety, pure progression boundary, evidence authority, and RC2 behavior tests.
+- Mathematics, Statistics & Econometrics, Finance, and CS/AI Golden E2Es passed.
+- Novice-to-Elite, overchallenge, repair/retest, stepwise scaffolding, AI-dependence, and Monster-isolation simulations passed.
+- Frozen v1.0 replay was exact; RC1 evidence retained its state shape when no target event existed.
+- Main Vault was 56/56 unchanged and real mastery unchanged.
+- Expected Reader notes remained synchronized; RC2 did not write to the live Reader.
+- Reachable-history/prospective privacy scans had zero findings at that checkpoint.
+- `ARCHITECTURE.toml` validated with zero existing/introduced hard violations; named large files emitted review warnings rather than automatic splitting.
+
+At this RC2 checkpoint, PR #4 was still the review vehicle and Human Production E2E remained pending.
+
+## Current superseding state
+
+v1.2 now exposes Progressive Mentorship as deterministic advisory context to four subject-bound GPT Tutors through the Runtime Bridge and Context Builder. Fresh-chat continuity, incremental checkpointing, real Tutor sessions, projection recovery, and Reader visibility have been exercised in controlled dogfood.
+
+See [Progressive Mentorship](progressive-mentorship.md), [Current Status](current-status.md), and [v1.2 real dogfood acceptance](audits/v1.2-real-dogfood-acceptance.md).

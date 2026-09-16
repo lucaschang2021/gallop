@@ -1,9 +1,10 @@
-# DeepTutor Bridge V1
+# DeepTutor Bridge — legacy optional adapter
 
-Gallop decides what to train. The existing external DeepTutor adapter prepares
-diagnostic questions. No DeepTutor code or Learning Space is restructured.
+> **Current v1.2 role:** DeepTutor is a compatibility adapter, not part of the Zero-Touch critical path. Normal daily learning uses the four subject-bound GPT Tutor MCP surfaces and the Journal-backed Tutor Bridge. This document remains the technical reference for explicit legacy DeepTutor generation.
 
-The four subject policies are data in gallop/schemas/training-policies.json:
+Gallop decides what to train. The external DeepTutor adapter can prepare diagnostic questions for the compatible Automation V1 queue without owning mastery, readiness, progression, or Tutor continuity.
+
+The four subject policies are data in `gallop/schemas/training-policies.json`:
 
 | Subject | Preferred training |
 | --- | --- |
@@ -12,48 +13,48 @@ The four subject policies are data in gallop/schemas/training-policies.json:
 | Finance | Assumptions, intuition, quantitative problems, empirical evidence, cases, institutions/accounting |
 | CS / AI | No-agent coding, algorithms, systems, from-scratch implementation, debugging |
 
-Queue items include stable queue_id, subject, concept, type, P0-P4 priority,
-reason, evidence refs, creation date and status. Priority is deterministic:
-P0 severe/prerequisite weakness; P1 repeated mistakes or demanding assessment
-failure; P2 low confidence; P3 spaced reinforcement; P4 extension.
+## Automation V1 queue boundary
 
-prepare maps an item into the existing practice-manifest schema. The chain is:
+Queue items include stable `queue_id`, subject, concept, type, P0-P4 priority, reason, evidence refs, creation date, and status. Priority is deterministic:
 
+- P0: severe/prerequisite weakness;
+- P1: repeated mistakes or demanding-assessment failure;
+- P2: low confidence;
+- P3: spaced reinforcement;
+- P4: extension.
+
+`prepare` maps an item into the compatible practice-manifest schema:
+
+```text
 queue_id -> manifest_id -> practice_id -> result_id -> evidence events
+```
 
-The provider's practice ID is retained separately. Default prepare is local:
-it writes a human task and an incomplete result template. prepare --send asynchronously submits
-DeepTutor's existing deep_question transport with selected context, not a whole
-vault, file paths or credentials.
+Default preparation is local and writes a human task plus an incomplete result template. `prepare --send` explicitly submits the selected context to the separately installed DeepTutor runtime. It does not send a whole Vault, Journal, local paths, or Gallop credentials by implication.
 
-The installed transport produces choice diagnostics. They supplement preparation
-but do not count as proof, oral, coding or simulation performance. For those
-types, the learner must perform the assigned task and a human must evaluate
-actual response references. Gallop does not present choice-question success as
-proof completion or allow an LLM score to be the sole truth.
+## Evidence authority
 
-Generation does not start learning. start --confirm is required, and
-ingest-result --confirm-human validates the Automation result envelope in
-gallop/schemas/automation-result.schema.json. It is a separate boundary from
-legacy practice-result JSON: old CLI commands and schemas remain unchanged.
-Provider output alone is never an accepted learner result.
+Generated questions are **provider output**, not learner evidence. Generation does not start learning, complete a task, or raise mastery.
 
-The asynchronous bridge records a stable job ID, queue ID, manifest ID and
-per-attempt worker/provider PID plus birth time. It redirects stdout/stderr to
-private files and closes stdin. The CLI returns immediately; use poll/collect.
-The default 240-second deadline does not terminate work. Late results can be
-collected from the same attempt, including after the caller exits or crashes.
-A result must match the invocation's turn ID and include a completed DeepTutor
-terminal event. Never query an unrelated latest result from the provider database.
-Retries preserve prior attempts and are refused while work is live or its spawn
-outcome is uncertain. A second collection cannot create another prepared event.
-OS file locks release automatically on crash; journal replay handles a cache
-write interrupted after the event transaction commits.
+Choice diagnostics cannot substitute for proof, oral, coding, simulation, or research performance. The learner must perform the assigned work; an explicit human-confirmed assessment is required before Automation V1 can admit the result through its evidence gate.
 
-The automated Golden test uses synthetic results in its isolated namespace.
-Such results demonstrate plumbing only and make no claim about a real learner.
+The v1.2 Tutor path has a stronger explicit distinction: Tutor assessments are candidate evidence and human attestation is separate. DeepTutor output never bypasses that model.
 
-Real generation and full isolated Automation acceptance are PASS. The user
-supplied and confirmed an actual response; it was recorded conservatively as
-non-independent validation, without changing real mastery. No synthetic provider
-output or invented response was substituted. See [final gate](automation-final-gate.md).
+## Durable submit / poll / collect
+
+The asynchronous bridge records a stable job ID, queue ID, manifest ID, and per-attempt process/provider identity. stdout/stderr are redirected to private runtime files and stdin is closed. The CLI returns immediately; callers use `poll` and `collect`.
+
+The default caller deadline does not prove provider termination. Late output can be collected from the same attempt. A result must match the invocation correlation data and completed provider terminal event. Gallop never recovers by taking an unrelated provider "latest result".
+
+Retries preserve prior attempts and are refused while work is live or spawn ownership is uncertain. A second collection cannot create another prepared event. Journal replay recovers application state without resubmitting provider work after a committed event.
+
+Provider exactly-once execution is not claimed across an indeterminate OS spawn failure.
+
+## Privacy
+
+DeepTutor model/provider credentials and account state stay in the external runtime. Gallop stores job metadata and generated material under private runtime storage; answer keys, logs, provider IDs, and raw output do not belong in Gallop-Reader.
+
+## Historical acceptance
+
+The v1.0 Automation acceptance exercised a real DeepTutor generation/collection and a user-confirmed isolated response while preserving real mastery. That remains historical transport evidence, not a current provider-health guarantee. See [Automation V1 final gate](automation-final-gate.md).
+
+The current v1.2 acceptance is the separate [four-Tutor real dogfood record](audits/v1.2-real-dogfood-acceptance.md); it does **not** require DeepTutor.

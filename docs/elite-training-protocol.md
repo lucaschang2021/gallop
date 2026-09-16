@@ -1,85 +1,70 @@
-# Elite Training Protocol 1.1
+# Elite Training and Evidence Protocol
 
-Elite evidence records **how** a learner performed. It preserves three views:
+Elite evidence records **how** a learner performed. The semantics introduced during v1.1 are retained in the accepted v1.2 evidence architecture and feed readiness and Progressive Mentorship without becoming a separate learner-facing product.
 
-- **Mastery** is conservative concept state from diverse confirmed performance.
-- **Readiness** is a capability profile with status, confidence, count and refs.
-- **Benchmark performance** is a chronological record under stated conditions.
+The system preserves distinct views:
 
-There is no overall ability score and no competition award prediction.
+- **Mastery:** conservative concept state from diverse confirmed performance.
+- **Readiness:** capability dimensions with status, confidence, counts, and evidence refs.
+- **Benchmark performance:** chronological observations under stated conditions.
+- **Progressive Mentorship:** deterministic advisory interpretation of current capability versus explicit targets.
+
+There is no single overall ability score and no competition-award prediction.
 
 ## Performance semantics
 
-`INDEPENDENT` means no performance hint and hint level 0. `HINT_1` is a
-clarification at level 1. `HINT_2` is direction or structure at levels 2-3.
-`ASSISTED` is substantial help at level 4. `SOLUTION_SEEN` means the core
-solution was exposed and cannot establish mastery. `UNSOLVED` records weakness
-without reducing mastery. Clearly contradictory combinations fail closed.
+`INDEPENDENT` requires no performance hint and compatible assistance/provenance. `HINT_1`, `HINT_2`, `ASSISTED`, `SOLUTION_SEEN`, and `UNSOLVED` preserve the actual help/result boundary. Contradictory combinations fail closed.
 
-Agent provenance is `NONE`, `REFERENCE_ONLY`, `HINT_ONLY`, `AI_ASSISTED`,
-`AI_GENERATED`, or `UNKNOWN`. Missing provenance remains absent. Working code
-plus `AI_GENERATED` does not establish Coding Independence.
+Agent provenance includes `NONE`, `REFERENCE_ONLY`, `HINT_ONLY`, `AI_ASSISTED`, `AI_GENERATED`, or `UNKNOWN`. Working code with `AI_GENERATED` provenance does not establish coding independence.
 
-Quality is recorded by ordinal dimensions: `POOR`, `DEVELOPING`, `SOLID`,
-`STRONG`, `EXCEPTIONAL`, or `UNKNOWN`. It is never inferred from score. Transfer
-is `NOT_TESTED`, `FAILED`, `PARTIAL`, or `SUCCESS`; success requires distinct
-source and target contexts, independent provenance and explicit `NEW_CONTEXT`.
-Durations and `time_spent` use seconds.
+Quality dimensions remain ordinal (`POOR`, `DEVELOPING`, `SOLID`, `STRONG`, `EXCEPTIONAL`, `UNKNOWN`) and are not inferred mechanically from score.
 
-## Failure modes and task types
+Transfer is explicit. `SUCCESS` requires a genuinely distinct target context plus compatible independent provenance; a familiar replay is not novel transfer.
 
-Failure modes use `namespace:MODE`. A configuration may point to a validated
-registry that adds namespaces or modes. Historical modes replay without current
-registry validation, so configuration changes never rewrite the journal.
+## Task types and failure modes
 
-Task types are `CONCEPT`, `PROOF`, `DERIVATION`, `HARD_PROBLEM`, `LONG_PROBLEM`,
-`SIMULATION`, `ORAL_EXAM`, `CODING`, `NO_AGENT_CODING`, `SYSTEMS_PROBLEM`,
-`EMPIRICAL`, `PAPER_READING`, `REPLICATION`, `RESEARCH`, `BENCHMARK`, and
-`MINI_CONTEST`. Recording a type never implies success.
+Supported evidence can cover concept work, proof, derivation, hard/long problems, simulation, oral examination, coding, `NO_AGENT_CODING`, systems work, empirical work, paper reading, replication, research, benchmarks, and mini contests.
 
-## Readiness and provenance
+Recording a task type never implies success.
 
-Profiles contain every documented mathematics, statistics/econometrics,
-finance and CS/AI dimension. An untouched profile is `UNKNOWN`, low confidence,
-zero evidence and no refs. Assisted work can support only foundational
-familiarity in a non-independence dimension. Repeated independent performances
-across distinct days and contexts progress conservatively. `ADVANCED` requires
-at least six diverse delayed performances, explicit novel transfer and a
-verified closed-book/no-AI benchmark. One event can never produce Advanced.
+Failure modes use versioned/validated labels. Historical events replay using their recorded semantics; changing a current registry does not rewrite old evidence.
 
-Every change is an immutable `readiness_transition` verified on replay.
-`readiness explain` exposes independent, assisted, benchmark and transfer refs,
-failure modes and explicit prerequisite gaps.
+## Readiness
 
-## Benchmarks and explicit links
+Readiness dimensions exist for Mathematics, Statistics & Econometrics, Finance, and CS & AI. Missing evidence stays `UNKNOWN` with low confidence and zero refs.
 
-Benchmark types cover IMC, Yau Undergraduate Mathematics Contest, mini contest,
-closed-book, oral, no-agent, course exam and custom contexts. Scores, counts and
-duration are optional. Rates appear only with explicit denominators and complete
-evidence coverage. Rolling observations combine only the same subject, type,
-source and conditions, retain nulls, and are descriptions rather than forecasts.
+Assisted work can support familiarity but cannot be silently promoted into independence. Higher readiness requires repeated independent work across days/contexts and, where applicable, transfer, retention, closed-book/no-agent, oral, or research evidence.
 
-`PREREQUISITE`, `SUPPORTS`, `TRANSFER`, and `RELATED` links carry explicit source,
-target and provenance. Only `PREREQUISITE` is described as a gap. Every link is
-informational with `curriculum_action: NONE`; v1.1 does not infer edges or alter
-curriculum.
+Every readiness transition is replayable and tied to evidence refs.
 
-## System boundaries and migration
+## Candidate evidence and human attestation in v1.2
 
-Native events are `elite_evidence`, `benchmark`, `prerequisite_link` and audited
-readiness transitions. IDs are stable and conflicting reuse fails. Tutor v1 may
-add unconfirmed evidence. A DeepTutor manifest may request conditions, but a
-request is not outcome telemetry and missing telemetry is never fabricated.
+The v1.2 Tutor Protocol admits Tutor assessments only as **candidate evidence**. Explicit human attestation is separate and preserves assistance/agent provenance. A Tutor cannot declare `MASTERED` authority into existence.
 
-Projections are concise `Elite Training.md`, `Benchmarks.md`, `Readiness.md` and
-small subject Home summaries; `Today.md` remains operational. The existing
-one-way Reader exporter applies privacy filters. Raw events, SQLite, metadata,
-response refs, answers and integration data are not projected to a learner Reader.
+This is the main integration change from the v1.1 introduction: Elite evidence is now part of the live four-Tutor continuity model while keeping the same conservative authority boundary.
 
-There is no v1 migration. A frozen synthetic journal produced by immutable
-v1.0.0, including legacy mastery transitions, is replayed against its exact
-expected state. A v1-only journal has no `elite` key and unchanged projections.
-Missing fields display `UNKNOWN` or `NOT_RECORDED`; history is not rewritten.
+## Benchmarks
 
-Adaptive scheduling, ML mastery prediction, graph inference, automatic
-curriculum selection, award prediction and agent swarms remain outside v1.1.
+Benchmarks may record closed-book, oral, no-agent, course-exam, Yau/competition, custom, or other defined contexts. Scores/counts/duration are optional and remain observations under stated conditions rather than forecasts.
+
+Rolling summaries combine only comparable conditions and retain unknown/null data. Gallop does not convert sparse benchmark observations into award probabilities.
+
+## Explicit links
+
+`PREREQUISITE`, `SUPPORTS`, `TRANSFER`, and `RELATED` links carry explicit provenance. Only a prerequisite relation represents a prerequisite gap. Links do not silently mutate curriculum or certify the target.
+
+## Progressive Mentorship integration
+
+`gallop.progression` consumes confirmed evidence/readiness plus explicit targets to derive current capability, training zone, scaffolding, prerequisite focus, next action, gains, mentor role, and research independence.
+
+Those outputs are advisory. The four GPT Tutors can receive them through bounded v1.2 context, but GPT wording or acceptance does not add authority.
+
+## Projections
+
+Readable projections may include Elite Training, Benchmarks, Readiness, Development, North Star, and subject summaries. Raw Journal events, answers, local metadata, response refs, backend sessions, credentials, and integration runtime do not belong in Gallop-Reader.
+
+## Compatibility
+
+Historical V1-only Journals replay to the frozen V1 shape under the exact compatibility fixture. No v1.1/v1.2 source upgrade silently seeds evidence or rewrites historical mastery.
+
+The historical v1.1 RC reports remain audit records of how these semantics were introduced. Current status is documented in [Current Status](current-status.md), [Progressive Mentorship](progressive-mentorship.md), and [v1.2 Tutor Protocol](v1.2-tutor-protocol.md).
