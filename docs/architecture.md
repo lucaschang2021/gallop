@@ -2,7 +2,7 @@
 
 [Home](../README.en.md) · [Current status](current-status.md) · [Quickstart](quickstart.md)
 
-Gallop is a headless local learning control plane. The current RC2 candidate is
+Gallop is a headless local learning control plane. The stable v1.2.0 release is
 operated through Python CLI/developer tooling and connects structured tutor
 records, local learning evidence, human practice, and readable notes. Gallop
 does not ship a learner UI. This document maps responsibilities and storage
@@ -12,9 +12,9 @@ The permanent product boundary is:
 
 > GPT = TEACH · GALLOP = GOVERN · OBSIDIAN = REMEMBER · EVIDENCE = PROVE
 
-For target v1.2, the four GPT tutor conversations (Mathematics, Statistics &
+For v1.2.0, the four GPT tutor conversations (Mathematics, Statistics &
 Econometrics, Finance, and CS & AI) are the complete learner-facing surface.
-That Zero-Touch bridge is a post-governance target, not a current RC2 feature.
+That Zero-Touch bridge is the stable v1.2.0 learner-facing integration.
 
 Automation V1 adds a local event-driven path beside the compatible legacy
 adapters. It changes the authority model for new Automation inputs only.
@@ -39,17 +39,17 @@ flowchart TD
 ## Current implementation
 
 The current implementation is the journal/replay/application/projection system
-shown above, including the pure Progressive Mentorship domain. It is headless,
-but normal daily use is not yet Zero-Touch: CLI/file operations remain the
-available operational path in RC2.
+shown above, including the pure Progressive Mentorship domain and the v1.2.0
+subject-bound Tutor Runtime Bridge. It is headless; CLI/file operations remain
+available for setup, inspection, and recovery.
 
-## Target v1.2 architecture
+## Stable v1.2 architecture
 
-After the governed baseline passes, v1.2 may add a versioned Tutor Protocol,
-runtime bridge, incremental evidence checkpoints, bounded context builder, and
-fresh-chat restoration. All four tutors must share one Journal, application,
+The stable v1.2.0 architecture provides a versioned Tutor Protocol, runtime
+bridge, incremental evidence checkpoints, bounded context builder, and
+fresh-chat restoration. All four tutors share one Journal, application,
 progression engine, evidence model, and planning system. No Gallop frontend or
-second learner-facing application is authorized.
+second learner-facing application is included.
 
 Journal remains the source of truth. State is replay-derived, Obsidian is a
 durable human-readable projection, and tutor output is teaching/candidate
@@ -69,7 +69,7 @@ the target learner experience and is not silently migrated.
 
 Historical V1 release evidence remains useful compatibility evidence. It does
 not prove current provider health, Zero-Touch behavior, learning efficacy, or
-the target v1.2 architecture.
+the verified v1.2.0 release gates.
 
 ## Boundaries
 

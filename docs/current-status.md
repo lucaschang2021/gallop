@@ -1,16 +1,15 @@
 # Current status
 
-**Snapshot: 2026-09-14.** The RC2 governance baseline is frozen at record commit
-`22a3fe2c27b4128fc1124eefe003fbad6194b127`. The v1.2 implementation and
-controlled real four-Tutor dogfood are complete on the Zero-Touch candidate
-branch. The [v1.2 baseline](baselines/v1.2-zero-touch-baseline.md) becomes frozen
-only when the exact record commit completes the required CI matrix successfully.
+**Snapshot: 2026-09-16.** Gallop v1.2.0 is the stable Zero-Touch Learning
+Continuity release. The implementation, controlled real four-Tutor dogfood, and
+required Windows/Ubuntu Python 3.11/3.13 CI matrix are complete. The stable
+commit is `5c5ded1ecf163707fe818cbfea277abaa7b998b5`, tagged `v1.2.0`.
 
 Gallop is headless. The frozen target product definition is:
 
 > GPT = TEACH · GALLOP = GOVERN · OBSIDIAN = REMEMBER · EVIDENCE = PROVE
 
-## Current RC2 implementation
+## Current v1.2.0 implementation
 
 Automation V1 provides explicit tutor intake, raw-byte preservation, append-only
 SQLite evidence, replayable learning state, four-subject queues, conservative
@@ -25,7 +24,7 @@ explicit application Clock/Journal seams, and expanded architecture checks.
 Its exact counts and drift results are in the
 [governed-baseline record](baselines/rc2-governed-baseline.md).
 
-## Target v1.2 architecture
+## Stable v1.2 architecture
 
 The first seven sequential v1.2 stages, a versioned bidirectional
 [Tutor Protocol](v1.2-tutor-protocol.md) and its transport-neutral Runtime
@@ -64,12 +63,12 @@ tagged `v1.0.0`. It remains compatibility evidence, not a current health check.
 
 | Area | Verified snapshot | Meaning / limit |
 |---|---|---|
-| Package | `gallop-learning` 1.0.0, Python >=3.11, Alpha classifier in [pyproject.toml](../pyproject.toml) | v1.0.0 names the Automation milestone; it is not a production-readiness guarantee |
-| Releases | [v1.0.0](https://github.com/lucaschang2021/gallop/releases/tag/v1.0.0), [v0.1.0](https://github.com/lucaschang2021/gallop/releases/tag/v0.1.0) | v1.0.0 has GitHub source archives but no attached wheel/checksum assets; v0.1.0 has a source ZIP, wheel and checksums |
-| Tags | `v0.1.0-rc1`, `v0.1.0`, `v1.0.0` | Release candidates and releases are distinct; no PyPI publication is established here |
+| Package | `gallop-learning` 1.2.0, Python >=3.11, Alpha classifier in [pyproject.toml](../pyproject.toml) | Stable package release; this is not a production-readiness guarantee |
+| Releases | [v1.2.0](https://github.com/lucaschang2021/gallop/releases/tag/v1.2.0), [v1.0.0](https://github.com/lucaschang2021/gallop/releases/tag/v1.0.0), [v0.1.0](https://github.com/lucaschang2021/gallop/releases/tag/v0.1.0) | v1.2.0 is the current stable release; CI does not attach wheel/checksum assets |
+| Tags | `v0.1.0-rc1`, `v0.1.0`, `v1.0.0`, `v1.2.0` | Release candidates and releases are distinct; no PyPI publication is established here |
 | Pull requests | [#1](https://github.com/lucaschang2021/gallop/pull/1) and [#2](https://github.com/lucaschang2021/gallop/pull/2) merged | No open PR at the start of this documentation review; this review's PR is subsequent work |
 | Issues | No standalone issues returned by the repository's all-state issue listing at review start | Absence of reported bugs is not proof of absence of defects |
-| CI | Main [run 33401439397](https://github.com/lucaschang2021/gallop/actions/runs/33401439397) and tag [run 33401773433](https://github.com/lucaschang2021/gallop/actions/runs/33401773433) succeeded at the baseline SHA | Historical checks, not results for future commits |
+| CI | Stable v1.2.0 verification [run 35064712786](https://github.com/lucaschang2021/gallop/actions/runs/35064712786) passed on all four matrix jobs | Checks the stable release commit; macOS and other Python versions are not covered |
 
 The [CI workflow](../.github/workflows/tests.yml) runs on push and pull request
 with Windows/Ubuntu × Python 3.11/3.13. It installs development dependencies,
@@ -94,7 +93,7 @@ versions are not covered by this matrix.
 
 ## Known limitations and remaining work
 
-1. **Real setup remains technical.** v1.2 provides subject-bound local Tutor MCP
+1. **Real setup remains technical.** v1.2.0 provides subject-bound local Tutor MCP
    tools, but no daemon, account scraper, automatic notifications, or Gallop UI.
    `learner` mode requires an existing
    Obsidian Vault; `cycle`/`publish` need an existing verified Reader binding.
@@ -111,8 +110,8 @@ versions are not covered by this matrix.
 5. **Recovery has limits.** No provider exactly-once claim across uncertain OS
    spawning; no atomic transaction across all Markdown files and cloud sync.
    Existing live/uncertain jobs must not be duplicated to escape a timeout.
-6. **Distribution can improve.** v1.0.0 artifact uploads, checksums and release
-   version checks are missing from the current workflow. Use source installation.
+6. **Distribution can improve.** CI does not upload wheel/checksum assets and no
+   PyPI publication is established. Use source installation or the verified tag.
 7. **Future capabilities stay future.** Built-in semantic retrieval, a general
    plugin ecosystem, Competition Mathematics, Yau specialization, and a Gallop
    UI are not part of the v1.2 baseline.

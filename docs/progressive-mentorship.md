@@ -18,7 +18,7 @@ mastery remain keyed by subject plus concept. Evidence attributed to Concept A
 does not become Concept B evidence. A shared readiness label may summarize its
 explicitly labelled source records, but it cannot certify another concept.
 
-## Target v1.2 architecture
+## Stable v1.2 architecture context
 
 After governance closure, the same engine may supply bounded training directives
 to the four GPT tutors through the Tutor Protocol. Gallop continues to own

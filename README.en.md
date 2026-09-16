@@ -2,9 +2,9 @@
 
 **Turn AI tutoring notes, weaknesses, and real practice records into a learning plan you can keep tracking—a local-first Python learning orchestration tool.**
 
-[简体中文](README.md) · [Quickstart](docs/quickstart.md) · [Architecture](docs/architecture.md) · [Current status](docs/current-status.md) · [Roadmap](docs/roadmap.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Apache-2.0](LICENSE)
+[简体中文](README.md) · [v1.2.0 release notes](docs/releases/v1.2.0.md) · [Quickstart](docs/quickstart.md) · [Architecture](docs/architecture.md) · [Current status](docs/current-status.md) · [Roadmap](docs/roadmap.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Apache-2.0](LICENSE)
 
-> **Stable release: v1.0.0 / Automation V1; current candidate baseline: v1.2 Zero-Touch Learning Continuity.** v1.2 adds four subject-bound GPT Tutor MCP servers, Journal-derived fresh-chat restoration, incremental checkpoints, and automatic Obsidian projection. This remains an early-stage project with no guarantee of learning outcomes. Read the [current status](docs/current-status.md) and [controlled dogfood record](docs/audits/v1.2-real-dogfood-acceptance.md) before connecting real notes.
+> **Stable release: v1.2.0 / Zero-Touch Learning Continuity.** v1.2 provides four subject-bound GPT Tutor MCP servers, Journal-derived fresh-chat restoration, incremental checkpoints, and automatic Obsidian projection. This remains an early-stage project with no guarantee of learning outcomes. Read the [current status](docs/current-status.md) and [controlled dogfood record](docs/audits/v1.2-real-dogfood-acceptance.md) before connecting real notes.
 
 ## Why Gallop?
 
@@ -33,7 +33,7 @@ Automation currently ships policies for mathematics, statistics/econometrics, fi
 | Training and review | Four subject policies, P0–P4 priorities, T+1/T+7/T+30 review candidates | Explicit CLI runs, no daemon or automatic reminders |
 | Practice preparation | Local task specifications; optional DeepTutor diagnostics with durable submit/poll/collect jobs | DeepTutor is separate; choice questions cannot replace proof, oral, coding, or simulation work |
 | Mastery evaluation | Levels 0–5 and low/medium/high confidence from human-confirmed actual results | Generated material is not completed training; one correct answer does not promote mastery |
-| Elite training and progressive mentorship (v1.1 RC) | Distinguish independent, hinted, solution-seen, and AI-generated evidence; derive training zones, scaffolding, and prerequisite repair from an explicit target and current evidence | A target never raises current capability; guidance does not schedule work, and the Human Production E2E remains pending |
+| Elite training and progressive mentorship | Distinguish independent, hinted, solution-seen, and AI-generated evidence; derive training zones, scaffolding, and prerequisite repair from an explicit target and current evidence | A target never raises current capability; guidance does not schedule work |
 | Notes and mobile reading | Managed Obsidian Markdown regions and filtered one-way Gallop-Reader export | Reader is not bidirectional sync; real publication requires an existing verified Reader binding |
 | Legacy compatibility | v0.1 session/manifest/generate/import-result commands and offline demo remain | Legacy configuration, state, and mastery rules are separate from Automation |
 
@@ -130,12 +130,12 @@ gallop/
 └── .github/workflows/       # Windows/Ubuntu CI and wheel build check
 ```
 
-CI runs tests, example validation, repository audit, the offline demo, and a wheel build on pushes and PRs. The v1.0.0 release record reports 177 local tests and an isolated real DeepTutor acceptance run. This does not validate every environment, model, or long-term learning outcome.
+CI runs tests, example validation, repository audit, the offline demo, and a wheel build on pushes and PRs. The v1.2.0 release verification covers Windows/Ubuntu with Python 3.11/3.13. This does not validate every environment, model, or long-term learning outcome.
 
 Dependency direction, evidence authority, explicit time, and hotspot growth are
 governed by [Architecture Governance](docs/architecture-governance.md) and its executable CI gate.
 
-As of 2026-08-31, the v1.0.0 GitHub Release has no attached wheel/checksum assets, and CI does not automatically upload release assets. Use source installation above; the v0.1.0 wheel is not v1.0.0. [Current status and evidence](docs/current-status.md) separates implementation, historical validation, and remaining work.
+v1.2.0 is published as a stable GitHub Tag/Release. CI does not automatically upload wheel assets; install from source or the verified tag. [Current status and evidence](docs/current-status.md) separates implementation, historical validation, and remaining work.
 
 ## Next steps and contributing
 

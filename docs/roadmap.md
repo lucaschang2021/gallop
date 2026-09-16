@@ -14,17 +14,20 @@ There are no promised dates or assigned future version numbers. See
   replay, four-subject training queues, human-confirmed practice/assessment,
   mastery safety rules, durable DeepTutor jobs, owned Obsidian projections and
   filtered Gallop-Reader publication.
+- **v1.2.0 / Zero-Touch Learning Continuity:** four subject-bound GPT Tutor MCP
+  surfaces, Journal-derived fresh-chat restoration, incremental checkpoints,
+  exact duplicate recovery, controlled real four-Tutor dogfood, and safe
+  Obsidian/Reader continuity. Released as stable tag `v1.2.0`.
 
 These releases establish executable workflows, not validated learning outcomes.
 Legacy commands remain supported; historical state is not migrated implicitly.
 
-## Release candidate
+## Stable release
 
-**v1.2 Zero-Touch Learning Continuity** builds on the frozen v1.1 RC2 governance
-boundary with four subject-bound GPT Tutor MCP servers, incremental Journal
-checkpoints, fresh-chat restoration, and owned Obsidian projection. Controlled
-real four-subject dogfood is recorded, while the exact baseline commit still
-requires its final CI freeze. Stable v1.0.0 remains immutable. The candidate
+**v1.2.0 Zero-Touch Learning Continuity** is released from the frozen v1.1 RC2
+governance boundary with four subject-bound GPT Tutor MCP servers, incremental
+Journal checkpoints, fresh-chat restoration, owned Obsidian projection, and
+controlled real four-subject dogfood. Stable v1.0.0 remains immutable. v1.2.0
 does not add a new scheduler, Gallop UI, mandatory secondary AI, or silently
 reinterpret historical v1 evidence.
 

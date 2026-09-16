@@ -2,9 +2,9 @@
 
 **把 AI 辅导中的概念、薄弱点和真实练习记录，变成可持续追踪的学习计划——一个本地优先的 Python 学习编排工具。**
 
-[English](README.en.md) · [快速开始](docs/quickstart.md) · [架构](docs/architecture.md) · [当前状态](docs/current-status.md) · [路线图](docs/roadmap.md) · [贡献](CONTRIBUTING.md) · [安全](SECURITY.md) · [Apache-2.0](LICENSE)
+[English](README.en.md) · [v1.2.0 发布说明](docs/releases/v1.2.0.md) · [快速开始](docs/quickstart.md) · [架构](docs/architecture.md) · [当前状态](docs/current-status.md) · [路线图](docs/roadmap.md) · [贡献](CONTRIBUTING.md) · [安全](SECURITY.md) · [Apache-2.0](LICENSE)
 
-> **稳定版本：v1.0.0 / Automation V1；当前候选基线：v1.2 Zero-Touch Learning Continuity。** v1.2 增加四个 subject-bound GPT Tutor MCP、Journal 驱动的 fresh-chat 恢复、增量 checkpoint 和自动 Obsidian 投影；它仍属早期项目，不保证学习效果。真实使用前请阅读[当前状态](docs/current-status.md)与[受控 Dogfood 记录](docs/audits/v1.2-real-dogfood-acceptance.md)。
+> **稳定版本：v1.2.0 / Zero-Touch Learning Continuity。** v1.2 提供四个 subject-bound GPT Tutor MCP、Journal 驱动的 fresh-chat 恢复、增量 checkpoint 和自动 Obsidian 投影；它仍属早期项目，不保证学习效果。真实使用前请阅读[当前状态](docs/current-status.md)与[受控 Dogfood 记录](docs/audits/v1.2-real-dogfood-acceptance.md)。
 
 ## 为什么需要 Gallop？
 
@@ -33,7 +33,7 @@ Gallop 连接三个环节：**导师记录学了什么 → 安排下一次练什
 | 训练与复习 | 四学科策略、P0–P4 优先级、T+1/T+7/T+30 复习候选项 | 手动调用命令，无后台守护进程或自动提醒 |
 | 练习准备 | 本地任务说明；可选 DeepTutor 诊断题及持久 submit/poll/collect 任务 | DeepTutor 单独安装；当前选择题不能代替证明、口试、编程或模拟实验 |
 | 掌握度评估 | 根据人确认的真实结果更新 0–5 级状态与 low/medium/high 置信度 | 生成题目不等于完成训练；一次答对不会自动升级 |
-| 精英训练与渐进指导（v1.1 RC） | 区分独立、提示、看过答案和 AI 生成证据；根据显式目标与当前证据给出训练区间、支架和先修修复建议 | 目标不会抬高当前能力；建议不直接调度任务，Human Production E2E 尚待执行 |
+| 精英训练与渐进指导 | 区分独立、提示、看过答案和 AI 生成证据；根据显式目标与当前证据给出训练区间、支架和先修修复建议 | 目标不会抬高当前能力；建议不直接调度任务 |
 | 笔记与手机阅读 | Obsidian Markdown 受管区域、过滤后的单向 Gallop-Reader 导出 | Reader 是阅读镜像，不是双向同步；真实发布依赖现有已验证的 Reader 绑定 |
 | 兼容旧流程 | 保留 v0.1 的 session/manifest/generate/import-result 和离线 demo | 旧流程的配置、状态和掌握度规则与 Automation 分开 |
 
@@ -130,12 +130,12 @@ gallop/
 └── .github/workflows/       # Windows/Ubuntu CI 与 wheel 构建检查
 ```
 
-CI 对 push/PR 运行测试、示例校验、仓库审计、离线 demo 和 wheel 构建。v1.0.0 的发布记录报告了 177 项本地测试及一次隔离的真实 DeepTutor 验证；这不证明所有环境、模型或长期学习效果都已验证。
+CI 对 push/PR 运行测试、示例校验、仓库审计、离线 demo 和 wheel 构建。v1.2.0 发布验证覆盖 Windows/Ubuntu、Python 3.11/3.13；这不证明所有环境、模型或长期学习效果都已验证。
 
 架构依赖、证据权限、时间输入和热点文件增长由
 [Architecture Governance](docs/architecture-governance.md) 与 CI 中的可执行 Gate 约束。
 
-截至 2026-08-31，v1.0.0 GitHub Release 没有附加 wheel/checksum 资产，当前 CI 也不自动上传发布资产。请使用上面的源码安装方式；不要把 v0.1.0 wheel 当成 v1.0.0。[当前状态与证据](docs/current-status.md)区分已实现、历史验证和待完善项。
+v1.2.0 已发布为稳定 Tag/Release；当前 CI 不自动上传 wheel 资产，推荐从源码或已验证 Tag 安装。[当前状态与证据](docs/current-status.md)区分已实现、历史验证和待完善项。
 
 ## 后续方向与参与方式
 

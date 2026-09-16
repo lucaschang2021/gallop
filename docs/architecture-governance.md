@@ -15,9 +15,9 @@ The governed product definition is:
 
 > GPT = TEACH · GALLOP = GOVERN · OBSIDIAN = REMEMBER · EVIDENCE = PROVE
 
-Gallop is headless. In target v1.2, the four GPT tutor conversations are the
-learner-facing product surface. The Tutor runtime bridge and Zero-Touch workflow
-are not implemented by RC2 and cannot begin before governance closure passes.
+Gallop is headless. In stable v1.2.0, the four GPT tutor conversations are the
+learner-facing product surface. The subject-bound Tutor runtime bridge and
+Zero-Touch workflow are implemented and remain governed by this contract.
 
 DeepTutor is `LEGACY`, `OPTIONAL`, `NON-AUTHORITATIVE`, and not part of the
 future primary workflow. Existing compatibility may remain isolated; no new
